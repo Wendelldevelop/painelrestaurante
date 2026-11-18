@@ -1,0 +1,278 @@
+{
+  "nome": "Casa Brasa",
+  "slogan": "Brasa de lenha e massa fresca desde 1998",
+  "descricao": "Carnes na brasa de lenha e massas feitas na casa, num casarão de 1920 no Centro de São Paulo.",
+  "cozinha": "Brasa de lenha e massas frescas",
+  "faixaPreco": "$$$",
+  "fundacao": 1998,
+  "fundadores": "Dona Lúcia e Seu Antônio Ferraz",
+  "whatsapp": "5511999999999",
+  "telefone": "(11) 99999-9999",
+  "instagram": "https://instagram.com/",
+  "facebook": "https://facebook.com/",
+  "endereco": {
+    "rua": "Rua das Laranjeiras, 245",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01000-000",
+    "referencia": "Casarão amarelo em frente à praça, com portão de ferro e lanternas na entrada."
+  },
+  "coordenadas": {
+    "lat": -23.5489,
+    "lng": -46.6388
+  },
+  "fuso": "America/Sao_Paulo",
+  "horarios": {
+    "domingo": [
+      {
+        "abre": "11:30",
+        "fecha": "17:00"
+      }
+    ],
+    "segunda": [],
+    "terca": [
+      {
+        "abre": "11:30",
+        "fecha": "15:00"
+      },
+      {
+        "abre": "18:30",
+        "fecha": "23:00"
+      }
+    ],
+    "quarta": [
+      {
+        "abre": "11:30",
+        "fecha": "15:00"
+      },
+      {
+        "abre": "18:30",
+        "fecha": "23:00"
+      }
+    ],
+    "quinta": [
+      {
+        "abre": "11:30",
+        "fecha": "15:00"
+      },
+      {
+        "abre": "18:30",
+        "fecha": "23:00"
+      }
+    ],
+    "sexta": [
+      {
+        "abre": "11:30",
+        "fecha": "15:00"
+      },
+      {
+        "abre": "18:30",
+        "fecha": "00:00"
+      }
+    ],
+    "sabado": [
+      {
+        "abre": "11:30",
+        "fecha": "00:00"
+      }
+    ]
+  },
+  "reservas": {
+    "capacidadePorHorario": 40,
+    "intervaloMinutos": 30,
+    "ultimaChegadaAntesDeFecharMin": 90,
+    "antecedenciaMinimaHoras": 2,
+    "diasAFrente": 30,
+    "maxPessoas": 12
+  },
+  "entrega": {
+    "taxa": 9.9,
+    "pedidoMinimo": 60,
+    "tempoDelivery": "40 a 60 min",
+    "tempoRetirada": "25 min"
+  },
+  "pagamentos": [
+    "Pix",
+    "Cartão de crédito",
+    "Cartão de débito",
+    "Vale-refeição",
+    "Dinheiro"
+  ],
+  "sobre": {
+    "historiaResumo": "Começou em 1998 numa garagem, com seis mesas e a churrasqueira de tijolo do Seu Antônio. Hoje ocupa um casarão de 1920 a duas quadras dali, e quem comanda a cozinha é a neta.",
+    "historia": [
+      {
+        "ano": "1998",
+        "titulo": "A primeira brasa",
+        "texto": "Com seis mesas, uma churrasqueira de tijolo e as receitas da avó, a Casa Brasa abre as portas na garagem da família."
+      },
+      {
+        "ano": "2006",
+        "titulo": "O casarão",
+        "texto": "A fila na calçada pediu espaço. A família restaura um casarão de 1920 a duas quadras dali, nosso endereço até hoje."
+      },
+      {
+        "ano": "2014",
+        "titulo": "Massas da casa",
+        "texto": "Chega a máquina de massa fresca e, com ela, o tagliatelle da Dona Lúcia vira o prato mais pedido de domingo."
+      },
+      {
+        "ano": "2022",
+        "titulo": "Terceira geração",
+        "texto": "A neta Marina assume a cozinha, depois de anos em restaurantes da Itália, e renova o cardápio sem perder a raiz."
+      }
+    ],
+    "chef": {
+      "nome": "Marina Ferraz",
+      "cargo": "Chef e neta dos fundadores",
+      "texto": "Cresci entre a churrasqueira do meu avô e a mesa de massa da minha avó. Cozinho com fogo, paciência e ingrediente comprado de quem planta perto.",
+      "foto": "fotos/_chef"
+    },
+    "fotos": {
+      "brasa": "fotos/_brasa",
+      "entrada": "fotos/_salao",
+      "salao": "fotos/_salao",
+      "mesa": "fotos/_mesa",
+      "bar": "fotos/_bar",
+      "galeria": [
+        "fotos/_bar",
+        "fotos/_cozinha",
+        "fotos/_salao-b"
+      ]
+    }
+  },
+  "pratoDoChefe": "picanha-brasa",
+  "executivo": {
+    "dias": "Terça a sexta, das 11h30 às 15h",
+    "inclui": "Acompanha suco natural ou refrigerante e a sobremesa do dia",
+    "titulo": "Executivo",
+    "chamada": "Almoço do dia"
+  },
+  "avaliacao": {
+    "media": 4.8,
+    "total": 1240,
+    "fonte": "Google",
+    "verificada": false
+  },
+  "depoimentos": [
+    {
+      "nome": "Camila Rocha",
+      "origem": "Google",
+      "nota": 5,
+      "quando": "há 2 semanas",
+      "texto": "A picanha é perfeita e o atendimento parece de casa de vó. Virou nosso almoço de domingo."
+    },
+    {
+      "nome": "Rafael Mendes",
+      "origem": "Google",
+      "nota": 5,
+      "quando": "há 1 mês",
+      "texto": "O tagliatelle da Dona Lúcia é inesquecível. O casarão é lindo, vale reservar a varanda."
+    },
+    {
+      "nome": "Juliana Souza",
+      "origem": "TripAdvisor",
+      "nota": 5,
+      "quando": "há 1 mês",
+      "texto": "Comemoramos o aniversário da minha mãe lá. Equipe atenciosa e sobremesas incríveis."
+    },
+    {
+      "nome": "Pedro Almeida",
+      "origem": "Google",
+      "nota": 4,
+      "quando": "há 2 meses",
+      "texto": "Executivo farto e bem servido, sai rápido no almoço. A costela 12 horas desmancha."
+    },
+    {
+      "nome": "Marina Lopes",
+      "origem": "Instagram",
+      "nota": 5,
+      "quando": "há 3 meses",
+      "texto": "Ambiente elegante sem ser formal. A carta de vinhos combina muito bem com as carnes."
+    },
+    {
+      "nome": "Lucas Ferreira",
+      "origem": "Google",
+      "nota": 5,
+      "quando": "há 3 meses",
+      "texto": "Pedi delivery e chegou quentinho. O filé sobre espaguete é obrigatório."
+    }
+  ],
+  "especialidades": [
+    {
+      "titulo": "Lenha, não gás",
+      "texto": "As carnes assam na brasa de lenha, cada corte no seu tempo."
+    },
+    {
+      "titulo": "Massa do dia",
+      "texto": "Aberta toda manhã na cozinha. O tagliatelle é o mesmo de 1998."
+    },
+    {
+      "titulo": "Fornecedor com nome",
+      "texto": "Folhas, legumes e queijos vêm de pequenos produtores da região."
+    },
+    {
+      "titulo": "Sem pressa",
+      "texto": "A costela fica doze horas no forno. O ragu, a tarde inteira."
+    }
+  ],
+  "site": {
+    "url": "https://www.seurestaurante.com.br",
+    "titulo": "Casa Brasa | Carnes na brasa e massas frescas no Centro de São Paulo",
+    "descricao": "Carnes na brasa de lenha e massas feitas na casa, num casarão de 1920 no Centro de São Paulo. Veja o cardápio, reserve uma mesa ou peça pelo WhatsApp."
+  },
+  "canais": {
+    "ifood": ""
+  },
+  "instagramUsuario": "@casabrasa",
+  "comodidades": [
+    {
+      "titulo": "Estacionamento",
+      "texto": "Convênio com o estacionamento ao lado"
+    },
+    {
+      "titulo": "Acessibilidade",
+      "texto": "Rampa na entrada e banheiro adaptado"
+    },
+    {
+      "titulo": "Pet",
+      "texto": "Pets são bem-vindos na varanda"
+    },
+    {
+      "titulo": "Wi-Fi",
+      "texto": "Gratuito para clientes"
+    }
+  ],
+  "eventos": [
+    {
+      "titulo": "Aniversários",
+      "texto": "Mesa reservada e menu fechado por pessoa. A sobremesa do aniversariante é por conta da casa."
+    },
+    {
+      "titulo": "Almoços e jantares de equipe",
+      "texto": "Menu por pessoa, na varanda ou no salão, com bebidas à parte."
+    },
+    {
+      "titulo": "Casa fechada",
+      "texto": "O casarão inteiro para o seu evento, com cardápio montado junto com a chef."
+    }
+  ],
+  "capa": {
+    "titulo": "Carne na brasa de lenha. Massa feita de manhã.",
+    "texto": "Desde 1998 num casarão do Centro de São Paulo. A família Ferraz cuida do fogo, da massa e da mesa.",
+    "video": "video/capa.mp4",
+    "poster": "video/capa.webp"
+  },
+  "destaques": [
+    "picanha-brasa",
+    "costela-12h",
+    "espaguete-camarao",
+    "tiramisu"
+  ],
+  "mesas": 12,
+  "logo": {
+    "iniciais": "CB"
+  },
+  "pedidos": false
+}

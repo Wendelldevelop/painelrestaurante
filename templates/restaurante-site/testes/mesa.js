@@ -1,0 +1,23 @@
+const path = require('path');
+const RAIZ = 'file://' + path.resolve(__dirname, '..') + '/';
+const { chromium } = require('playwright');
+(async()=>{const b=await chromium.launch();let falhas=0;
+for(const w of [375,1440]){const p=await b.newPage({viewport:{width:w,height:w<500?812:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__a=[];window.open=(u)=>{window.__a.push(u);return null;};});
+const ok=(n,c,x='')=>{if(!c)falhas++;console.log(w,c?'OK  ':'FALHA',n,x);};
+const B=RAIZ+'site/';
+await p.goto(B+'cardapio.html?mesa=7');await p.waitForTimeout(1200);
+ok('aviso da mesa',await p.evaluate(()=>/mesa 7/.test(document.querySelector('.aviso-mesa')?.textContent||'')));
+await p.click('.exec-item >> nth=1');await p.waitForTimeout(1100);
+ok('roleta troca o prato',await p.evaluate(()=>document.querySelector('.roleta-nome').textContent==='Frango grelhado'&&!document.querySelector('.roleta-prato[data-i="1"]').hidden&&document.querySelector('.roleta-prato[data-i="0"]').hidden));
+await p.click('[data-passo="1"]');await p.waitForTimeout(1100);
+ok('seta avança',await p.evaluate(()=>document.querySelector('.roleta-nome').textContent.startsWith('Salmão')));
+await p.click('[data-roleta-add]');await p.waitForTimeout(400);
+ok('adiciona da roleta',await p.evaluate(()=>JSON.parse(localStorage.getItem('cb-carrinho')).some(c=>c.id==='exec-peixe')));
+await p.goto(B+'pedido.html');await p.waitForTimeout(800);
+ok('opção na mesa marcada',await p.evaluate(()=>document.querySelector('input[value=mesa]')?.checked&&document.querySelector('.fora-mesa').hidden));
+await p.fill('[name=nome]','Cliente Teste');await p.click('#enviar-pedido');await p.waitForTimeout(300);
+const r=decodeURIComponent(await p.evaluate(()=>window.__a.at(-1)||''));
+ok('pedido da mesa no WhatsApp',/Na mesa 7/.test(r)&&!/Pagamento/.test(r)&&/Salmão ao molho de laranja/.test(r),r.slice(30,120).replace(/\n/g,' / '));
+ok('sem erros',errs.length===0,errs.join(';'));await p.close();}
+console.log('FALHAS',falhas);process.exitCode=falhas?1:0;await b.close()})();

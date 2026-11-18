@@ -1,0 +1,5 @@
+templates/restaurante-site/casa-brasa-site.zip
+templates/restaurante-site/demo-pdv.html
+templates/restaurante-site/*.jpg
+templates/restaurante-site/v7/
+!/demo-pdv.html

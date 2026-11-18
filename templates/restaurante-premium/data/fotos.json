@@ -1,0 +1,378 @@
+{
+  "salada-quintal": {
+    "url": "https://images.pexels.com/photos/1059905/pexels-photo-1059905.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "pao-fermentacao": {
+    "url": "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "camarao-alho": {
+    "url": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "file-roti": {
+    "url": "https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "salmao-brasa": {
+    "url": "https://images.pexels.com/photos/3655916/pexels-photo-3655916.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "frango-caipira": {
+    "url": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "moqueca-camarao": {
+    "url": "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "carbonara": {
+    "url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "espaguete-arrabbiata": {
+    "url": "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "lasanha-berinjela": {
+    "url": "https://images.unsplash.com/photo-1619895092538-128341789043?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "pizza-fermentacao": {
+    "url": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "ravioli-dona-lucia": {
+    "url": "https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "espaguete-camarao": {
+    "url": "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "tiramisu": {
+    "url": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "cheesecake-frutas": {
+    "url": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "brownie-sorvete": {
+    "url": "https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "prato"
+  },
+  "sorbet-manga": {
+    "url": "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "bruschetta-tomate": {
+    "url": "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "picanha-brasa": {
+    "url": "https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "limonada-gengibre": {
+    "url": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "vinho-tinto-malbec": {
+    "url": "https://images.unsplash.com/photo-1474722883778-792e7990302f?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "costela-12h": {
+    "url": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "prato"
+  },
+  "exec-bife": {
+    "url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.507,
+      0.668
+    ],
+    "raio": 0.19
+  },
+  "exec-frango": {
+    "url": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.56,
+      0.5
+    ],
+    "raio": 0.3
+  },
+  "exec-peixe": {
+    "url": "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.505,
+      0.52
+    ],
+    "raio": 0.42
+  },
+  "exec-vegetariano": {
+    "url": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.52,
+      0.55
+    ],
+    "raio": 0.46
+  },
+  "_capa": {
+    "url": "https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_brasa": {
+    "url": "https://images.unsplash.com/photo-1558030137-a56c1b004fa3?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_salao": {
+    "url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_mesa": {
+    "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_chef": {
+    "url": "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_bar": {
+    "url": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_cozinha": {
+    "url": "https://images.unsplash.com/photo-1428515613728-6b4607e44363?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "_salao-b": {
+    "url": "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "foto"
+  },
+  "r-pao-fermentacao": {
+    "url": "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-bruschetta-tomate": {
+    "url": "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-salada-quintal": {
+    "url": "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-bolinho-costela": {
+    "url": "https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-camarao-alho": {
+    "url": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-picanha-brasa": {
+    "url": "https://images.unsplash.com/photo-1546964124-0cce460f38ef?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-costela-12h": {
+    "url": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-file-roti": {
+    "url": "https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-salmao-brasa": {
+    "url": "https://images.pexels.com/photos/3655916/pexels-photo-3655916.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-frango-caipira": {
+    "url": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-moqueca-camarao": {
+    "url": "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-bowl-vegano": {
+    "url": "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.47
+    ],
+    "raio": 0.2,
+    "lado": 560
+  },
+  "r-ravioli-dona-lucia": {
+    "url": "https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-pizza-fermentacao": {
+    "url": "https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-espaguete-camarao": {
+    "url": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-espaguete-arrabbiata": {
+    "url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-lasanha-berinjela": {
+    "url": "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-carbonara": {
+    "url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-cheesecake-frutas": {
+    "url": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-brownie-sorvete": {
+    "url": "https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.5
+    ],
+    "raio": "auto",
+    "lado": 560
+  },
+  "r-tiramisu": {
+    "url": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.47,
+      0.82
+    ],
+    "raio": 0.36,
+    "lado": 560
+  },
+  "r-sorbet-manga": {
+    "url": "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=1600&q=82",
+    "tipo": "redondo",
+    "centro": [
+      0.5,
+      0.72
+    ],
+    "raio": 0.4,
+    "lado": 560
+  }
+}

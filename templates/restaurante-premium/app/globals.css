@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/*
+  Identidade: restaurante clássico. Branco limpo, verde-floresta sólido,
+  terra queimada nos detalhes e tipografia de cardápio impresso.
+  Troque as cores aqui para mudar o site inteiro.
+*/
+@theme {
+  --color-papel: #ffffff;
+  --color-salvia: #edf0e8;
+  --color-verde: #2d4a35;
+  --color-verde-escuro: #1f3526;
+  --color-terra: #9a4c2a;
+  --color-terra-claro: #f4e7df;
+  --color-tinta: #1d241f;
+  --color-suave: #5a6259;
+  --color-linha: #dcdfd5;
+  /* Cores de apoio que combinam com a paleta (selos, executivo, bar) */
+  --color-mostarda: #c9962e;
+  --color-oliva: #55653f;
+  --color-vinho: #5b2318;
+  --color-noite: #1c1a17;
+
+  --font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-lato), "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 8rem;
+  background: var(--color-papel);
+}
+
+body {
+  background: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--color-verde);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-terra);
+  outline-offset: 3px;
+}
+
+.container-site {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 2rem;
+  }
+}
+
+/* Rótulo em versalete, como nos cardápios impressos */
+.rotulo {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+}
+
+/* Ornamento: linha — losango — linha */
+.ornamento {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-terra);
+}
+.ornamento::before,
+.ornamento::after {
+  content: "";
+  height: 1px;
+  width: 2.5rem;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* Pontilhado entre nome e preço */
+.pontilhado {
+  flex: 1;
+  min-width: 1rem;
+  border-bottom: 1px dotted color-mix(in srgb, var(--color-tinta) 35%, transparent);
+  transform: translateY(-0.3em);
+}
+
+@keyframes flutuar {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+.flutuar {
+  animation: flutuar 5s ease-in-out infinite;
+}
+
+@keyframes zoom-suave {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+.zoom-suave {
+  animation: zoom-suave 12s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .flutuar, .zoom-suave { animation: none; }
+}

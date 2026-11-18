@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR" data-modo="%%MODO%%"%%VITRINE%%>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+%%CABECA%%
+<link rel="icon" href="%%ICONE%%">
+%%FONTES%%
+%%ESTILO%%
+</head>
+<body data-pagina="%%PAGINA%%">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="largura topo-linha">
+    <a class="marca" href="%%L.inicio%%" aria-label="%%NOME%%, página inicial">%%LOGO%%<span>%%NOME%%</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="%%L.cardapio%%" data-nav="cardapio">Cardápio</a>
+      <a href="%%L.reservas%%" data-nav="reservas" data-so-pedido>Reservas</a>
+      <a href="%%L.sobre%%" data-nav="sobre">A casa</a>
+    </nav>
+    <p class="topo-status" data-status aria-live="polite"></p>
+    <a class="btn btn-pri topo-reservar" href="%%L.reservas%%" data-so-pedido>Reservar mesa</a>
+    <a class="btn btn-sec topo-reservar" data-insta href="https://instagram.com/" target="_blank" rel="noopener" data-so-vitrine>Instagram</a>
+    <button type="button" class="sacola" data-so-pedido data-abrir-pedido aria-label="Abrir pedido">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="sacola-txt">Pedido</span><span class="contador" data-contador hidden>0</span>
+    </button>
+  </div>
+</header>
+
+<main id="conteudo"%%PRE%%>%%CONTEUDO%%</main>
+
+<footer class="rodape">
+  <div class="largura rodape-grade">
+    <div>
+      <p class="marca">%%LOGO%%<span>%%NOME%%</span></p>
+      <p class="rodape-nota">Brasa de lenha e massa fresca desde 1998.</p>
+    </div>
+    <div>
+      <h2 class="rotulo">Onde</h2>
+      <p>Rua das Laranjeiras, 245<br>Centro, São Paulo — SP</p>
+      <p><a data-tel href="tel:">(11) 99999-9999</a></p>
+    </div>
+    <div>
+      <h2 class="rotulo">Páginas</h2>
+      <p><a href="%%L.cardapio%%">Cardápio</a><span data-so-pedido><br><a href="%%L.reservas%%">Reservas</a></span><br><a href="%%L.sobre%%">A casa e contato</a><span data-so-pedido><br><a href="%%L.pedido%%">Seu pedido</a></span></p>
+    </div>
+    <div>
+      <h2 class="rotulo">Redes</h2>
+      <p><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a><br><a href="https://facebook.com/" target="_blank" rel="noopener">Facebook</a><br><a data-whats href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></p>
+    </div>
+  </div>
+  <p class="largura rodape-fim">© <span id="ano"></span> Casa Brasa</p>
+</footer>
+
+<nav class="barra-cel" aria-label="Atalhos">
+  <a href="%%L.cardapio%%" data-nav="cardapio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>Cardápio</a>
+  <a href="%%L.reservas%%" data-nav="reservas" data-so-pedido><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>Reservar</a>
+  <a data-tel href="tel:"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.180 2 19.790 19.790 0 0 1-8.630-3.070 19.500 19.500 0 0 1-6-6 19.790 19.790 0 0 1-3.070-8.670A2 2 0 0 1 4.110 2h3a2 2 0 0 1 2 1.720 12.840 12.840 0 0 0 .700 2.810 2 2 0 0 1-.450 2.110L8.090 9.910a16 16 0 0 0 6 6l1.270-1.270a2 2 0 0 1 2.110-.450 12.840 12.840 0 0 0 2.810.700A2 2 0 0 1 22 16.920z"/></svg>Ligar</a>
+  <a data-whats href="https://wa.me/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>WhatsApp</a>
+  <a data-insta href="https://instagram.com/" target="_blank" rel="noopener" data-so-vitrine><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>Instagram</a>
+  <button type="button" data-so-pedido data-abrir-pedido><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Pedido<span class="contador" data-contador hidden>0</span></button>
+</nav>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Detalhes do prato" hidden></div>
+<div class="veu" id="fundo-gaveta" hidden></div>
+<aside class="gaveta" id="gaveta" role="dialog" aria-modal="true" aria-labelledby="titulo-gaveta" hidden></aside>
+
+%%SCRIPTS%%
+</body>
+</html>
