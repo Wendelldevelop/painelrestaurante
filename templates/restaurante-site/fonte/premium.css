@@ -654,3 +654,4 @@ html:not([data-vitrine]) [data-so-vitrine] { display: none !important; }
 .sugestao .btn { min-height: 2.5rem; padding: var(--e2) var(--e4); flex: none; }
 .sugestao .fechar { width: 2.5rem; height: 2.5rem; margin: 0; flex: none; }
 @keyframes sobe-sug { from { opacity: 0; transform: translate(-50%, 1rem); } }
+.adicionar.esgotado, .adicionar:disabled { opacity: .55; cursor: not-allowed; text-decoration: line-through; }

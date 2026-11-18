@@ -90,7 +90,8 @@
     "taxa": 9.9,
     "pedidoMinimo": 60,
     "tempoDelivery": "40 a 60 min",
-    "tempoRetirada": "25 min"
+    "tempoRetirada": "25 min",
+    "delivery": false
   },
   "pagamentos": [
     "Pix",
@@ -153,7 +154,8 @@
     "media": 4.8,
     "total": 1240,
     "fonte": "Google",
-    "verificada": false
+    "verificada": false,
+    "link": ""
   },
   "depoimentos": [
     {
@@ -274,5 +276,6 @@
   "logo": {
     "iniciais": "CB"
   },
-  "pedidos": false
+  "pedidos": false,
+  "esgotados": []
 }

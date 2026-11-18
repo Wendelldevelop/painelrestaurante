@@ -33,6 +33,7 @@ try:
     for modo, testes in PLANO:
         conf = json.loads(original)
         conf["pedidos"] = modo
+        conf["entrega"]["delivery"] = True  # testa o modo mais completo
         CONFIG.write_text(json.dumps(conf, ensure_ascii=False, indent=2), encoding="utf-8")
         codigo, saida = rodar([sys.executable, "montar.py"])
         if codigo:

@@ -15,7 +15,8 @@
   const PAINEL = CONFIG.pedidos === "painel";
   const MESA0 = new URLSearchParams(location.search).get("mesa") || (CONFIG.mesa ? String(CONFIG.mesa) : "") || (() => { try { return sessionStorage.getItem("cb-mesa") || ""; } catch (e) { return ""; } })();
   const PEDIDOS = CONFIG.pedidos !== false && !(PAINEL && !MESA0);
-  const DELIVERY = CONFIG.pedidos === true;
+  const DELIVERY = CONFIG.pedidos === true && CONFIG.entrega?.delivery !== false; // "delivery": false no config tira a entrega
+  const ESGOTADOS = new Set(CONFIG.esgotados || []); // pratos que acabaram hoje (o painel atualiza ao vivo)
   document.documentElement.toggleAttribute("data-vitrine", !PEDIDOS);
   const lp = (id) => (MULTI && PAG !== "cardapio" ? L.cardapio : "") + "#prato-" + id;
 
@@ -116,6 +117,7 @@
     if (!$("#gaveta").hidden) desenharGaveta();
   }
   function adicionar(id, qtd = 1, obs = "", sug = false) {
+    if (ESGOTADOS.has(id)) return;
     const chave = id + "::" + obs.trim().toLowerCase();
     const ex = carrinho.find((c) => c.chave === chave);
     if (ex) ex.qtd += qtd; else carrinho.push({ chave, id, qtd, obs: obs.trim(), sug });
@@ -151,7 +153,7 @@
   const pratoDaCasa = () => item(CONFIG.pratoDoChefe) || CARDAPIO.find((i) => i.foto) || CARDAPIO[0];
   const btnIfood = (cls = "link") => (canais.ifood ? `<a class="${cls}" href="${esc(canais.ifood)}" target="_blank" rel="noopener">Pedir no iFood</a>` : "");
 
-  const btnAdd = (it) => (PEDIDOS ? `<button type="button" class="adicionar" data-add="${it.id}" aria-label="Adicionar ${esc(it.nome)} ao pedido">Adicionar</button>` : "");
+  const btnAdd = (it) => (!PEDIDOS ? "" : ESGOTADOS.has(it.id) ? `<button type="button" class="adicionar esgotado" data-add="${it.id}" disabled>Esgotado hoje</button>` : `<button type="button" class="adicionar" data-add="${it.id}" aria-label="Adicionar ${esc(it.nome)} ao pedido">Adicionar</button>`);
   const insta = CONFIG.instagram || "";
   const redes = (cls = "link") => [insta && `<a class="${cls}" href="${esc(insta)}" target="_blank" rel="noopener">Instagram${CONFIG.instagramUsuario ? " " + esc(CONFIG.instagramUsuario) : ""}</a>`, CONFIG.facebook && `<a class="${cls}" href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>`, `<a class="${cls}" href="${linkWhats(`Olá, ${CONFIG.nome}!`)}" target="_blank" rel="noopener">WhatsApp</a>`].filter(Boolean).join("");
 
@@ -600,8 +602,8 @@
       <form id="form-pedido" class="form" style="margin-top:var(--e7);gap:var(--e6)" novalidate>
         ${PAINEL ? `<p class="aviso-mesa" style="border-radius:var(--raio)"><span>Pedido da <b>mesa ${esc(mesa)}</b>. Vai direto para a cozinha.</span></p><input type="hidden" name="tipo" value="mesa">` : `<fieldset><legend>Como você quer receber</legend><div class="opcoes">
           ${mesa ? `<label class="opcao"><input type="radio" name="tipo" value="mesa" checked><strong>Na mesa ${esc(mesa)}</strong><small>A equipe leva até você</small></label>` : ""}
-          <label class="opcao"><input type="radio" name="tipo" value="delivery" ${mesa ? "" : "checked"}><strong>Delivery</strong><small>${reais(CONFIG.entrega.taxa)} · ${esc(CONFIG.entrega.tempoDelivery)}</small></label>
-          <label class="opcao"><input type="radio" name="tipo" value="retirada"><strong>Retirada</strong><small>Sem taxa · ${esc(CONFIG.entrega.tempoRetirada)}</small></label>
+          ${DELIVERY ? `<label class="opcao"><input type="radio" name="tipo" value="delivery" ${mesa ? "" : "checked"}><strong>Delivery</strong><small>${reais(CONFIG.entrega.taxa)} · ${esc(CONFIG.entrega.tempoDelivery)}</small></label>` : ""}
+          <label class="opcao"><input type="radio" name="tipo" value="retirada" ${!mesa && !DELIVERY ? "checked" : ""}><strong>Retirada</strong><small>Sem taxa · ${esc(CONFIG.entrega.tempoRetirada)}</small></label>
         </div></fieldset>`}
         <div class="conta" id="itens-pedido"></div>
         <div class="form-duas">
@@ -648,15 +650,22 @@
       // modo painel: o pedido vai direto para o PDV (aqui, a tela ao lado na demonstração)
       if (CONFIG.pedidos === "painel") {
         const num = Date.now() % 100000;
-        window.parent.postMessage({ tipo: "pedido", num, mesa: naMesa ? mesa : "", modo: naMesa ? "Mesa" : deliv ? "Delivery" : "Retirada", nome: d.nome.trim(), obs: d.obs.trim(),
-          itens: carrinho.map((c) => ({ nome: item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: item(c.id).preco, cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa }, "*");
+        const pedido = { tipo: "pedido", num, mesa: naMesa ? mesa : "", modo: naMesa ? "Mesa" : deliv ? "Delivery" : "Retirada", nome: d.nome.trim(), obs: d.obs.trim(),
+          itens: carrinho.map((c) => ({ nome: item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: item(c.id).preco, cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa };
+        let confirmado = false;
+        const enviar = () => { if (!confirmado) { window.parent.postMessage(pedido, "*"); setTimeout(enviar, 3000); } };
+        enviar();
         carrinho = [];
         salvarCarrinho();
-        $("#conteudo").innerHTML = `<div class="largura pagina estreita"><h1>Pedido enviado</h1><p class="texto">Chegou na cozinha. Acompanhe aqui:</p><p class="lead" id="status-pedido" style="margin-top:var(--e4)">Recebido</p><p style="margin-top:var(--e6)"><a class="btn btn-sec" href="${L.cardapio}">Pedir mais</a> <button type="button" class="btn btn-sec" data-chamar="garcom">Chamar garçom</button> <button type="button" class="btn btn-sec" data-chamar="conta">Pedir a conta</button></p></div>`;
+        $("#conteudo").innerHTML = `<div class="largura pagina estreita"><h1>Pedido enviado</h1><p class="texto">Chegou na cozinha. Acompanhe aqui:</p><p class="lead" id="status-pedido" style="margin-top:var(--e4)">Enviando…</p><p style="margin-top:var(--e6)"><a class="btn btn-sec" href="${L.cardapio}">Pedir mais</a> <button type="button" class="btn btn-sec" data-chamar="garcom">Chamar garçom</button> <button type="button" class="btn btn-sec" data-chamar="conta">Pedir a conta</button></p></div>`;
         window.scrollTo(0, 0);
         window.addEventListener("message", (ev) => {
+          if (ev.data?.num === num && ev.data.tipo === "recebido") { confirmado = true; if ($("#status-pedido")?.textContent === "Enviando…") $("#status-pedido").textContent = "Recebido"; }
           if (ev.data?.tipo === "status" && ev.data.num === num && $("#status-pedido")) $("#status-pedido").textContent = ev.data.status;
-          if (ev.data?.tipo === "fechada" && $("#status-pedido")) $("#status-pedido").textContent = "Conta fechada. Obrigado pela visita!";
+          if (ev.data?.tipo === "fechada" && $("#status-pedido")) {
+            const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
+            $("#status-pedido").closest(".pagina").innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Sua conta foi fechada. Gostou? Sua avaliação ajuda muito a casa.</p><p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
+          }
         });
         return;
       }
@@ -812,6 +821,11 @@
     salvarCarrinho();
     $$("[data-abrir-pedido]").forEach((b) => (b.onclick = abrirGaveta));
     $("#fundo-gaveta").onclick = fecharGaveta;
+    window.addEventListener("message", (ev) => {
+      if (ev.data?.tipo !== "esgotado") return;
+      ev.data.ativo ? ESGOTADOS.add(ev.data.id) : ESGOTADOS.delete(ev.data.id);
+      $$(`[data-add="${ev.data.id}"]`).forEach((b) => { b.disabled = ev.data.ativo; b.classList.toggle("esgotado", ev.data.ativo); b.textContent = ev.data.ativo ? "Esgotado hoje" : "Adicionar"; });
+    });
     document.addEventListener("click", (ev) => {
       const add = ev.target.closest("[data-add]");
       if (add) {

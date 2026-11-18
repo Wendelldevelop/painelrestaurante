@@ -16,4 +16,11 @@ console.log('alerta conta:',await p.locator('.alerta').count(),'mesa 5:',await p
 await p.locator('#cozinha-Recebido .card button, #bar-Recebido .card button').first().click();await p.waitForTimeout(500);
 console.log('status no celular:',await f.locator('#status-pedido').textContent());
 
+await f.locator('a:has-text("Pedir mais")').click();await p.waitForTimeout(800);const id=await f.locator('[data-add]').first().getAttribute('data-add');
+await p.locator(`.esg [data-id="${id}"]`).click();await p.waitForTimeout(300);
+console.log('esgotado no celular:',await f.locator(`[data-add="${id}"]`).first().isDisabled());
+await p.locator('.card [data-cancel]').first().click();
+await p.fill('#pin','0000');await p.click('#ok-canc');console.log('senha errada bloqueia:',await p.locator('#erro').textContent()!=='');
+await p.fill('#pin','1234');await p.click('#ok-canc');await p.waitForTimeout(300);console.log('cancelamentos:',await p.locator('#g-canc .nota').count());
+await p.selectOption('#funcao','cozinha');console.log('abas visiveis p/ cozinha:',await p.locator('nav button:visible').count());
 console.log(errs);await b.close()})();
