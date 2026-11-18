@@ -19,8 +19,8 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - Apresentação (slides): https://claude.ai/artifact/YBnRHxZJgt7vQ5VAn6mfdf (privada).
 
 ## O sistema: 2 partes
-1. **O que o cliente vê** (`cliente.html`): site do restaurante com cardápio, fotos e reserva. Pelo QR da mesa (`?mesa=N`) ele pede, acompanha o status, chama o garçom, pede a conta e, ao fechar, recebe o link para avaliar no Google. Ao adicionar um prato aparece "Vai bem com…" (venda extra).
-2. **O que o restaurante vê** (`restaurante.html`), um painel com abas:
+1. **O que o cliente vê** (`cliente.html`): site do restaurante com cardápio, fotos e reserva. Pelo QR da mesa (`?mesa=N`) ele pede, acompanha o status, chama o garçom e **fecha a conta pelo celular** (vê os itens, 10% opcional, escolhe Pix/crédito/débito/dinheiro e divide por pessoas). O pagamento é na **maquininha do restaurante**: o painel avisa "levar a maquininha", o garçom confirma "Pago na maquininha", a mesa é liberada e o cliente recebe o link para avaliar no Google. Ao adicionar um prato aparece "Vai bem com…" (venda extra).
+2. **O que o restaurante vê** (`restaurante.html`): painel claro, menu lateral no PC e menu embaixo no celular (botão "Ver no celular / Ver no PC"). Abas:
    - **Pedidos:** todos do dia, com status e filtro.
    - **Cozinha e Bar:** pedidos separados por setor, com tempo, alerta de atraso e "esgotado hoje".
    - **Mesas (garçom):** mapa, aceite do 1º pedido, "entregue na mesa", fechar conta com 10% de serviço.

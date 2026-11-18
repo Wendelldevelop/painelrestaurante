@@ -11,8 +11,8 @@ await f.locator('#gaveta a.btn-pri').click();await p.waitForTimeout(800);
 await f.locator('#enviar-pedido').click();await p.waitForTimeout(800);
 await p.locator('.alerta [data-ok]').click();await p.waitForTimeout(400);
 console.log('aba pedidos:',await p.locator('#lista-pedidos tr').count());console.log('PDV cards:',await p.locator('#cozinha-Recebido .card, #bar-Recebido .card').count(),await p.locator('#g-fat').textContent());
-await f.locator('[data-chamar="conta"]').first().click();await p.waitForTimeout(300);
-console.log('alerta conta:',await p.locator('.alerta').count(),'mesa 5:',await p.locator('#mapa .m').nth(4).locator('.s').textContent());
+await f.locator('[data-chamar="garcom"]').first().click();await p.waitForTimeout(300);
+console.log('alerta garcom:',await p.locator('.alerta').count(),'mesa 5:',await p.locator('#mapa .m').nth(4).locator('.s').textContent());
 await p.locator('#cozinha-Recebido .card button, #bar-Recebido .card button').first().click();await p.waitForTimeout(500);
 console.log('status no celular:',await f.locator('#status-pedido').textContent());
 

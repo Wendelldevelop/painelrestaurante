@@ -871,6 +871,36 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
     if (!sug) sugerir(id);
   }
 
+  // conta da mesa: itens vêm do painel (já sem os cancelados); serviço e divisão escolhidos pelo cliente
+  let extrato = { itens: [], total: 0 };
+  const contaTotal = () => extrato.total * ($("#servico")?.checked ? 1.1 : 1);
+  function calcConta() {
+    $("#v-serv").textContent = reais($("#servico").checked ? extrato.total * 0.1 : 0);
+    $("#v-total").textContent = reais(contaTotal());
+    const n = +$("#pessoas").value;
+    $("#v-pessoa").textContent = n > 1 ? `${reais(contaTotal() / n)} por pessoa` : "";
+  }
+  function mostrarConta(d) {
+    extrato = d;
+    $("#conteudo").innerHTML = `<div class="largura pagina estreita pagina-conta"><p class="sobre">Mesa ${esc(mesa)}</p><h1>Sua conta</h1>
+      ${d.itens.length ? `<div class="conta" style="margin-top:var(--e6)"><ul>${d.itens.map((i) => `<li class="entre"><span>${i.qtd}× ${esc(i.nome)}</span><span class="preco">${reais(i.qtd * i.preco)}</span></li>`).join("")}</ul>
+      <p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(d.total)}</span></p>
+      <label class="entre"><span><input type="checkbox" id="servico" checked> Serviço (10%, opcional)</span><span class="preco" id="v-serv"></span></label>
+      <p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total" id="v-total"></span></p></div>
+      <form class="form" style="margin-top:var(--e6);gap:var(--e5)" onsubmit="return false"><fieldset><legend>Como vai pagar</legend><div class="opcoes">
+        ${["Pix", "Crédito", "Débito", "Dinheiro"].map((f, i) => `<label class="opcao"><input type="radio" name="pagamento" value="${f}" ${i === 1 ? "checked" : ""}><strong>${f}</strong></label>`).join("")}</div></fieldset>
+      <label><span>Dividir a conta</span><select class="campo" id="pessoas">${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n === 1 ? "Não dividir" : n + " pessoas"}</option>`).join("")}</select></label>
+      <p class="lead" id="v-pessoa"></p>
+      <p class="nota">O pagamento é feito na maquininha do restaurante: o garçom leva até a sua mesa.</p>
+      <button type="button" class="btn btn-pri" data-fechar-conta>Fechar conta e chamar a maquininha</button></form>`
+      : `<p class="texto" style="margin-top:var(--e5)">Ainda não há pedidos nesta mesa.</p>`}</div>`;
+    window.scrollTo(0, 0);
+    if (!d.itens.length) return;
+    $("#servico").onchange = calcConta;
+    $("#pessoas").onchange = calcConta;
+    calcConta();
+  }
+
   // venda extra: ao adicionar um prato, sugere o que combina com ele (harmonização do cardápio)
   function sugerir(id) {
     const it = item(id);
@@ -1408,10 +1438,6 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
         window.addEventListener("message", (ev) => {
           if (ev.data?.num === num && ev.data.tipo === "recebido") { confirmado = true; if ($("#status-pedido")?.textContent === "Enviando…") $("#status-pedido").textContent = "Recebido"; }
           if (ev.data?.tipo === "status" && ev.data.num === num && $("#status-pedido")) $("#status-pedido").textContent = ev.data.status;
-          if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa) && $("#status-pedido")) {
-            const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
-            $("#status-pedido").closest(".pagina").innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Sua conta foi fechada. Gostou? Sua avaliação ajuda muito a casa.</p><p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
-          }
         });
         return;
       }
@@ -1568,6 +1594,13 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
     $$("[data-abrir-pedido]").forEach((b) => (b.onclick = abrirGaveta));
     $("#fundo-gaveta").onclick = fecharGaveta;
     window.addEventListener("message", (ev) => {
+      if (ev.data?.tipo === "extrato" && String(ev.data.mesa) === String(mesa)) return mostrarConta(ev.data);
+      if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
+        const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");
+        const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
+        if (alvo) alvo.innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Pagamento confirmado e conta fechada. Gostou? Sua avaliação ajuda muito a casa.</p><p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
+        return;
+      }
       if (ev.data?.tipo !== "esgotado") return;
       ev.data.ativo ? ESGOTADOS.add(ev.data.id) : ESGOTADOS.delete(ev.data.id);
       $$(`[data-add="${ev.data.id}"]`).forEach((b) => { b.disabled = ev.data.ativo; b.classList.toggle("esgotado", ev.data.ativo); b.textContent = ev.data.ativo ? "Esgotado hoje" : "Adicionar"; });
@@ -1584,11 +1617,20 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
       if (sg) { adicionar(sg.dataset.sug, 1, "", true); $("#sugestao")?.remove(); }
       if (ev.target.closest("[data-sug-fechar]")) $("#sugestao")?.remove();
       const cm = ev.target.closest("[data-chamar]");
-      if (cm) {
+      if (cm && cm.dataset.chamar === "conta" && PAINEL) {
+        // o cliente vê a conta (vinda do painel) e fecha pelo celular; paga na maquininha do restaurante
+        window.parent.postMessage({ tipo: "ver-conta", mesa }, "*");
+      } else if (cm) {
         window.parent.postMessage({ tipo: cm.dataset.chamar, mesa }, "*");
         cm.textContent = cm.dataset.chamar === "conta" ? "Conta pedida" : "Garçom chamado";
         cm.disabled = true;
         setTimeout(() => { cm.disabled = false; cm.textContent = cm.dataset.chamar === "conta" ? "Pedir a conta" : "Chamar garçom"; }, 8000);
+      }
+      const fc = ev.target.closest("[data-fechar-conta]");
+      if (fc) {
+        const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", pes = +$("#pessoas").value, tot = contaTotal();
+        window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg, pessoas: pes, servico: $("#servico").checked, total: tot }, "*");
+        fc.outerHTML = `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;
       }
       if (ev.target.closest("#gaveta [data-fechar]")) fecharGaveta();
       if (ev.target.closest("[data-fechar-prato]")) { ev.preventDefault(); fecharPrato(); }
@@ -1629,6 +1671,6 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
 
 </script>
 <script>(()=>{const c=new BroadcastChannel("casa-brasa-pdv");
-window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta"].includes(e.data.tipo))c.postMessage(e.data)});
+window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta","ver-conta"].includes(e.data.tipo))c.postMessage(e.data)});
 c.onmessage=e=>window.postMessage(e.data,"*")})();</script></body>
 </html>

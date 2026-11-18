@@ -21,68 +21,121 @@ MENU = json.dumps([{"id": i["id"], "nome": i["nome"], "cat": i["categoria"], "pr
 
 PAINEL = r"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demonstração: pedido na mesa e painel da casa</title>
-<style>
-:root{--fundo:#17100b;--cartao:#231710;--cartao2:#2c1d14;--linha:rgba(241,230,208,.14);--texto:#f1e6d0;--suave:#bcaa8f;--brasa:#b23a1e;--ouro:#dba63a;--verde:#6fae5a;--azul:#5b8fd6}
-*{box-sizing:border-box}body{margin:0;background:#0d0906;color:var(--texto);font:15px/1.5 system-ui,sans-serif;height:100vh;display:grid;grid-template-columns:auto 1fr;overflow:hidden}
-button{font:600 13px system-ui;border:0;border-radius:6px;padding:9px 14px;cursor:pointer;background:var(--ouro);color:#1f150e}
-button.sec{background:transparent;color:var(--texto);border:1px solid var(--linha)}button.perigo{background:var(--brasa);color:var(--texto)}
-.lado{display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 30%,#2a1b12,#0d0906)}
-.lado p{margin:0 0 10px;color:var(--suave);font-size:13px;text-align:center;max-width:390px}
-.celular{width:390px;height:min(800px,calc(100vh - 80px));border:10px solid #000;border-radius:44px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.6);background:#000}
+<style>:root{--fundo:#f5efe4;--cartao:#fffdf9;--cartao2:#f1e9dc;--linha:#e6dccb;--texto:#2b2018;--suave:#7c6b58;--brasa:#b23a1e;--brasa-cl:#fbe9e4;--ouro:#b7791f;--ouro-cl:#fbf1de;--verde:#2f7d3b;--verde-cl:#e7f3e6;--sombra:0 1px 2px rgba(60,40,20,.06),0 6px 18px rgba(60,40,20,.06);--r:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;height:100vh;display:grid;grid-template-columns:auto 1fr;overflow:hidden}
+button{font:600 13px system-ui,sans-serif;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--brasa);color:#fff;transition:filter .15s,transform .1s}
+button:hover{filter:brightness(1.08)}button:active{transform:scale(.97)}
+button.sec{background:var(--cartao);color:var(--texto);border:1px solid var(--linha)}button.perigo{background:var(--brasa);color:#fff}
+.lado{display:grid;place-items:center;padding:24px;background:linear-gradient(160deg,#efe6d6,#e4d8c4);border-right:1px solid var(--linha)}
+.lado p{margin:0 0 12px;color:var(--suave);font-size:13px;text-align:center;max-width:390px}
+.celular{width:390px;height:min(800px,calc(100vh - 90px));border:10px solid #1d1611;border-radius:44px;overflow:hidden;box-shadow:0 30px 60px rgba(60,40,20,.3);background:#000}
 .celular iframe{width:100%;height:100%;border:0;display:block}
-.painel{display:flex;flex-direction:column;min-width:0;border-left:1px solid var(--linha);background:var(--fundo)}
-header{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--linha)}
-header h1{margin:0;font:600 19px/1 Georgia,serif}.tag{padding:3px 9px;border-radius:99px;background:var(--brasa);font-size:11px;font-weight:700}
-.usuario{margin-left:auto;font-size:12px;color:var(--suave)}.usuario b{color:var(--texto)}
-nav{display:flex;gap:4px;padding:0 20px;border-bottom:1px solid var(--linha);overflow-x:auto}
-nav button{background:none;color:var(--suave);border-radius:0;padding:12px 14px;border-bottom:2px solid transparent;position:relative;white-space:nowrap}
-nav button[aria-selected=true]{color:var(--texto);border-color:var(--ouro)}
-nav .bolinha{position:absolute;top:6px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--brasa);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 4px}
-main{flex:1;overflow:auto;padding:16px 20px}.aba{display:none}.aba.ativa{display:block}
-.alertas{display:grid;gap:8px;margin-bottom:12px}.alerta{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:#3a1a10;border:1px solid var(--brasa);animation:chega .3s ease}
-.alerta b{font-size:16px}.alerta .mx{margin-left:auto;display:flex;gap:8px}
-.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.col h2{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave)}
-.card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:12px;margin-bottom:10px;animation:chega .35s ease}
-.card.novo{border-color:var(--ouro);box-shadow:0 0 0 1px var(--ouro)}.card.atraso{border-color:var(--brasa)}
-.topo{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mesa{font:600 20px/1 Georgia,serif}.hora{color:var(--suave);font-size:12px}
-.tempo{font-variant-numeric:tabular-nums}.atraso .tempo{color:#ff9b85;font-weight:700}
-.card ul{list-style:none;margin:8px 0;padding:0}.card li{padding:3px 0;border-top:1px solid var(--linha)}.card li small{display:block;color:var(--ouro)}
+.painel{display:grid;grid-template-columns:210px 1fr;grid-template-rows:auto 1fr;min-width:0;min-height:0}
+header{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:14px 24px;background:var(--cartao);border-bottom:1px solid var(--linha)}
+header h1{margin:0;font:600 20px/1 Georgia,serif;letter-spacing:-.01em}
+header h1::before{content:"CB";display:inline-grid;place-items:center;width:34px;height:34px;margin-right:10px;border-radius:50%;background:var(--brasa);color:#fff;font:700 13px system-ui;vertical-align:middle}
+.tag{padding:4px 10px;border-radius:99px;background:var(--verde-cl);color:var(--verde);font-size:11px;font-weight:700}
+.tag::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--verde);margin-right:6px;vertical-align:1px;animation:pulsa 1.6s infinite}
+.usuario{margin-left:auto;font-size:13px;color:var(--suave)}
+.usuario select{font:600 13px system-ui;background:var(--cartao2);color:var(--texto);border:1px solid var(--linha);border-radius:10px;padding:8px 10px;margin-left:8px}
+nav{display:flex;flex-direction:column;gap:4px;padding:18px 12px;background:var(--cartao);border-right:1px solid var(--linha);overflow-y:auto}
+nav button{background:none;color:var(--suave);text-align:left;padding:11px 14px;border-radius:10px;position:relative;font-size:14px;font-weight:600}
+nav button:hover{background:var(--cartao2);color:var(--texto);filter:none}
+nav button[aria-selected=true]{background:var(--brasa-cl);color:var(--brasa)}
+nav .bolinha{position:absolute;top:50%;right:10px;transform:translateY(-50%);min-width:20px;height:20px;border-radius:10px;background:var(--brasa);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 5px}
+main{overflow:auto;padding:24px 28px 40px;min-width:0}
+.aba{display:none}.aba.ativa{display:block;animation:entra .25s ease}
+.alertas{display:grid;gap:10px;margin-bottom:18px}.alertas:empty{display:none}
+.alerta{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r);background:var(--brasa-cl);border:1px solid #f0c4b8;border-left:5px solid var(--brasa);animation:chega .3s ease;box-shadow:var(--sombra)}
+.alerta b{font-size:16px;margin-right:6px}.alerta span{color:var(--suave)}.alerta .mx{margin-left:auto;display:flex;gap:8px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.col{background:var(--cartao2);border-radius:var(--r);padding:14px;min-height:240px}
+.col h2{margin:2px 4px 14px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--suave)}
+.card{background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:14px;margin-bottom:12px;animation:chega .35s ease;box-shadow:var(--sombra)}
+.card.novo{border-color:var(--ouro);box-shadow:0 0 0 3px var(--ouro-cl),var(--sombra)}.card.atraso{border-color:var(--brasa);box-shadow:0 0 0 3px var(--brasa-cl),var(--sombra)}
+.topo{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mesa{font:600 21px/1 Georgia,serif}.hora{color:var(--suave);font-size:12px}
+.tempo{font-variant-numeric:tabular-nums;font-weight:600}.atraso .tempo{color:var(--brasa)}
+.card ul{list-style:none;margin:10px 0;padding:0}.card li{padding:6px 0;border-top:1px solid var(--linha);font-weight:500}.card li small{display:block;color:var(--ouro);font-weight:600}
 .pe{display:flex;justify-content:space-between;align-items:center;gap:8px}.total{font-weight:700}
-.vazio{color:var(--suave);font-size:13px;padding:16px;border:1px dashed var(--linha);border-radius:10px;text-align:center}
-.mapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.m{background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px;min-height:118px;display:flex;flex-direction:column;gap:4px}
-.m .n{font:600 22px/1 Georgia,serif}.m .s{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.m .v{color:var(--suave);font-size:13px}.m button{margin-top:auto}
-.m.livre{opacity:.6}.m.livre .s{color:var(--verde)}.m.ocupada .s{color:var(--ouro)}.m.pronto{border-color:var(--verde)}.m.pronto .s{color:var(--verde)}
-.m.conta{border-color:var(--brasa);background:#2e140d}.m.conta .s{color:#ff9b85}
-.lista{display:grid;gap:8px}.linha{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cartao);border:1px solid var(--linha);border-radius:10px}
-.linha .q{font:600 18px/1 Georgia,serif;min-width:58px}.linha .d{flex:1;min-width:0}.linha .d small{display:block;color:var(--suave)}
-.st{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid currentColor}
-.st.pendente{color:var(--ouro)}.st.confirmada{color:var(--verde)}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}.k{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:12px}
-.k small{color:var(--suave);font-size:12px}.k b{display:block;font:600 24px/1.2 Georgia,serif}.k.lucro{border-color:var(--verde)}.k.lucro b{color:var(--verde)}
-.duas{display:grid;grid-template-columns:1fr 1fr;gap:14px}.bloco{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px}
-.bloco h3{margin:0 0 8px;font:600 15px system-ui}.barra{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0}.barra i{height:8px;border-radius:4px;background:var(--ouro);display:block}
-.nota{color:var(--suave);font-size:12px;margin-top:10px}.seguro{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.seguro span{font-size:12px;padding:4px 9px;border-radius:99px;background:var(--cartao2);color:var(--suave)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:grid;place-items:center;z-index:9}.modal[hidden]{display:none}
-.caixa{background:var(--cartao);border:1px solid var(--linha);border-radius:14px;padding:20px;width:min(420px,92vw)}.caixa h3{margin:0 0 10px;font:600 20px Georgia,serif}
-.caixa .l{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--linha)}.caixa .t{font-size:20px;font-weight:700;border:0}
-.usuario select{font:600 13px system-ui;background:var(--cartao2);color:var(--texto);border:1px solid var(--linha);border-radius:6px;padding:6px 8px;margin-left:6px}
-.esg{display:flex;flex-wrap:wrap;gap:6px}.esg button{background:var(--cartao2);color:var(--texto);border:1px solid var(--linha);font-weight:500}.esg button.on{background:var(--brasa);border-color:var(--brasa);text-decoration:line-through}
-.card .mx{display:flex;gap:6px}.card .mx .sec{padding:9px 10px}.caixa input,.caixa select{width:100%;font:15px system-ui;padding:9px;margin:4px 0 10px;border-radius:6px;border:1px solid var(--linha);background:var(--cartao2);color:var(--texto)}
-.erro{color:#ff9b85;font-size:13px;min-height:1.2em}
-.filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.filtros button{background:var(--cartao2);color:var(--suave);border:1px solid var(--linha);font-weight:500}.filtros button.on{background:var(--ouro);color:#1f150e}
-.tabela{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--suave);padding:8px 10px;border-bottom:1px solid var(--linha)}
-td{padding:10px;border-bottom:1px solid var(--linha);vertical-align:top}td small{display:block;color:var(--suave)}
-.ps{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap;background:var(--cartao2)}
-.ps.p-Pronto,.ps.p-Entregue{color:var(--verde)}.ps.p-Recebido,.ps.p-Em.preparo,.ps.p-Aguardando{color:var(--ouro)}.ps.p-Cancelado,.ps.p-Recusado,.ps.p-Descartado{color:#ff9b85}
-tbody.esg button{padding:6px 10px}
-@keyframes chega{from{opacity:0;transform:translateY(-6px)}}
-@media(max-width:1000px){body{grid-template-columns:1fr;height:auto;overflow:auto}.celular{width:100%;max-width:390px;height:720px}.cols,.kpis,.duas{grid-template-columns:1fr 1fr}}
+.card .mx{display:flex;gap:6px}.card .mx .sec{padding:10px 12px}
+.vazio{color:var(--suave);font-size:13px;padding:22px 16px;border:2px dashed var(--linha);border-radius:12px;text-align:center;background:rgba(255,255,255,.4)}
+.mapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.m{background:var(--cartao);border:1px solid var(--linha);border-top:5px solid var(--linha);border-radius:var(--r);padding:14px;min-height:140px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--sombra)}
+.m .n{font:600 22px/1 Georgia,serif}.m .s{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.m .v{color:var(--suave);font-size:13px}.m button{margin-top:auto}
+.m.livre{background:rgba(255,253,249,.6);box-shadow:none}.m.livre .s{color:var(--verde)}
+.m.ocupada{border-top-color:var(--ouro)}.m.ocupada .s{color:var(--ouro)}
+.m.pronto{border-top-color:var(--verde);background:var(--verde-cl)}.m.pronto .s{color:var(--verde)}
+.m.conta{border-top-color:var(--brasa);background:var(--brasa-cl)}.m.conta .s{color:var(--brasa)}
+.lista{display:grid;gap:10px}
+.linha{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;box-shadow:var(--sombra)}
+.linha .q{font:600 19px/1 Georgia,serif;min-width:60px;color:var(--brasa)}.linha .d{flex:1;min-width:0}.linha .d small{display:block;color:var(--suave)}
+.st{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
+.st.pendente{color:var(--ouro);background:var(--ouro-cl)}.st.confirmada{color:var(--verde);background:var(--verde-cl)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+.k{background:var(--cartao);border:1px solid var(--linha);border-radius:var(--r);padding:16px;box-shadow:var(--sombra)}
+.k small{color:var(--suave);font-size:12px;font-weight:600}.k b{display:block;font:600 26px/1.25 Georgia,serif;margin-top:4px}
+.k.lucro{background:var(--verde-cl);border-color:#cfe5cc}.k.lucro b{color:var(--verde)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bloco{background:var(--cartao);border:1px solid var(--linha);border-radius:var(--r);padding:18px;box-shadow:var(--sombra)}
+.bloco .linha{box-shadow:none;background:var(--fundo)}
+.bloco h3{margin:0 0 12px;font:600 16px Georgia,serif}
+.barra{display:flex;align-items:center;gap:10px;font-size:13px;margin:8px 0}.barra i{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--brasa),var(--ouro));display:block}
+.nota{color:var(--suave);font-size:12px;margin-top:12px}
+.seguro{display:flex;gap:8px;flex-wrap:wrap}.seguro span{font-size:12px;padding:6px 12px;border-radius:99px;background:var(--verde-cl);color:var(--verde);font-weight:600}
+.seguro span::before{content:"✓ "}
+.modal{position:fixed;inset:0;background:rgba(43,32,24,.45);backdrop-filter:blur(3px);display:grid;place-items:center;z-index:9}.modal[hidden]{display:none}
+.caixa{background:var(--cartao);border-radius:18px;padding:24px;width:min(440px,92vw);box-shadow:0 30px 60px rgba(43,32,24,.25)}.caixa h3{margin:0 0 12px;font:600 21px Georgia,serif}
+.caixa .l{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--linha)}.caixa .t{font-size:20px;font-weight:700;border:0;color:var(--brasa)}
+.caixa label{display:block;font-size:13px;font-weight:600;color:var(--suave)}
+.caixa input,.caixa select{width:100%;font:15px system-ui;padding:11px;margin:6px 0 12px;border-radius:10px;border:1px solid var(--linha);background:var(--fundo);color:var(--texto)}
+.erro{color:var(--brasa);font-size:13px;min-height:1.2em;font-weight:600}
+.esg{display:flex;flex-wrap:wrap;gap:8px}.esg button{background:var(--fundo);color:var(--texto);border:1px solid var(--linha);font-weight:500}
+.esg button.on{background:var(--brasa-cl);color:var(--brasa);border-color:#f0c4b8;text-decoration:line-through}
+tbody.esg button{padding:7px 12px;background:var(--verde-cl);color:var(--verde);border-color:#cfe5cc;text-decoration:none}tbody.esg button.on{background:var(--brasa-cl);color:var(--brasa);border-color:#f0c4b8}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filtros button{background:var(--cartao);color:var(--suave);border:1px solid var(--linha);font-weight:600;border-radius:99px;padding:8px 14px}.filtros button.on{background:var(--texto);color:var(--cartao);border-color:var(--texto)}
+.tabela{overflow-x:auto;background:var(--cartao);border:1px solid var(--linha);border-radius:var(--r);box-shadow:var(--sombra)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--suave);padding:12px 14px;background:var(--cartao2)}
+td{padding:12px 14px;border-top:1px solid var(--linha);vertical-align:top}tr:hover td{background:#fdf8f0}td small{display:block;color:var(--suave)}
+.ps{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:99px;white-space:nowrap;background:var(--cartao2);color:var(--suave)}
+.ps.p-Pronto,.ps.p-Entregue{color:var(--verde);background:var(--verde-cl)}.ps.p-Recebido,.ps.p-Em,.ps.p-Aguardando{color:var(--ouro);background:var(--ouro-cl)}.ps.p-Cancelado,.ps.p-Recusado{color:var(--brasa);background:var(--brasa-cl)}
+#aba-pedidos>.vazio{margin-top:14px}
+@media(max-width:700px){.col{min-height:0}.usuario{font-size:0}.painel{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}header{padding:10px 14px;flex-wrap:wrap;gap:8px}header h1{font-size:17px}.usuario{margin-left:0;flex:1;display:flex;align-items:center}.usuario select{flex:1}nav{grid-row:3;flex-direction:row;overflow-x:auto;border-right:0;border-top:1px solid var(--linha);padding:6px;gap:2px}nav button{white-space:nowrap;font-size:12px;padding:10px 12px}nav .bolinha{top:3px;right:1px;transform:none;min-width:16px;height:16px;font-size:10px}main{padding:14px}.cols,.duas{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr;gap:10px}.k b{font-size:20px}.mapa{grid-template-columns:1fr 1fr;gap:10px}.alerta{flex-wrap:wrap}.alerta .mx{margin-left:0;width:100%}.alerta .mx button{flex:1}.linha{flex-wrap:wrap}}
+body.modo-cel{background:#ddd0bb}
+body.modo-cel .painel{width:400px;justify-self:center;align-self:center;height:min(820px,calc(100vh - 40px));border:10px solid #1d1611;border-radius:38px;overflow:hidden;box-shadow:0 30px 60px rgba(60,40,20,.3);background:var(--fundo)}
+body.modo-cel main{overflow:auto}
+body.modo-cel .painel{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+body.modo-cel .col{min-height:0}
+body.modo-cel .usuario{font-size:0}
+body.modo-cel header{padding:10px 14px;flex-wrap:wrap;gap:8px}
+body.modo-cel header h1{font-size:17px}
+body.modo-cel .usuario{margin-left:0;flex:1;display:flex;align-items:center}
+body.modo-cel .usuario select{flex:1}
+body.modo-cel nav{grid-row:3;flex-direction:row;overflow-x:auto;border-right:0;border-top:1px solid var(--linha);padding:6px;gap:2px}
+body.modo-cel nav button{white-space:nowrap;font-size:12px;padding:10px 12px}
+body.modo-cel nav .bolinha{top:3px;right:1px;transform:none;min-width:16px;height:16px;font-size:10px}
+body.modo-cel main{padding:14px}
+body.modo-cel .cols,body.modo-cel .duas{grid-template-columns:1fr}
+body.modo-cel .kpis{grid-template-columns:1fr 1fr;gap:10px}
+body.modo-cel .k b{font-size:20px}
+body.modo-cel .mapa{grid-template-columns:1fr 1fr;gap:10px}
+body.modo-cel .alerta{flex-wrap:wrap}
+body.modo-cel .alerta .mx{margin-left:0;width:100%}
+body.modo-cel .alerta .mx button{flex:1}
+body.modo-cel .linha{flex-wrap:wrap}
+[hidden]{display:none!important}
+@keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1000px){body{grid-template-columns:1fr;height:auto;overflow:auto}.celular{width:100%;max-width:390px;height:720px}
+.painel{grid-template-columns:1fr}nav{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--linha);padding:8px 12px}nav button{white-space:nowrap;padding-right:34px}
+.cols,.duas{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}main{padding:16px}header{flex-wrap:wrap}.usuario{margin-left:0}}
 </style></head><body>
 <section class="lado"><div><p>Cliente na <b>mesa 5</b>: escolha os pratos, aceite a sugestão de bebida, finalize e use "Chamar garçom" e "Pedir a conta".</p>
 <div class="celular"><iframe id="site" title="Cardápio do cliente"></iframe></div></div></section>
 <section class="painel">
-<header><h1>Casa Brasa · Painel</h1><span class="tag">Ao vivo</span><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option></select></label></header>
+<header><h1>Casa Brasa · Painel</h1><span class="tag">Ao vivo</span><button class="sec" id="modo-tela" type="button">📱 Ver no celular</button><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option></select></label></header>
 <nav role="tablist">
 <button role="tab" aria-selected="false" data-aba="pedidos">Pedidos<span class="bolinha" id="b-pedidos" hidden></span></button>
 <button role="tab" aria-selected="true" data-aba="cozinha">Cozinha<span class="bolinha" id="b-cozinha" hidden></span></button>
@@ -102,7 +155,7 @@ tbody.esg button{padding:6px 10px}
 <section class="aba" id="aba-bar"><div class="cols">
 <div class="col"><h2>Novos</h2><div id="bar-Recebido"><p class="vazio">Bebidas e vinhos vêm direto para cá, separados da cozinha.</p></div></div>
 <div class="col"><h2>Em preparo</h2><div id="bar-Em preparo"></div></div><div class="col"><h2>Prontos</h2><div id="bar-Pronto"></div></div></div><div class="bloco" style="margin-top:14px"><h3>Acabou alguma bebida?</h3><div class="esg" data-setor="bar"></div></div></section>
-<section class="aba" id="aba-mesas"><div class="mapa" id="mapa"></div><p class="nota">O garçom vê o mapa no celular dele: aceita o primeiro pedido de cada mesa, leva o que ficou pronto e fecha a conta.</p></section>
+<section class="aba" id="aba-mesas"><div class="mapa" id="mapa"></div><p class="nota">O garçom vê o mapa no celular dele: aceita o primeiro pedido de cada mesa e leva o que ficou pronto. O cliente fecha a conta pelo celular e o garçom só leva a maquininha.</p></section>
 <section class="aba" id="aba-reservas"><div class="lista" id="reservas"></div><p class="nota">Reservas feitas pelo site chegam aqui. "Confirmar no WhatsApp" abre a conversa com a mensagem pronta. Lista de exemplo.</p></section>
 <section class="aba" id="aba-gerencia">
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
@@ -126,7 +179,8 @@ const mesas={};for(let i=1;i<=12;i++)mesas[i]={n:i,estado:"livre",total:0,itens:
 Object.assign(mesas[2],{estado:"ocupada",total:186,aceita:true,itens:[{nome:"Picanha na brasa",qtd:2,preco:89}]});
 Object.assign(mesas[7],{estado:"ocupada",total:64,aceita:true,itens:[{nome:"Tagliatelle da Dona Lúcia",qtd:1,preco:64}]});
 Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84},{nome:"Chope pilsen",qtd:3,preco:14}]});
-const pedidos=[];let filtro="Todos";
+const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
+let filtro="Todos";
 function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;listaPedidos()}
 const FILTROS=["Todos","Aguardando aceite","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
 function listaPedidos(){const vis=pedidos.filter(o=>filtro==="Todos"||o.status===filtro);
@@ -179,6 +233,10 @@ h.push(Date.now());
 if(m&&!m.aceita){const a=alerta(`<b>Mesa ${esc(p.mesa)}: primeiro pedido</b><span>${p.itens.length} item(ns) · ${reais(p.total)} · confirme que tem gente na mesa</span>`,p.mesa,`<button data-ok>Aceitar</button><button class="sec" data-nao>Recusar</button>`);
 a.querySelector("[data-ok]").onclick=()=>{m.aceita=true;a.remove();entrar(p)};a.querySelector("[data-nao]").onclick=()=>{a.remove();reg(p,"Recusado");site().postMessage({tipo:"status",num:p.num,status:"Recusado: chame o garçom"},"*");contar()}}
 else entrar(p)}
+if(p.tipo==="ver-conta"){const m=mesas[p.mesa];if(m){m.estado="conta";mapa();site().postMessage({tipo:"extrato",mesa:p.mesa,itens:m.itens,total:m.total},"*")}return}
+if(p.tipo==="conta"&&p.pagamento){const m=mesas[p.mesa];if(m){m.estado="conta";mapa()}
+const a=alerta(`<b>Mesa ${esc(p.mesa)} fechou a conta</b><span>${reais(p.total)} no ${esc(p.pagamento)}${p.pessoas>1?` · dividir em ${p.pessoas} (${reais(p.total/p.pessoas)} cada)`:""}${p.servico?"":" · sem os 10%"} · levar a maquininha</span>`,p.mesa,`<button data-pago>Pago na maquininha</button>`);
+a.querySelector("[data-pago]").onclick=()=>{a.remove();pagos.push(p);liberar(p.mesa)};return}
 if(p.tipo==="garcom"||p.tipo==="conta"){const m=mesas[p.mesa];if(p.tipo==="conta"&&m){m.estado="conta";mapa()}
 const a=alerta(`<b>Mesa ${esc(p.mesa)}</b><span>${p.tipo==="conta"?"pediu a conta":"chamou o garçom"}</span>`,p.mesa,`<button data-vou>Estou indo</button>`);a.querySelector("[data-vou]").onclick=()=>{a.remove();contar()}}});
 // reservas (exemplo)
@@ -193,6 +251,7 @@ function gerencia(){const ocup=Object.values(mesas).filter(m=>m.total).length||1
 if(cancel.length)$("#g-canc").innerHTML=cancel.map(x=>`<p class="nota" style="margin:4px 0">${x}</p>`).join("");
 const top=Object.entries(vendidos).sort((a,b)=>b[1]-a[1]).slice(0,5),max=top[0]?top[0][1]:1;
 $("#g-top").innerHTML=top.length?top.map(([n,q])=>`<div class="barra"><span style="flex:0 0 46%">${esc(n)}</span><i style="width:${q/max*45}%"></i><b>${q}</b></div>`).join(""):'<p class="nota">Faça um pedido no celular.</p>'}
+$("#modo-tela").onclick=e=>{const c=document.body.classList.toggle("modo-cel");e.target.textContent=c?"💻 Ver no PC":"📱 Ver no celular"};
 // login por função: cada um vê só a sua tela
 $("#funcao").onchange=e=>{const f=e.target.value;document.querySelectorAll("nav button").forEach(b=>b.hidden=!!f&&b.dataset.aba!==f);document.querySelector(`nav [data-aba="${f||"cozinha"}"]`).click()};
 // esgotado hoje
@@ -223,7 +282,7 @@ print(f"{destino.name}: {destino.stat().st_size // 1024} KB")
 # Abertas no mesmo navegador (duas janelas, ou PC e TV espelhada), conversam por um canal local.
 CANAL = "casa-brasa-pdv"
 PONTE = """<script>(()=>{const c=new BroadcastChannel("%s");
-window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta"].includes(e.data.tipo))c.postMessage(e.data)});
+window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta","ver-conta"].includes(e.data.tipo))c.postMessage(e.data)});
 c.onmessage=e=>window.postMessage(e.data,"*")})();</script></body>""" % CANAL
 cli = site.replace("</body>", PONTE, 1) if "</body>" in site else site + PONTE
 (AQUI / "cliente.html").write_text(cli, encoding="utf-8")
@@ -237,6 +296,6 @@ a = rest.index("(()=>{const b=atob(")
 rest = rest[:a] + rest[rest.index('"#cardapio"})();', a) + len('"#cardapio"})();'):]  # tira o iframe
 rest = rest.replace('const site=()=>document.getElementById("site").contentWindow;',
     'const canal=new BroadcastChannel("%s"),site=()=>({postMessage:d=>canal.postMessage(d)});canal.onmessage=e=>window.dispatchEvent(new MessageEvent("message",{data:e.data}));' % CANAL)
-rest = rest.replace("grid-template-columns:auto 1fr;", "grid-template-columns:1fr;").replace("<title>Demonstração: pedido na mesa e painel da casa</title>", "<title>Casa Brasa · Painel do restaurante</title>")
+rest = rest.replace("display:grid;grid-template-columns:auto 1fr;overflow:hidden}", "display:grid;grid-template-columns:1fr;overflow:hidden}").replace("<title>Demonstração: pedido na mesa e painel da casa</title>", "<title>Casa Brasa · Painel do restaurante</title>")
 (AQUI / "restaurante.html").write_text(rest, encoding="utf-8")
 print("cliente.html e restaurante.html")
