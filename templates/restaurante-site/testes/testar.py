@@ -57,5 +57,9 @@ finally:
         ok = codigo == 0 and "PDV cards: 1" in saida and "Em preparo" in saida
         falhou |= not ok
         print(f"[demo PDV] pdv.js: {'ok' if ok else 'FALHOU'}")
+        codigo, saida = rodar(["node", str(AQUI / "duas-telas.js")])
+        ok = codigo == 0 and "FALHAS 0" in saida
+        falhou |= not ok
+        print(f"[cliente + restaurante] duas-telas.js: {'ok' if ok else 'FALHOU'}")
 print("RESULTADO:", "FALHOU" if falhou else "tudo ok")
 sys.exit(1 if falhou else 0)

@@ -10,14 +10,14 @@ await f.locator('.barra-cel [data-abrir-pedido]').click();await p.waitForTimeout
 await f.locator('#gaveta a.btn-pri').click();await p.waitForTimeout(800);
 await f.locator('#enviar-pedido').click();await p.waitForTimeout(800);
 await p.locator('.alerta [data-ok]').click();await p.waitForTimeout(400);
-console.log('PDV cards:',await p.locator('#cozinha-Recebido .card, #bar-Recebido .card').count(),await p.locator('#g-fat').textContent());
+console.log('aba pedidos:',await p.locator('#lista-pedidos tr').count());console.log('PDV cards:',await p.locator('#cozinha-Recebido .card, #bar-Recebido .card').count(),await p.locator('#g-fat').textContent());
 await f.locator('[data-chamar="conta"]').first().click();await p.waitForTimeout(300);
 console.log('alerta conta:',await p.locator('.alerta').count(),'mesa 5:',await p.locator('#mapa .m').nth(4).locator('.s').textContent());
 await p.locator('#cozinha-Recebido .card button, #bar-Recebido .card button').first().click();await p.waitForTimeout(500);
 console.log('status no celular:',await f.locator('#status-pedido').textContent());
 
 await f.locator('a:has-text("Pedir mais")').click();await p.waitForTimeout(800);const id=await f.locator('[data-add]').first().getAttribute('data-add');
-await p.locator(`.esg [data-id="${id}"]`).click();await p.waitForTimeout(300);
+await p.locator(`.esg:not(tbody) [data-id="${id}"]`).click();await p.waitForTimeout(300);
 console.log('esgotado no celular:',await f.locator(`[data-add="${id}"]`).first().isDisabled());
 await p.locator('.card [data-cancel]').first().click();
 await p.fill('#pin','0000');await p.click('#ok-canc');console.log('senha errada bloqueia:',await p.locator('#erro').textContent()!=='');

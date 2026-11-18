@@ -662,7 +662,7 @@
         window.addEventListener("message", (ev) => {
           if (ev.data?.num === num && ev.data.tipo === "recebido") { confirmado = true; if ($("#status-pedido")?.textContent === "Enviando…") $("#status-pedido").textContent = "Recebido"; }
           if (ev.data?.tipo === "status" && ev.data.num === num && $("#status-pedido")) $("#status-pedido").textContent = ev.data.status;
-          if (ev.data?.tipo === "fechada" && $("#status-pedido")) {
+          if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa) && $("#status-pedido")) {
             const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
             $("#status-pedido").closest(".pagina").innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Sua conta foi fechada. Gostou? Sua avaliação ajuda muito a casa.</p><p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
           }
