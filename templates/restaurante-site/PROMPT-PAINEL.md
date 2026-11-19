@@ -75,6 +75,19 @@ São dois sistemas: o **do cliente** (o site que já existe) e o **da casa** (um
 - Cada restaurante tem um identificador curto (por exemplo `casa-brasa`) usado nas URLs.
 - Criar restaurante, escolher o plano (Cardápio Digital, Site + Reservas, Mesa Completa) e ativar ou suspender por falta de pagamento.
 
+### 8. Balcão com senha e TV (lanchonetes, hamburguerias, cafeterias)
+- Pedido sem mesa ("Retirar no balcão" ou QR do balcão `?balcao`): o cliente recebe uma **senha** no celular.
+- Tela de **TV** com "Preparando" e "Pode retirar", chamando a senha com som; botões "Chamar de novo" e "Retirado".
+
+### 9. Redes (várias unidades) — já nascer preparado
+- Uma conta de **rede** com várias **unidades**; cada unidade com mesas, equipe, QR e caixa próprios.
+- **Painel da rede:** faturamento somado, ranking das lojas, ticket, tempo de preparo e alertas por unidade.
+- **Cardápio central** com preço próprio por unidade e "esgotado" por loja.
+- Cargos: dono da rede, gerente regional, gerente da loja e equipe.
+- **Cliente único da rede** (CRM e fidelidade valem em qualquer unidade).
+- Abrir unidade nova copiando a configuração de outra.
+- Tipo de negócio na configuração (restaurante, pizzaria, hamburgueria, cafeteria, bar) liga só os recursos daquele tipo.
+
 ## Segurança e confiabilidade (obrigatório)
 - Código da mesa no QR que muda quando a mesa é fechada, mais o aceite do garçom no primeiro pedido.
 - Limite de pedidos por minuto por mesa.

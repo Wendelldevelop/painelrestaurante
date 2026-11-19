@@ -42,7 +42,12 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **Relatório do mês em PDF** (Gerência > "Relatório do mês"): faturamento, pedidos, ticket, vendas por dia, horários de pico, pratos mais vendidos e recomendações. Números do mês são de exemplo.
 - **Integrações com o caixa** (aba Integrações): Saipos, Consumer, Colibri ou webhook; cada pedido e conta fechada é enviado (simulado na demo, com o JSON que seria enviado).
 
-**Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante** no topo, no centro.
+**Ramo de comida e redes (já na demo):**
+- **Balcão com senha + TV:** o cliente escolhe "Retirar no balcão" (ou usa o QR do balcão `?balcao`), recebe uma senha e é chamado na TV ("TV senhas" no topo do `sistema.html`; aba "Balcão e TV" no painel). Para lanchonetes, hamburguerias e cafeterias.
+- **Rede de lojas:** escolha da unidade no topo do painel e aba "Rede de lojas" com faturamento somado, ranking, alerta de preparo, cardápio central com preço por loja, clientes da rede e "+ Nova unidade". Centro é ao vivo; as outras lojas são exemplo.
+- Próximo: o sistema online já deve nascer com várias unidades (ver itens 8 e 9 do `PROMPT-PAINEL.md`).
+
+**Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.
 

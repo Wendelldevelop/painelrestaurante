@@ -104,8 +104,8 @@ body.modo-cel .alerta{flex-wrap:wrap}
 body.modo-cel .alerta .mx{margin-left:0;width:100%}
 body.modo-cel .alerta .mx button{flex:1}
 body.modo-cel .linha{flex-wrap:wrap}
-@media(max-width:700px){#modo-tela{display:none}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}nav button{white-space:normal;text-align:center;font-size:11px;line-height:1.2;padding:9px 4px;min-height:44px}nav .bolinha{top:2px;right:2px}.tabela{background:none;border:0;box-shadow:none;overflow:visible}.tabela table,.tabela tbody,.tabela tr,.tabela td{display:block}.tabela thead{display:none}.tabela tr{display:grid;gap:4px 10px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sombra)}.tabela td{padding:0;border:0;background:none!important}#aba-pedidos tr{grid-template-columns:auto 1fr auto}#aba-pedidos td:nth-child(3){font-weight:700}#aba-pedidos td:nth-child(4){grid-column:1/-1;padding:6px 0;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}#aba-pedidos td:nth-child(5){font-weight:700}#aba-pedidos td:nth-child(6){grid-column:2/-1;justify-self:end}#aba-cardapio tr{grid-template-columns:1fr auto;align-items:center}#aba-cardapio td:nth-child(1){font-weight:600}#aba-cardapio td:nth-child(2),#aba-cardapio td:nth-child(3){display:none}#aba-cardapio td:nth-child(6){grid-row:1/3;grid-column:2}#aba-cardapio td:nth-child(4),#aba-cardapio td:nth-child(5){color:var(--suave);font-size:13px;display:inline}#aba-cardapio td:nth-child(5)::after{content:" vendidos hoje"}.filtros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.filtros button{white-space:nowrap}.card .pe{flex-wrap:wrap}.linha .q{min-width:0}}
-body.modo-cel nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}
+@media(max-width:700px){#modo-tela{display:none}nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}nav button{white-space:normal;text-align:center;font-size:11px;line-height:1.2;padding:9px 4px;min-height:44px}nav .bolinha{top:2px;right:2px}.tabela{background:none;border:0;box-shadow:none;overflow:visible}.tabela table,.tabela tbody,.tabela tr,.tabela td{display:block}.tabela thead{display:none}.tabela tr{display:grid;gap:4px 10px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sombra)}.tabela td{padding:0;border:0;background:none!important}#aba-pedidos tr{grid-template-columns:auto 1fr auto}#aba-pedidos td:nth-child(3){font-weight:700}#aba-pedidos td:nth-child(4){grid-column:1/-1;padding:6px 0;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}#aba-pedidos td:nth-child(5){font-weight:700}#aba-pedidos td:nth-child(6){grid-column:2/-1;justify-self:end}#aba-cardapio tr{grid-template-columns:1fr auto;align-items:center}#aba-cardapio td:nth-child(1){font-weight:600}#aba-cardapio td:nth-child(2),#aba-cardapio td:nth-child(3){display:none}#aba-cardapio td:nth-child(6){grid-row:1/3;grid-column:2}#aba-cardapio td:nth-child(4),#aba-cardapio td:nth-child(5){color:var(--suave);font-size:13px;display:inline}#aba-cardapio td:nth-child(5)::after{content:" vendidos hoje"}.filtros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.filtros button{white-space:nowrap}.card .pe{flex-wrap:wrap}.linha .q{min-width:0}}
+body.modo-cel nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}
 body.modo-cel nav button{white-space:normal;text-align:center;font-size:11px;line-height:1.2;padding:9px 4px;min-height:44px}
 body.modo-cel nav .bolinha{top:2px;right:2px}
 body.modo-cel .tabela{background:none;border:0;box-shadow:none;overflow:visible}
@@ -153,6 +153,28 @@ body.modo-cel .linha .q{min-width:0}
 @media print{body{display:block!important;height:auto!important;overflow:visible!important;padding:0!important;background:#fff!important}
 body>*:not(#relatorio){display:none!important}#relatorio{position:static!important;overflow:visible!important;background:#fff!important;padding:0!important}
 .rel-acoes{display:none!important}.folha{box-shadow:none!important;padding:0!important;max-width:none!important}.folha h2{break-after:avoid}.rel-bloco{break-inside:avoid}@page{size:A4;margin:14mm}}
+#unidade{font:600 13px system-ui;background:var(--cartao2);color:var(--texto);border:1px solid var(--linha);border-radius:10px;padding:7px 8px}
+.aviso-unidade{margin:0 0 16px;padding:12px 16px;border-radius:12px;background:var(--ouro-cl);border:1px solid #ecd3a6;color:#6b4a12;font-size:14px}
+table.mini{width:100%;font-size:13px}table.mini th,table.mini td{padding:7px 8px;border-top:1px solid var(--linha);text-align:left}table.mini th{background:none;border:0}
+.ao-vivo{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:var(--verde-cl);color:var(--verde);font-size:11px;font-weight:700}
+.alerta-t{color:var(--brasa);font-weight:700}.nova{color:var(--suave);font-style:italic}
+#tv{position:fixed;inset:0;z-index:35;background:#1b1410;color:#f6efe4;display:grid;grid-template-rows:auto 1fr}
+body.um #tv{top:64px}
+.tv-topo{display:flex;align-items:center;gap:20px;padding:18px 34px;border-bottom:1px solid rgba(246,239,228,.12)}
+.tv-topo b{font:600 30px Georgia,serif}.tv-hora{margin-left:auto;font:600 28px system-ui;font-variant-numeric:tabular-nums;color:#dba63a}
+.tv-topo .sec{background:transparent;color:#f6efe4;border-color:rgba(246,239,228,.25)}body.um #tv-sair{display:none}
+.tv-corpo{display:grid;grid-template-columns:1fr 1.4fr;min-height:0}
+.tv-col{padding:26px 34px;overflow:hidden}.tv-col h2{margin:0 0 18px;font:600 20px system-ui;letter-spacing:.14em;text-transform:uppercase;color:#bcaa8f}
+.tv-col+.tv-col{background:#2a1d14}
+.tv-prep,.tv-prontos{display:flex;flex-wrap:wrap;gap:14px}.tv-prep span,.tv-prontos span{font:700 46px/1 system-ui;padding:14px 24px;border-radius:14px;background:rgba(246,239,228,.08);color:#d8c8b0}
+.tv-prontos span{background:#2f7d3b;color:#fff}.tv-prep em,.tv-prontos em{color:#7c6b58;font-size:22px}
+.tv-agora{background:#b23a1e;border-radius:22px;padding:22px 30px;margin-bottom:22px}.tv-agora.chama{animation:pisca .9s ease 3}
+.tv-agora small{display:block;font-size:20px;letter-spacing:.12em;text-transform:uppercase;opacity:.85}.tv-agora b{display:block;font:800 128px/1.05 system-ui}.tv-agora span{font-size:32px}
+.tv-agora.vazio{background:rgba(246,239,228,.06)}
+@keyframes pisca{50%{filter:brightness(1.4);transform:scale(1.02)}}
+@media(max-width:800px){.tv-corpo{grid-template-columns:1fr}.tv-agora b{font-size:84px}.tv-prep span,.tv-prontos span{font-size:32px}.tv-topo{padding:14px 18px}.tv-col{padding:18px}}
+@media(max-width:700px){#unidade{max-width:150px}#aba-rede .tabela tr{grid-template-columns:1fr 1fr}#aba-rede .tabela td:nth-child(1){grid-column:1/-1;font-weight:700}}
+body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #aba-rede .tabela td:nth-child(1){grid-column:1/-1;font-weight:700}body.modo-cel #unidade{max-width:150px}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -161,18 +183,21 @@ body>*:not(#relatorio){display:none!important}#relatorio{position:static!importa
 .cols,.duas{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}main{padding:16px}header{flex-wrap:wrap}.usuario{margin-left:0}}
 </style></head><body>
 <section class="painel">
-<header><h1>Casa Brasa · Painel</h1><span class="tag">Ao vivo</span><button class="sec" id="modo-tela" type="button">📱 Ver no celular</button><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option></select></label></header>
+<header><h1>Casa Brasa · Painel</h1><select id="unidade" aria-label="Unidade"></select><span class="tag">Ao vivo</span><button class="sec" id="modo-tela" type="button">📱 Ver no celular</button><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option><option value="balcao">Balcão</option><option value="rede">Dono da rede</option></select></label></header>
 <nav role="tablist">
 <button role="tab" aria-selected="false" data-aba="pedidos">Pedidos<span class="bolinha" id="b-pedidos" hidden></span></button>
 <button role="tab" aria-selected="true" data-aba="cozinha">Cozinha<span class="bolinha" id="b-cozinha" hidden></span></button>
 <button role="tab" aria-selected="false" data-aba="bar">Bar<span class="bolinha" id="b-bar" hidden></span></button>
 <button role="tab" aria-selected="false" data-aba="mesas">Mesas (garçom)<span class="bolinha" id="b-mesas" hidden></span></button>
+<button role="tab" aria-selected="false" data-aba="balcao">Balcão e TV<span class="bolinha" id="b-balcao" hidden></span></button>
 <button role="tab" aria-selected="false" data-aba="reservas">Reservas</button>
 <button role="tab" aria-selected="false" data-aba="cardapio">Cardápio</button>
 <button role="tab" aria-selected="false" data-aba="gerencia">Gerência e CRM</button>
 <button role="tab" aria-selected="false" data-aba="integracoes">Integrações</button>
+<button role="tab" aria-selected="false" data-aba="rede">Rede de lojas</button>
 </nav>
 <main>
+<p class="aviso-unidade" id="aviso-unidade" hidden></p>
 <div class="alertas" id="alertas"></div>
 <section class="aba" id="aba-pedidos"><div class="filtros" id="filtros"></div><div class="tabela"><table><thead><tr><th>#</th><th>Hora</th><th>Mesa</th><th>Itens</th><th>Total</th><th>Status</th></tr></thead><tbody id="lista-pedidos"></tbody></table></div><p class="vazio" id="sem-pedidos">Nenhum pedido ainda. Faça um pelo celular do cliente.</p></section>
 <section class="aba" id="aba-cardapio"><div class="tabela"><table><thead><tr><th>Prato</th><th>Categoria</th><th>Setor</th><th>Preço</th><th>Vendidos hoje</th><th>Hoje</th></tr></thead><tbody class="esg" data-setor="todos"></tbody></table></div><p class="nota">"Esgotado" some na hora do cardápio do cliente. No sistema real o dono também troca preço, foto e descrição por aqui.</p></section>
@@ -188,6 +213,15 @@ body>*:not(#relatorio){display:none!important}#relatorio{position:static!importa
 <div class="integ" id="integ"></div>
 <div class="bloco" style="margin-top:18px"><h3>Últimos envios ao caixa</h3><div id="integ-log"><p class="nota">Conecte um sistema e faça um pedido.</p></div><pre id="integ-json" hidden></pre></div>
 <p class="nota">Na demonstração o envio é simulado. A integração real usa a API de cada sistema (Saipos, Consumer, Colibri) ou um webhook para qualquer outro.</p></section>
+<section class="aba" id="aba-balcao"><div class="acoes-g"><button id="abrir-tv" type="button">📺 Abrir tela da TV</button></div>
+<div class="duas"><div class="bloco"><h3>Preparando</h3><div class="lista" id="b-prep"><p class="nota">Nenhum pedido do balcão.</p></div></div><div class="bloco"><h3>Prontos para retirar</h3><div class="lista" id="b-prontos"><p class="nota">—</p></div></div></div>
+<p class="nota">Pedido do balcão não tem mesa: o cliente recebe uma senha no celular e é chamado na TV quando fica pronto. Para hamburguerias, lanchonetes, cafeterias e pizzarias com retirada.</p></section>
+<section class="aba" id="aba-rede"><div class="acoes-g"><button id="nova-unidade" type="button" class="sec">+ Nova unidade</button></div>
+<div class="kpis" id="r-kpis"></div>
+<div class="tabela"><table><thead><tr><th>Unidade</th><th>Faturamento hoje</th><th>Pedidos</th><th>Ticket médio</th><th>Preparo</th><th>Nota</th></tr></thead><tbody id="r-lojas"></tbody></table></div>
+<div class="duas" style="margin-top:18px"><div class="bloco"><h3>Cardápio central</h3><table class="mini" id="r-cardapio"></table><p class="nota">Muda uma vez e vale para todas as lojas; cada unidade pode ter preço próprio e marcar o que acabou.</p></div>
+<div class="bloco"><h3>Clientes da rede</h3><div class="lista"><div class="linha"><span class="q">4.812</span><span class="d"><b>clientes cadastrados</b><small>em todas as unidades</small></span></div><div class="linha"><span class="q">22%</span><span class="d"><b>já foram em mais de uma loja</b><small>reconhecidos em qualquer unidade</small></span></div><div class="linha"><span class="q">1.096</span><span class="d"><b>no programa de fidelidade</b><small>pontos valem na rede toda</small></span></div></div></div></div>
+<p class="nota">A unidade Centro mostra os pedidos ao vivo desta demonstração; as outras são exemplos.</p></section>
 <section class="aba" id="aba-gerencia"><div class="acoes-g"><button id="btn-rel" type="button">📄 Relatório do mês (PDF)</button></div>
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
 <div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras (sugestão)</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
@@ -198,6 +232,8 @@ body>*:not(#relatorio){display:none!important}#relatorio{position:static!importa
 <p class="nota">Números do celular são reais nesta demonstração; clientes, reservas e a senha do gerente (1234) são exemplos.</p></section>
 </main></section>
 <div id="relatorio" hidden></div>
+<section id="tv" class="tv" hidden aria-label="Tela de senhas"><div class="tv-topo"><b>Casa Brasa</b><span class="tv-hora" id="tv-hora"></span><button class="sec" id="tv-sair" type="button">Sair da TV</button></div>
+<div class="tv-corpo"><div class="tv-col"><h2>Preparando</h2><div class="tv-prep" id="tv-prep"></div></div><div class="tv-col"><h2>Pode retirar</h2><div id="tv-agora" class="tv-agora"></div><div class="tv-prontos" id="tv-prontos"></div></div></div></section>
 <div class="modal" id="modal" hidden><div class="caixa" id="caixa"></div></div>
 
 <script>
@@ -212,7 +248,7 @@ Object.assign(mesas[7],{estado:"ocupada",total:64,aceita:true,itens:[{nome:"Tagl
 Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84,pessoa:"Lucas"},{nome:"Chope pilsen",qtd:3,preco:14,pessoa:"Marina"}]});
 const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
 let filtro="Todos";
-function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;listaPedidos()}
+function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;listaPedidos();try{tv()}catch(e){}}
 const FILTROS=["Todos","Aguardando aceite","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
 function listaPedidos(){const vis=pedidos.filter(o=>filtro==="Todos"||o.status===filtro);
 $("#filtros").innerHTML=FILTROS.map(f=>`<button class="${f===filtro?"on":""}" data-f="${f}">${f} (${f==="Todos"?pedidos.length:pedidos.filter(o=>o.status===f).length})</button>`).join("");
@@ -220,7 +256,7 @@ $("#lista-pedidos").innerHTML=vis.map(o=>`<tr><td>#${o.num}</td><td>${o.hora.toL
 <td>${o.itens.map(i=>`${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}`).join("<br>")}</td><td>${reais(o.total)}</td><td><span class="ps p-${o.status.split(" ")[0]}">${o.status}</span></td></tr>`).join("");
 $("#sem-pedidos").hidden=pedidos.length>0;const n=pedidos.filter(o=>o.status==="Aguardando aceite").length;const b=$("#b-pedidos");b.hidden=!n;b.textContent=n}
 $("#filtros").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filtro=b.dataset.f;listaPedidos()}};
-let ped=0,fat=0,sug=0;const vendidos={},vistos=new Set(),hist={},tempos=[],cancel=[];
+let ped=0,fat=0,sug=0,senhaN=40;const balcao=[];const vendidos={},vistos=new Set(),hist={},tempos=[],cancel=[];
 function bip(f=880){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.18,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.45);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+.45)}catch(e){}}
 function bolinha(id,n){const b=$("#b-"+id);b.hidden=!n;b.textContent=n}
 function contar(){bolinha("cozinha",document.querySelectorAll("#cozinha-Recebido .card").length);bolinha("bar",document.querySelectorAll("#bar-Recebido .card").length);
@@ -240,17 +276,17 @@ $("#caixa").onclick=e=>{if(e.target.closest("[data-cancelar]"))$("#modal").hidde
 if(c){const m=mesas[c.dataset.confirmar];enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*1.1)}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*.1).toFixed(2),total:+(m.total*1.1).toFixed(2)});site().postMessage({tipo:"fechada",mesa:m.n},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
 // cozinha e bar
 function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo";c.dataset.status="Recebido";c.dataset.ini=Date.now();
-c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Retirada"}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
+c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Balcão · senha "+p.senha}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
 <ul>${itens.map(i=>`<li>${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}</li>`).join("")}</ul><div class="pe"><span class="hora">${setor==="bar"?"Bar":"Cozinha"}</span><span class="mx"><button>Começar</button><button class="sec" data-cancel>Cancelar</button></span></div>`;
 c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);
 c.querySelector("button").onclick=()=>{const s=PROX[c.dataset.status][0];c.dataset.status=s;c.classList.remove("novo");
-if(s==="Pronto"){c.querySelector(".mx").remove();tempos.push((Date.now()-c.dataset.ini)/1000);gerencia();const m=mesas[p.mesa];if(m){m.estado="pronto";m.pronto++;}mapa()}else c.querySelector("button").textContent=PROX[s][1];
-reg(p,s);site().postMessage({tipo:"status",num:p.num,status:s==="Pronto"?"Pronto, saindo para a mesa":"Em preparo"},"*");document.getElementById(`${setor}-${s}`).prepend(c);contar()};
+if(s==="Pronto"){c.querySelector(".mx").remove();tempos.push((Date.now()-c.dataset.ini)/1000);gerencia();const m=mesas[p.mesa];if(m){m.estado="pronto";m.pronto++;}if(!p.mesa&&--p.pend<=0)pronta(p);mapa()}else c.querySelector("button").textContent=PROX[s][1];
+if(p.mesa||s!=="Pronto")reg(p,s);site().postMessage({tipo:"status",num:p.num,status:p.mesa?(s==="Pronto"?"Pronto, saindo para a mesa":"Em preparo"):(p.pronta?`Pronto! Senha ${p.senha}: retire no balcão`:`Senha ${p.senha} · em preparo`)},"*");document.getElementById(`${setor}-${s}`).prepend(c);contar()};
 $(`#${setor}-Recebido .vazio`)?.remove();$(`#${setor}-Recebido`).prepend(c)}
 setInterval(()=>document.querySelectorAll(".card[data-ini]").forEach(c=>{if(c.dataset.status==="Pronto")return;const s=Math.floor((Date.now()-c.dataset.ini)/1000);
 c.querySelector(".tempo").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;c.classList.toggle("atraso",s>90)}),1000);
-function entrar(p){reg(p,"Recebido");enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
-if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);
+function entrar(p){reg(p,"Recebido");if(!p.mesa&&!p.senha){p.senha=String(++senhaN).padStart(3,"0");balcao.push(p);site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Aguarde ser chamado na TV.`},"*")}enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
+if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);p.pend=(coz.length?1:0)+(bar.length?1:0);tv();
 const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>{i.pessoa=i.pessoa||p.nome||"Mesa";m.itens.push(i)})}
 ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.qtd;if(i.sug)sug+=i.qtd*i.preco});gerencia();mapa();bip()}
 // alertas: aceite do primeiro pedido, garçom, conta
@@ -278,7 +314,7 @@ $("#reservas").onclick=e=>{const b=e.target.closest("[data-conf]");if(b)setTimeo
 // gerência e CRM
 const crm=[["Marina Costa","5511900000011","34 dias","Picanha na brasa"],["Rafael Nunes","5511900000012","41 dias","Tagliatelle da Dona Lúcia"],["Juliana Prado","5511900000013","52 dias","Cheesecake de mirtilo"]];
 $("#crm").innerHTML=crm.map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Última visita há ${c[2]} · gosta de ${esc(c[3])}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Olá, ${c[0]}! Sentimos sua falta na Casa Brasa. Esta semana a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar convite</button></a></div>`).join("");
-function gerencia(){const ocup=Object.values(mesas).filter(m=>m.total).length||1;$("#g-ped").textContent=ped;$("#g-fat").textContent=reais(fat);$("#g-tkt").textContent=reais(fat/Math.max(1,new Set(Object.values(mesas).filter(m=>m.ultimo).map(m=>m.n)).size));$("#g-sug").textContent=reais(sug);if(typeof cardapio==="function"&&$('.esg[data-setor="todos"]').innerHTML)cardapio();if(tempos.length){const md=tempos.reduce((a,b)=>a+b,0)/tempos.length;$("#g-tmp").textContent=`${Math.floor(md/60)}:${String(Math.round(md%60)).padStart(2,"0")} min`}
+function gerencia(){const ocup=Object.values(mesas).filter(m=>m.total).length||1;$("#g-ped").textContent=ped;$("#g-fat").textContent=reais(fat);$("#g-tkt").textContent=reais(fat/Math.max(1,new Set(Object.values(mesas).filter(m=>m.ultimo).map(m=>m.n)).size));$("#g-sug").textContent=reais(sug);try{rede()}catch(e){}if(typeof cardapio==="function"&&$('.esg[data-setor="todos"]').innerHTML)cardapio();if(tempos.length){const md=tempos.reduce((a,b)=>a+b,0)/tempos.length;$("#g-tmp").textContent=`${Math.floor(md/60)}:${String(Math.round(md%60)).padStart(2,"0")} min`}
 if(cancel.length)$("#g-canc").innerHTML=cancel.map(x=>`<p class="nota" style="margin:4px 0">${x}</p>`).join("");
 const top=Object.entries(vendidos).sort((a,b)=>b[1]-a[1]).slice(0,5),max=top[0]?top[0][1]:1;
 $("#g-top").innerHTML=top.length?top.map(([n,q])=>`<div class="barra"><span style="flex:0 0 46%">${esc(n)}</span><i style="width:${q/max*45}%"></i><b>${q}</b></div>`).join(""):'<p class="nota">Faça um pedido no celular.</p>'}
@@ -348,6 +384,36 @@ $("#relatorio").innerHTML=`<div class="rel-acoes"><button class="sec" data-rel-f
 <p class="nota">Demonstração: números do mês são exemplos (os pedidos de hoje entram na lista de pratos). No sistema real vêm dos pedidos registrados.</p></div>`;$("#relatorio").hidden=false}
 $("#btn-rel").onclick=relatorio;
 $("#relatorio").onclick=e=>{if(e.target.closest("[data-rel-fechar]"))$("#relatorio").hidden=true;if(e.target.closest("[data-rel-pdf]"))window.print()};
+// balcão: senha pronta vai para a TV
+function pronta(p){p.pronta=Date.now();reg(p,"Pronto");tv();bip(990)}
+function tv(){const prep=balcao.filter(o=>!o.pronta&&!o.retirada),pr=balcao.filter(o=>o.pronta&&!o.retirada).sort((a,b)=>b.pronta-a.pronta),ult=pr[0];
+$("#tv-prep").innerHTML=prep.map(o=>`<span>${o.senha}</span>`).join("")||"<em>Nenhum pedido no momento</em>";
+const ag=$("#tv-agora");const novo=ult&&ag.dataset.num!==String(ult.num)+ult.pronta;ag.dataset.num=ult?String(ult.num)+ult.pronta:"";
+ag.className="tv-agora"+(ult?"":" vazio");ag.innerHTML=ult?`<small>Senha chamada</small><b>${ult.senha}</b><span>${esc(ult.nome&&ult.nome!=="Mesa"?ult.nome:"")}</span>`:`<small>Aguardando</small><b>—</b>`;
+if(novo){void ag.offsetWidth;ag.classList.add("chama")}
+$("#tv-prontos").innerHTML=pr.slice(1).map(o=>`<span>${o.senha}</span>`).join("");
+const linha=(o,b)=>`<div class="linha"><span class="q">${o.senha}</span><span class="d"><b>${esc(o.nome||"Cliente")}</b><small>${o.itens.map(i=>i.qtd+"× "+esc(i.nome)).join(", ")}</small></span>${b}</div>`;
+$("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="st pendente">${(pedidos.find(x=>x.num===o.num)||{}).status||"Recebido"}</span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
+$("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">Retirado</button></span>`)).join("")||'<p class="nota">—</p>';
+const n=pr.length,bb=$("#b-balcao");bb.hidden=!n;bb.textContent=n}
+$("#b-prontos").onclick=e=>{const r=e.target.closest("[data-retirado]"),d=e.target.closest("[data-de-novo]");
+if(r){const o=balcao.find(x=>String(x.num)===r.dataset.retirado);o.retirada=true;reg(o,"Entregue");site().postMessage({tipo:"status",num:o.num,status:"Retirado. Bom apetite!"},"*");tv()}
+if(d){const o=balcao.find(x=>String(x.num)===d.dataset.deNovo);o.pronta=Date.now();tv();bip(990)}};
+$("#abrir-tv").onclick=()=>{const b=document.querySelector('.troca [data-ver="tv"]');if(b)b.click();else $("#tv").hidden=false};
+$("#tv-sair").onclick=()=>{$("#tv").hidden=true};
+setInterval(()=>{$("#tv-hora").textContent=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})},1000);
+// rede: várias unidades (Centro ao vivo; as outras são exemplo)
+const UNID=[{id:"centro",nome:"Centro",fat:5120,ped:58,tmp:14.1,nota:4.8},{id:"jardins",nome:"Jardins",fat:6230,ped:71,tmp:13.1,nota:4.9},{id:"moema",nome:"Moema",fat:4890,ped:58,tmp:17.6,nota:4.6}];
+function unidades(){const v=$("#unidade").value||"centro";$("#unidade").innerHTML=UNID.map(u=>`<option value="${u.id}">Unidade ${esc(u.nome)}${u.id==="centro"?" (ao vivo)":""}</option>`).join("");$("#unidade").value=v}
+$("#unidade").onchange=e=>{const u=UNID.find(x=>x.id===e.target.value),a=$("#aviso-unidade");a.hidden=u.id==="centro";
+a.textContent=`Você está na unidade ${u.nome}. Cada loja tem as suas mesas, equipe e QR Codes. Nesta demonstração os pedidos ao vivo chegam na unidade Centro; ${u.nome} aparece com números de exemplo na aba Rede de lojas.`};
+function rede(){const lojas=UNID.map(u=>u.id==="centro"?Object.assign({},u,{fat:u.fat+fat,ped:u.ped+ped}):u),tf=lojas.reduce((t,u)=>t+u.fat,0),tp=lojas.reduce((t,u)=>t+u.ped,0);
+$("#r-kpis").innerHTML=`<div class="k"><small>Faturamento da rede hoje</small><b>${reais(tf)}</b></div><div class="k"><small>Pedidos na rede</small><b>${tp}</b></div><div class="k"><small>Ticket médio</small><b>${reais(tf/Math.max(1,tp)*1.6)}</b></div><div class="k"><small>Unidades</small><b>${lojas.length}</b></div><div class="k lucro"><small>Melhor loja hoje</small><b>${esc([...lojas].sort((a,b)=>b.fat-a.fat)[0].nome)}</b></div>`;
+$("#r-lojas").innerHTML=[...lojas].sort((a,b)=>b.fat-a.fat).map((u,i)=>u.nova?`<tr><td>${esc(u.nome)}</td><td colspan="5" class="nova">Configurando: cardápio, mesas e QR copiados da unidade Centro</td></tr>`:`<tr><td>${i+1}º · ${esc(u.nome)}${u.id==="centro"?'<span class="ao-vivo">ao vivo</span>':""}</td><td>${reais(u.fat)}</td><td>${u.ped} pedidos</td><td>${reais(u.fat/Math.max(1,u.ped)*1.6)}</td><td class="${u.tmp>16?"alerta-t":""}">${u.tmp.toFixed(1).replace(".",",")} min${u.tmp>16?" ⚠":""}</td><td>★ ${u.nota.toFixed(1).replace(".",",")}</td></tr>`).join("");
+const pr=["picanha-brasa","pizza-fermentacao","tiramisu"].map(id=>MENU.find(i=>i.id===id)).filter(Boolean),ab=UNID.filter(u=>!u.nova);
+$("#r-cardapio").innerHTML=`<tr><th>Prato</th>${ab.map(u=>`<th>${esc(u.nome)}</th>`).join("")}</tr>`+pr.map(i=>`<tr><td>${esc(i.nome)}</td>${ab.map(u=>`<td>${reais(i.preco+(u.id==="jardins"?6:0))}</td>`).join("")}</tr>`).join("")}
+$("#nova-unidade").onclick=()=>{const n=UNID.length+1;UNID.push({id:"u"+n,nome:"Nova unidade "+n,fat:0,ped:0,tmp:0,nota:0,nova:true});unidades();rede()};
+unidades();rede();tv();
 integ();
 mapa();listaReservas();gerencia();listaPedidos();
 </script></body></html>

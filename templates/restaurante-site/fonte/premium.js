@@ -14,7 +14,10 @@
   // "painel" = pedido vai para a cozinha (PDV); só pode pedir quem escaneou o QR da mesa
   const PAINEL = CONFIG.pedidos === "painel";
   const MESA0 = new URLSearchParams(location.search).get("mesa") || (CONFIG.mesa ? String(CONFIG.mesa) : "") || (() => { try { return sessionStorage.getItem("cb-mesa") || ""; } catch (e) { return ""; } })();
-  const PEDIDOS = CONFIG.pedidos !== false && !(PAINEL && !MESA0);
+  // balcão: pedido sem mesa, com senha chamada na TV ("balcao": false no config desliga; QR do balcão usa ?balcao)
+  const BALCAO = PAINEL && CONFIG.balcao !== false;
+  const BALCAO0 = BALCAO && new URLSearchParams(location.search).has("balcao");
+  const PEDIDOS = CONFIG.pedidos !== false && !(PAINEL && !MESA0 && !BALCAO0);
   const DELIVERY = CONFIG.pedidos === true && CONFIG.entrega?.delivery !== false; // "delivery": false no config tira a entrega
   const ESGOTADOS = new Set(CONFIG.esgotados || []); // pratos que acabaram hoje (o painel atualiza ao vivo)
   document.documentElement.toggleAttribute("data-vitrine", !PEDIDOS);
@@ -641,7 +644,7 @@
     return `<div class="largura pagina estreita">
       <h1>Seu pedido</h1>
       <form id="form-pedido" class="form" style="margin-top:var(--e7);gap:var(--e6)" novalidate>
-        ${PAINEL ? `<p class="aviso-mesa" style="border-radius:var(--raio)"><span>Pedido da <b>mesa ${esc(mesa)}</b>. Vai direto para a cozinha.</span></p><input type="hidden" name="tipo" value="mesa">` : `<fieldset><legend>Como você quer receber</legend><div class="opcoes">
+        ${PAINEL ? `<fieldset><legend>Como você quer receber</legend><div class="opcoes">${mesa ? `<label class="opcao"><input type="radio" name="tipo" value="mesa" checked><strong>Na mesa ${esc(mesa)}</strong><small>A equipe leva até você</small></label>` : ""}${BALCAO ? `<label class="opcao"><input type="radio" name="tipo" value="retirada" ${mesa ? "" : "checked"}><strong>Retirar no balcão</strong><small>Você recebe uma senha e é chamado na TV</small></label>` : ""}</div></fieldset>` : `<fieldset><legend>Como você quer receber</legend><div class="opcoes">
           ${mesa ? `<label class="opcao"><input type="radio" name="tipo" value="mesa" checked><strong>Na mesa ${esc(mesa)}</strong><small>A equipe leva até você</small></label>` : ""}
           ${DELIVERY ? `<label class="opcao"><input type="radio" name="tipo" value="delivery" ${mesa ? "" : "checked"}><strong>Delivery</strong><small>${reais(CONFIG.entrega.taxa)} · ${esc(CONFIG.entrega.tempoDelivery)}</small></label>` : ""}
           <label class="opcao"><input type="radio" name="tipo" value="retirada" ${!mesa && !DELIVERY ? "checked" : ""}><strong>Retirada</strong><small>Sem taxa · ${esc(CONFIG.entrega.tempoRetirada)}</small></label>
@@ -664,12 +667,12 @@
   function ligarPedido() {
     const f = $("#form-pedido");
     if (!f) return;
-    const tipo = () => (PAINEL ? "mesa" : f.tipo.value);
+    const tipo = () => f.tipo?.value || (PAINEL ? "mesa" : "");
     function desenhar() {
       const sub = subtotal(), taxa = tipo() === "delivery" ? CONFIG.entrega.taxa : 0;
       $("#itens-pedido").innerHTML = `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li class="entre"><span>${c.qtd}× ${esc(it.nome)}${c.obs ? `<br><small class="nota">${esc(c.obs)}</small>` : ""}</span><span class="preco">${reais(precoUn(c) * c.qtd)}</span></li>`; }).join("")}</ul><p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(sub)}</span></p>${taxa ? `<p class="entre"><span>Taxa de entrega</span><span class="preco">${reais(taxa)}</span></p>` : ""}<p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total">${reais(sub + taxa)}</span></p>`;
       $$(".so-delivery").forEach((x) => (x.hidden = tipo() !== "delivery"));
-      $$(".fora-mesa").forEach((x) => (x.hidden = tipo() === "mesa"));
+      $$(".fora-mesa").forEach((x) => (x.hidden = tipo() === "mesa" || PAINEL));
       $("#enviar-pedido").textContent = `${PAINEL ? "Enviar pedido para a cozinha" : "Enviar pedido pelo WhatsApp"} · ${reais(sub + taxa)}`;
     }
     f.addEventListener("change", desenhar);
@@ -679,7 +682,8 @@
       const sub = subtotal(), deliv = tipo() === "delivery", taxa = deliv ? CONFIG.entrega.taxa : 0;
       const err = [];
       if (!PAINEL && !d.nome.trim()) err.push("Informe seu nome.");
-      if (tipo() !== "mesa" && d.tel.replace(/\D/g, "").length < 10) err.push("Informe um telefone com DDD.");
+      if (PAINEL && tipo() === "retirada" && !d.nome.trim()) err.push("Informe seu nome para chamarmos você no balcão.");
+      if (tipo() !== "mesa" && !PAINEL && d.tel.replace(/\D/g, "").length < 10) err.push("Informe um telefone com DDD.");
       if (deliv && !d.end.trim()) err.push("Informe o endereço de entrega.");
       if (deliv && sub < CONFIG.entrega.pedidoMinimo) err.push(`O pedido mínimo para delivery é ${reais(CONFIG.entrega.pedidoMinimo)}.`);
       $("#p-erros").hidden = !err.length;
@@ -700,7 +704,7 @@
         enviar();
         carrinho = [];
         salvarCarrinho();
-        $("#conteudo").innerHTML = `<div class="largura pagina estreita"><h1>Pedido enviado</h1><p class="texto">Chegou na cozinha. Acompanhe aqui:</p><p class="lead" id="status-pedido" style="margin-top:var(--e4)">Enviando…</p><p style="margin-top:var(--e6)"><a class="btn btn-sec" href="${L.cardapio}">Pedir mais</a> <button type="button" class="btn btn-sec" data-chamar="garcom">Chamar garçom</button> <button type="button" class="btn btn-sec" data-chamar="conta">Pedir a conta</button></p></div>`;
+        $("#conteudo").innerHTML = `<div class="largura pagina estreita"><h1>Pedido enviado</h1><p class="texto">Chegou na cozinha. Acompanhe aqui:</p><p class="lead" id="status-pedido" style="margin-top:var(--e4)">Enviando…</p><p style="margin-top:var(--e6)"><a class="btn btn-sec" href="${L.cardapio}">Pedir mais</a>${naMesa ? ` <button type="button" class="btn btn-sec" data-chamar="garcom">Chamar garçom</button> <button type="button" class="btn btn-sec" data-chamar="conta">Pedir a conta</button>` : ""}</p></div>`;
         window.scrollTo(0, 0);
         window.addEventListener("message", (ev) => {
           if (ev.data?.num === num && ev.data.tipo === "recebido") { confirmado = true; if ($("#status-pedido")?.textContent === "Enviando…") $("#status-pedido").textContent = "Recebido"; }
@@ -724,7 +728,7 @@
     g.innerHTML = `<header><h2 id="titulo-gaveta">Seu pedido</h2><button type="button" class="fechar" data-fechar aria-label="Fechar pedido">${ic("x")}</button></header>${
       carrinho.length
         ? `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li><div class="entre"><b>${esc(it.nome)}</b><span class="preco">${reais(precoUn(c) * c.qtd)}</span></div>${c.obs ? `<p class="nota">${esc(c.obs)}</p>` : ""}<div class="contas"><button type="button" data-menos="${esc(c.chave)}" aria-label="Diminuir ${esc(it.nome)}">−</button><b>${c.qtd}</b><button type="button" data-mais="${esc(c.chave)}" aria-label="Aumentar ${esc(it.nome)}">+</button><button type="button" class="remover" data-remover="${esc(c.chave)}">Remover</button></div></li>`; }).join("")}</ul>
-          <footer><p class="entre"><span>Subtotal</span><span class="preco conta-total">${reais(sub)}</span></p>${PAINEL ? `<p class="nota">Mesa ${esc(mesa)}: o pedido vai direto para a cozinha.</p>` : `<p class="nota">Delivery: mais ${reais(CONFIG.entrega.taxa)}, ${esc(CONFIG.entrega.tempoDelivery)}. Retirada sem taxa.</p>`}${!PAINEL && falta ? `<p class="nota">Faltam ${reais(falta)} para o pedido mínimo de delivery.</p>` : ""}<a class="btn btn-pri btn-bloco" href="${L.pedido}" data-fechar>Finalizar pedido</a></footer>`
+          <footer><p class="entre"><span>Subtotal</span><span class="preco conta-total">${reais(sub)}</span></p>${PAINEL ? `<p class="nota">${mesa ? `Mesa ${esc(mesa)}: o` : "O"} pedido vai direto para a cozinha.</p>` : `<p class="nota">Delivery: mais ${reais(CONFIG.entrega.taxa)}, ${esc(CONFIG.entrega.tempoDelivery)}. Retirada sem taxa.</p>`}${!PAINEL && falta ? `<p class="nota">Faltam ${reais(falta)} para o pedido mínimo de delivery.</p>` : ""}<a class="btn btn-pri btn-bloco" href="${L.pedido}" data-fechar>Finalizar pedido</a></footer>`
         : `<div class="vazio"><h3>Seu pedido está vazio</h3><p class="nota">Escolha os pratos no cardápio.</p><a class="btn btn-sec" href="${L.cardapio}" data-fechar>Ver o cardápio</a></div>`
     }`;
   }
