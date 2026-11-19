@@ -659,3 +659,7 @@ html:not([data-vitrine]) [data-so-vitrine] { display: none !important; }
 .opc-tipo { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .7; }
 .opc .marcador small { opacity: .75; font-weight: 600; }
 .comanda-nome { margin-top: var(--e4); padding-top: var(--e3); border-top: 1px solid var(--linha, rgba(0,0,0,.1)); }
+/* promoção por horário e cashback */
+.faixa-promo { position: sticky; top: 0; z-index: 5; background: var(--brasa, #b23a1e); color: #fff; padding: var(--e3) var(--margem); font-weight: 600; font-size: var(--t-peq); text-align: center; }
+.faixa-promo p { margin: 0; }
+.cashback { margin-top: var(--e5); padding: var(--e4); border: 1px dashed currentColor; border-radius: var(--raio-m, 12px); font-size: var(--t-lead, 1.1rem); }

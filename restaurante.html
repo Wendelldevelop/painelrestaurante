@@ -139,7 +139,21 @@ body.modo-cel .linha .q{min-width:0}
 .ig b{font:600 18px Georgia,serif}.ig small{color:var(--suave)}.ig .st{align-self:flex-start}.ig button{margin-top:8px}.ig.on{border-color:#cfe5cc;background:#fbfef9}
 #integ-log p{margin:6px 0;font-size:13px;cursor:pointer}#integ-log p:hover{color:var(--brasa)}
 #integ-json{background:var(--cartao2);padding:12px;border-radius:10px;font-size:12px;overflow:auto;max-height:240px;white-space:pre-wrap;margin:10px 0 0}
-.acoes-g{display:flex;justify-content:flex-end;margin-bottom:14px}
+.acoes-g{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.sec-tit{margin:28px 0 12px;font:600 20px Georgia,serif}
+.form-fila{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:8px}.form-fila input,.form-fila select,.lin select{font:15px system-ui;padding:9px 10px;border-radius:10px;border:1px solid var(--linha);background:var(--fundo);color:var(--texto);min-width:0}
+.cel-fila{margin-top:14px;max-width:300px;border:8px solid #1d1611;border-radius:26px;padding:18px;background:#1b1410;color:#f6efe4;font-size:14px}.cel-fila b{display:block;font:600 22px Georgia,serif;margin:4px 0}.cel-fila .grande{font:800 44px/1 system-ui;color:#dba63a;margin:8px 0}
+.lin{display:flex;align-items:center;gap:10px;font-weight:600;margin:6px 0 14px}
+.kpis2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kpis2 .k{box-shadow:none}.kpis2 .k b{font-size:21px}
+.ia{margin-bottom:18px;background:linear-gradient(135deg,#fffdf9,#fbf1de)}.ia-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.ia-chips button{background:var(--cartao);color:var(--texto);border:1px solid var(--linha);font-weight:500;border-radius:99px;padding:7px 13px}
+.ia-conversa{display:grid;gap:8px;max-height:320px;overflow:auto;margin-bottom:10px}.ia-conversa:empty{display:none}
+.ia-p{justify-self:end;background:var(--brasa);color:#fff;padding:9px 13px;border-radius:14px 14px 4px 14px;max-width:80%}
+.ia-r{justify-self:start;background:var(--cartao);border:1px solid var(--linha);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:90%;line-height:1.55}
+.ia-form{display:flex;gap:8px}.ia-form input{flex:1;font:15px system-ui;padding:10px 12px;border-radius:10px;border:1px solid var(--linha);background:var(--cartao);min-width:0}
+.zap{background:#e5ddd5;border-radius:12px;padding:14px;margin:6px 0 12px}.zap-topo{font-size:12px;color:#54656f;text-align:center;margin-bottom:10px}
+.zap-msg{background:#fff;border-radius:0 10px 10px 10px;padding:10px 12px;font-size:14px;line-height:1.5;box-shadow:0 1px 1px rgba(0,0,0,.1);color:#111b21}.zap-h{display:block;text-align:right;font-size:11px;color:#667781;margin-top:4px}
+@media(max-width:700px){.form-fila{grid-template-columns:1fr 1fr}}
 #relatorio{position:fixed;inset:0;z-index:40;background:rgba(43,32,24,.55);overflow:auto;padding:24px 14px}
 .rel-acoes{display:flex;gap:8px;justify-content:flex-end;max-width:860px;margin:0 auto 12px}
 .folha{background:#fff;color:#2b2018;max-width:860px;margin:0 auto;border-radius:14px;padding:40px 44px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
@@ -190,8 +204,9 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 <button role="tab" aria-selected="false" data-aba="bar">Bar<span class="bolinha" id="b-bar" hidden></span></button>
 <button role="tab" aria-selected="false" data-aba="mesas">Mesas (garçom)<span class="bolinha" id="b-mesas" hidden></span></button>
 <button role="tab" aria-selected="false" data-aba="balcao">Balcão e TV<span class="bolinha" id="b-balcao" hidden></span></button>
-<button role="tab" aria-selected="false" data-aba="reservas">Reservas</button>
+<button role="tab" aria-selected="false" data-aba="reservas">Reservas e fila</button>
 <button role="tab" aria-selected="false" data-aba="cardapio">Cardápio</button>
+<button role="tab" aria-selected="false" data-aba="marketing">Fidelidade e promoções</button>
 <button role="tab" aria-selected="false" data-aba="gerencia">Gerência e CRM</button>
 <button role="tab" aria-selected="false" data-aba="integracoes">Integrações</button>
 <button role="tab" aria-selected="false" data-aba="rede">Rede de lojas</button>
@@ -208,7 +223,18 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 <div class="col"><h2>Novos</h2><div id="bar-Recebido"><p class="vazio">Bebidas e vinhos vêm direto para cá, separados da cozinha.</p></div></div>
 <div class="col"><h2>Em preparo</h2><div id="bar-Em preparo"></div></div><div class="col"><h2>Prontos</h2><div id="bar-Pronto"></div></div></div><div class="bloco" style="margin-top:14px"><h3>Acabou alguma bebida?</h3><div class="esg" data-setor="bar"></div></div></section>
 <section class="aba" id="aba-mesas"><div class="mapa" id="mapa"></div><p class="nota">O garçom vê o mapa no celular dele: aceita o primeiro pedido de cada mesa e leva o que ficou pronto. O cliente fecha a conta pelo celular e o garçom só leva a maquininha.</p></section>
-<section class="aba" id="aba-reservas"><div class="lista" id="reservas"></div><p class="nota">Reservas feitas pelo site chegam aqui. "Confirmar no WhatsApp" abre a conversa com a mensagem pronta. Lista de exemplo.</p></section>
+<section class="aba" id="aba-reservas"><div class="lista" id="reservas"></div><p class="nota">Reservas feitas pelo site chegam aqui. "Confirmar no WhatsApp" abre a conversa com a mensagem pronta. Lista de exemplo.</p>
+<h2 class="sec-tit">Fila de espera</h2>
+<div class="duas"><div class="bloco"><h3>Agora na fila</h3><div class="lista" id="fila"></div></div>
+<div class="bloco"><h3>Cliente entra pelo QR da porta</h3><p class="nota" style="margin-top:0">Casa cheia? Ele escaneia o QR da entrada, deixa nome e WhatsApp e espera onde quiser. Quando a mesa libera, recebe a mensagem.</p>
+<div class="form-fila"><input id="f-nome" placeholder="Nome" aria-label="Nome"><select id="f-pes" aria-label="Pessoas"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><input id="f-tel" placeholder="WhatsApp" inputmode="tel" aria-label="WhatsApp"><button id="f-entrar" type="button">Entrar na fila</button></div>
+<div class="cel-fila" id="cel-fila" hidden></div></div></div></section>
+<section class="aba" id="aba-marketing"><div class="duas">
+<div class="bloco"><h3>Fidelidade com cashback</h3><p class="nota" style="margin-top:0">Ao fechar a conta, o cliente ganha crédito para a próxima visita e vê isso no celular na hora.</p>
+<label class="lin">Cashback na conta <select id="fid-pct"><option value="0">Desligado</option><option value="3">3%</option><option value="5" selected>5%</option><option value="10">10%</option></select></label>
+<div class="kpis2"><div class="k lucro"><small>Cashback dado hoje</small><b id="fid-dist">R$ 0,00</b></div><div class="k"><small>Voltaram para usar (mês)</small><b>38%</b></div><div class="k"><small>Clientes no programa</small><b>1.096</b></div><div class="k"><small>Vendas de quem voltou (mês)</small><b>R$ 21.480</b></div></div>
+<p class="nota">Também funciona como "a 10ª visita é grátis" ou pontos. Os números do mês são exemplo.</p></div>
+<div class="bloco"><h3>Promoções por horário</h3><div class="lista" id="promos"></div><p class="nota">Ligam e desligam sozinhas no horário. Na demonstração, use "Ligar agora" e veja o cardápio do cliente mudar.</p></div></div></section>
 <section class="aba" id="aba-integracoes"><p class="nota" style="margin-top:0">Ligue o sistema ao caixa que o restaurante já usa: cada pedido e cada conta fechada vão direto para lá, sem lançar duas vezes.</p>
 <div class="integ" id="integ"></div>
 <div class="bloco" style="margin-top:18px"><h3>Últimos envios ao caixa</h3><div id="integ-log"><p class="nota">Conecte um sistema e faça um pedido.</p></div><pre id="integ-json" hidden></pre></div>
@@ -222,10 +248,13 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 <div class="duas" style="margin-top:18px"><div class="bloco"><h3>Cardápio central</h3><table class="mini" id="r-cardapio"></table><p class="nota">Muda uma vez e vale para todas as lojas; cada unidade pode ter preço próprio e marcar o que acabou.</p></div>
 <div class="bloco"><h3>Clientes da rede</h3><div class="lista"><div class="linha"><span class="q">4.812</span><span class="d"><b>clientes cadastrados</b><small>em todas as unidades</small></span></div><div class="linha"><span class="q">22%</span><span class="d"><b>já foram em mais de uma loja</b><small>reconhecidos em qualquer unidade</small></span></div><div class="linha"><span class="q">1.096</span><span class="d"><b>no programa de fidelidade</b><small>pontos valem na rede toda</small></span></div></div></div></div>
 <p class="nota">A unidade Centro mostra os pedidos ao vivo desta demonstração; as outras são exemplos.</p></section>
-<section class="aba" id="aba-gerencia"><div class="acoes-g"><button id="btn-rel" type="button">📄 Relatório do mês (PDF)</button></div>
+<section class="aba" id="aba-gerencia"><div class="acoes-g"><button id="btn-zap" type="button" class="sec">📱 Resumo do dia (WhatsApp)</button><button id="btn-rel" type="button">📄 Relatório do mês (PDF)</button></div>
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
 <div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras (sugestão)</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
-<div class="duas"><div class="bloco"><h3>Mais pedidos hoje</h3><div id="g-top"><p class="nota">Faça um pedido no celular.</p></div></div>
+<div class="bloco ia"><h3>✨ Pergunte ao assistente</h3><div class="ia-chips" id="ia-chips"></div><div class="ia-conversa" id="ia-conversa"></div>
+<form id="ia-form" class="ia-form"><input id="ia-q" placeholder="Ex.: qual prato vende menos?" aria-label="Pergunta"><button>Perguntar</button></form>
+<p class="nota">Demonstração: respostas a partir dos dados desta tela e de exemplos. No sistema real a IA lê todos os pedidos, reservas e clientes.</p></div>
+<div class="duas" style="margin-top:18px"><div class="bloco"><h3>Mais pedidos hoje</h3><div id="g-top"><p class="nota">Faça um pedido no celular.</p></div></div>
 <div class="bloco"><h3>Clientes que não voltam há 30 dias</h3><div class="lista" id="crm"></div></div></div>
 <div class="duas" style="margin-top:14px"><div class="bloco"><h3>Aniversariantes da semana</h3><div class="lista" id="aniv"></div></div><div class="bloco"><h3>Cancelamentos (com senha do gerente)</h3><div id="g-canc"><p class="nota">Nenhum hoje.</p></div></div></div>
 <div class="bloco" style="margin-top:14px"><h3>Segurança</h3><div class="seguro"><span>Primeiro pedido da mesa só entra com aceite do garçom</span><span>QR muda quando a mesa é fechada</span><span>Cancelar item só com senha do gerente</span><span>Cada restaurante vê só os próprios dados</span><span>Pedido é reenviado até a cozinha confirmar</span><span>Máximo de 3 pedidos por minuto por mesa</span><span>Login por função</span></div></div>
@@ -273,7 +302,7 @@ if(fe){const m=mesas[fe.dataset.fechar],serv=m.total*.1;$("#caixa").innerHTML=`<
 ${comandas(m)}<div class="l"><span>Subtotal</span><span>${reais(m.total)}</span></div><div class="l"><span>Serviço (10%)</span><span>${reais(serv)}</span></div><div class="l t"><span>Total</span><span>${reais(m.total+serv)}</span></div>
 <p class="nota">Com a integração ligada, a conta vai direto para o caixa (aba Integrações). A mesa é liberada e o código do QR muda (${m.qr} deixa de valer), então ninguém pede de casa com foto do QR.</p><div class="pe" style="margin-top:12px"><button class="sec" data-cancelar>Voltar</button><button data-confirmar="${m.n}">Enviar ao caixa e liberar</button></div>`;$("#modal").hidden=false}};
 $("#caixa").onclick=e=>{if(e.target.closest("[data-cancelar]"))$("#modal").hidden=true;const c=e.target.closest("[data-confirmar]");
-if(c){const m=mesas[c.dataset.confirmar];enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*1.1)}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*.1).toFixed(2),total:+(m.total*1.1).toFixed(2)});site().postMessage({tipo:"fechada",mesa:m.n},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
+if(c){const m=mesas[c.dataset.confirmar];enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*1.1)}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*.1).toFixed(2),total:+(m.total*1.1).toFixed(2)});const cb=+(m.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"fechada",mesa:m.n,cashback:cb},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
 // cozinha e bar
 function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo";c.dataset.status="Recebido";c.dataset.ini=Date.now();
 c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Balcão · senha "+p.senha}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
@@ -397,7 +426,7 @@ $("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="st pendente">${(pedidos
 $("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">Retirado</button></span>`)).join("")||'<p class="nota">—</p>';
 const n=pr.length,bb=$("#b-balcao");bb.hidden=!n;bb.textContent=n}
 $("#b-prontos").onclick=e=>{const r=e.target.closest("[data-retirado]"),d=e.target.closest("[data-de-novo]");
-if(r){const o=balcao.find(x=>String(x.num)===r.dataset.retirado);o.retirada=true;reg(o,"Entregue");site().postMessage({tipo:"status",num:o.num,status:"Retirado. Bom apetite!"},"*");tv()}
+if(r){const o=balcao.find(x=>String(x.num)===r.dataset.retirado);o.retirada=true;reg(o,"Entregue");const cb=+(o.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"status",num:o.num,status:"Retirado. Bom apetite!"+(cb?` Você ganhou ${reais(cb)} de cashback.`:"")},"*");tv()}
 if(d){const o=balcao.find(x=>String(x.num)===d.dataset.deNovo);o.pronta=Date.now();tv();bip(990)}};
 $("#abrir-tv").onclick=()=>{const b=document.querySelector('.troca [data-ver="tv"]');if(b)b.click();else $("#tv").hidden=false};
 $("#tv-sair").onclick=()=>{$("#tv").hidden=true};
@@ -414,6 +443,45 @@ const pr=["picanha-brasa","pizza-fermentacao","tiramisu"].map(id=>MENU.find(i=>i
 $("#r-cardapio").innerHTML=`<tr><th>Prato</th>${ab.map(u=>`<th>${esc(u.nome)}</th>`).join("")}</tr>`+pr.map(i=>`<tr><td>${esc(i.nome)}</td>${ab.map(u=>`<td>${reais(i.preco+(u.id==="jardins"?6:0))}</td>`).join("")}</tr>`).join("")}
 $("#nova-unidade").onclick=()=>{const n=UNID.length+1;UNID.push({id:"u"+n,nome:"Nova unidade "+n,fat:0,ped:0,tmp:0,nota:0,nova:true});unidades();rede()};
 unidades();rede();tv();
+// fidelidade com cashback
+let fidDist=0;const fidPct=()=>+$("#fid-pct").value;function fidelidade(){$("#fid-dist").textContent=reais(fidDist)}
+$("#fid-pct").onchange=fidelidade;
+// promoções por horário
+const PROMOS=[{id:"happy",titulo:"Happy hour: chopes e caipirinha com 50%",quando:"Seg a sex, das 17h às 19h",precos:{"chope-pilsen":7,"chope-ipa":9.5,"caipirinha-limao":12}},{id:"dia",titulo:"Prato do dia: Costela 12 horas por R$ 69",quando:"Ter a sex, almoço (11h30 às 15h)",precos:{"costela-12h":69}}];
+function promos(){$("#promos").innerHTML=PROMOS.map((x,i)=>`<div class="linha"><span class="d"><b>${esc(x.titulo)}</b><small>${esc(x.quando)}</small></span><span class="st ${x.ativa?"confirmada":"pendente"}">${x.ativa?"Ativa agora":"Agendada"}</span><button class="${x.ativa?"sec":""}" data-promo="${i}">${x.ativa?"Desligar":"Ligar agora"}</button></div>`).join("")}
+$("#promos").onclick=e=>{const b=e.target.closest("[data-promo]");if(!b)return;const x=PROMOS[b.dataset.promo];x.ativa=!x.ativa;site().postMessage({tipo:"promo",id:x.id,titulo:x.titulo,ativa:x.ativa,precos:x.precos},"*");promos()};
+// fila de espera
+const fila=[{nome:"Paula",pes:4,tel:"5511900000031",desde:Date.now()-18*60000},{nome:"Diego",pes:2,tel:"5511900000032",desde:Date.now()-9*60000}];
+function listaFila(){const at=fila.filter(f=>!f.fim);$("#fila").innerHTML=at.map((f,i)=>{const min=Math.round((Date.now()-f.desde)/60000);return `<div class="linha"><span class="q">${i+1}º</span><span class="d"><b>${esc(f.nome)}</b> · ${f.pes} pessoas<small>esperando há ${min} min${f.avisado?" · avisado no WhatsApp":""}</small></span>
+${f.avisado?`<span class="mx"><button data-sentou="${fila.indexOf(f)}">Sentou</button><button class="sec" data-desistiu="${fila.indexOf(f)}">Desistiu</button></span>`:`<a href="https://wa.me/${f.tel}?text=${encodeURIComponent(`Olá, ${f.nome}! Sua mesa na Casa Brasa está pronta. Te esperamos em até 10 minutos.`)}" target="_blank" rel="noopener"><button data-avisar="${fila.indexOf(f)}">Mesa pronta: avisar</button></a>`}</div>`}).join("")||'<p class="nota">Ninguém na fila.</p>'}
+$("#fila").onclick=e=>{const a=e.target.closest("[data-avisar]"),s=e.target.closest("[data-sentou]"),d=e.target.closest("[data-desistiu]");
+if(a)setTimeout(()=>{fila[a.dataset.avisar].avisado=true;listaFila()},200);if(s){fila[s.dataset.sentou].fim=1;listaFila()}if(d){fila[d.dataset.desistiu].fim=1;listaFila()}};
+$("#f-entrar").onclick=()=>{const nome=$("#f-nome").value.trim();if(!nome)return $("#f-nome").focus();const f={nome,pes:+$("#f-pes").value,tel:$("#f-tel").value.replace(/\D/g,"")||"5511900000000",desde:Date.now()};fila.push(f);listaFila();
+const pos=fila.filter(x=>!x.fim).indexOf(f)+1;const cel=$("#cel-fila");cel.hidden=false;cel.innerHTML=`<small>Casa Brasa · fila de espera</small><b>Olá, ${esc(nome)}!</b>Você é o<div class="grande">${pos}º</div>da fila. Espera estimada: ~${pos*8} min.<br><br>Pode esperar onde quiser: avisamos no WhatsApp quando a mesa estiver pronta.`;$("#f-nome").value="";$("#f-tel").value=""};
+setInterval(listaFila,30000);
+// resumo do dia no WhatsApp do dono
+$("#btn-zap").onclick=()=>{const top=Object.entries(vendidos).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1])[0],tm=tempos.length?tempos.reduce((a,b)=>a+b,0)/tempos.length/60:0,hoje=new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"});
+const linhas=[`*Casa Brasa · resumo de hoje (${hoje})*`,"",`💰 Faturamento: ${reais(fat)}`,`🧾 Pedidos: ${ped} · ticket médio ${reais(fat/Math.max(1,new Set(pedidos.filter(o=>o.mesa).map(o=>o.mesa)).size))}`,`🏆 Campeão do dia: ${top?top[0]+" ("+top[1]+")":"—"}`,`⏱️ Preparo médio: ${tm?tm.toFixed(1).replace(".",",")+" min":"—"}`,`✨ Vendas extras (sugestão): ${reais(sug)}`,`🎁 Cashback dado: ${reais(fidDist)}`,`❌ Cancelamentos: ${cancel.length}`,`📅 Reservas amanhã: 4 (1 aniversário)`,"","Bom descanso! Relatório completo no painel."];
+$("#caixa").innerHTML=`<h3>Resumo do dia no WhatsApp</h3><div class="zap"><div class="zap-topo">Stack Solution · mensagem automática</div><div class="zap-msg">${linhas.map(l=>esc(l).replace(/\*(.+?)\*/g,"<b>$1</b>")).join("<br>")}<span class="zap-h">23:00 ✓✓</span></div></div>
+<label class="lin"><input type="checkbox" checked> Enviar todo dia às 23h para o dono e o gerente</label><div class="pe"><button class="sec" data-cancelar>Fechar</button><a href="https://wa.me/?text=${encodeURIComponent(linhas.join("\n"))}" target="_blank" rel="noopener"><button>Enviar agora</button></a></div>`;$("#modal").hidden=false};
+// assistente de IA (respostas prontas a partir dos dados da demonstração)
+const PERG=["Qual prato vende mais?","Qual prato vende menos?","Quanto vendi hoje?","Qual o melhor horário?","Quem devo chamar de volta?","Como aumentar o ticket médio?"];
+$("#ia-chips").innerHTML=PERG.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join("");
+const nm=id=>(MENU.find(i=>i.id===id)||{}).nome||id;
+function responder(q){const t=q.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");const top=Object.entries(vendidos).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+if(/menos|pior|parad/.test(t))return `Os que menos saem no mês são <b>${nm("lasanha-berinjela")}</b> (12 pedidos) e <b>${nm("sorbet-manga")}</b> (15). Sugestão: coloque um deles como prato do dia com preço menor por uma semana; se não reagir, tire do cardápio e simplifique a cozinha.`;
+if(/mais|campe|melhor prato|vende bem/.test(t))return top.length?`Hoje o campeão é <b>${esc(top[0][0])}</b> (${top[0][1]}). No mês, <b>${nm("picanha-brasa")}</b> lidera com 159 pedidos. Vale destacar no topo do cardápio e criar um combo com bebida.`:`No mês, <b>${nm("picanha-brasa")}</b> lidera com 159 pedidos, seguida da <b>${nm("pizza-fermentacao")}</b>. Faça um pedido no celular para eu contar o de hoje.`;
+if(/hoje|vendi|fatur/.test(t))return `Hoje: <b>${reais(fat)}</b> em ${ped} pedido(s), com ${reais(sug)} vindos de sugestões "Vai bem com". ${cancel.length?cancel.length+" cancelamento(s) com senha do gerente.":"Nenhum cancelamento."}`;
+if(/horario|pico|hora/.test(t))return `Os picos são <b>20h–21h</b> no jantar e <b>12h–13h</b> no almoço: juntos, 51% dos pedidos. Reforce a cozinha nesses horários. Das 15h às 18h quase não há movimento: bom horário para um happy hour (aba Fidelidade e promoções).`;
+if(/cliente|volta|sumi|chamar/.test(t))return `38 clientes não voltam há mais de 30 dias. Os mais valiosos: <b>Marina Costa</b> (gosta de Picanha), <b>Rafael Nunes</b> e <b>Juliana Prado</b>. Mande o convite com sobremesa grátis na Gerência; com cashback ligado, 38% costumam voltar.`;
+if(/ticket|aumentar|vender mais|lucro|margem/.test(t))return `Três caminhos: 1) a sugestão "Vai bem com" já rendeu <b>${reais(sug)}</b> hoje; 2) adicionais no prato (queijo coalho, borda recheada) somam R$ 8 a R$ 18 por pedido; 3) combo prato + bebida. Para falar de <b>margem</b>, cadastre o custo de cada prato: no sistema real eu mostro o lucro por item.`;
+if(/quinta|segunda|terca|quarta|sexta|sabado|domingo|dia da semana/.test(t))return `Sexta e sábado vendem o dobro da semana. Quinta é o dia mais fraco depois do almoço de terça: teste um prato do dia ou happy hour na quinta.`;
+return `Na demonstração eu respondo às perguntas sugeridas acima. No sistema real a IA lê todos os seus pedidos, reservas e clientes e responde qualquer pergunta.`}
+function perguntar(q){if(!q.trim())return;const c=$("#ia-conversa");c.insertAdjacentHTML("beforeend",`<div class="ia-p">${esc(q)}</div><div class="ia-r ia-digitando">digitando…</div>`);c.scrollTop=c.scrollHeight;
+setTimeout(()=>{const r=c.querySelector(".ia-digitando");r.classList.remove("ia-digitando");r.innerHTML=responder(q);c.scrollTop=c.scrollHeight},650)}
+$("#ia-chips").onclick=e=>{const b=e.target.closest("[data-q]");if(b)perguntar(b.dataset.q)};
+$("#ia-form").onsubmit=e=>{e.preventDefault();perguntar($("#ia-q").value);$("#ia-q").value=""};
+fidelidade();promos();listaFila();
 integ();
 mapa();listaReservas();gerencia();listaPedidos();
 </script></body></html>

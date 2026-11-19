@@ -47,6 +47,13 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **Rede de lojas:** escolha da unidade no topo do painel e aba "Rede de lojas" com faturamento somado, ranking, alerta de preparo, cardápio central com preço por loja, clientes da rede e "+ Nova unidade". Centro é ao vivo; as outras lojas são exemplo.
 - Próximo: o sistema online já deve nascer com várias unidades (ver itens 8 e 9 do `PROMPT-PAINEL.md`).
 
+**Para o dono e o cliente voltarem (já na demo):**
+- **Resumo do dia no WhatsApp** (Gerência > "Resumo do dia"): prévia da mensagem das 23h com os números de hoje.
+- **Assistente com IA** (Gerência): perguntas prontas e campo livre; na demo as respostas são montadas a partir dos dados da tela.
+- **Fidelidade com cashback** (aba Fidelidade e promoções): % configurável; o cliente vê "você ganhou R$ X" ao fechar a conta.
+- **Promoções por horário:** happy hour e prato do dia; "Ligar agora" muda o preço e mostra a faixa no cardápio do cliente.
+- **Fila de espera** (aba Reservas e fila): entrada pelo QR da porta, posição e espera estimada, "Mesa pronta: avisar" no WhatsApp.
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

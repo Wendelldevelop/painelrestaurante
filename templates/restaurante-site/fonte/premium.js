@@ -828,12 +828,26 @@
   const marcarNav = (pag) => $$("[data-nav]").forEach((a) => a.setAttribute("aria-current", a.dataset.nav === pag ? "page" : "false"));
 
   // arquivo único: troca o conteúdo conforme o # do endereço
+  // promoções por horário (happy hour, prato do dia): o painel liga e desliga; o preço muda no cardápio e no pedido
+  const PROMOS = {};
+  function faixaPromo() {
+    $("#faixa-promo")?.remove();
+    const t = Object.values(PROMOS);
+    if (t.length && paginaAtual === "cardapio") $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-promo" class="faixa-promo" role="status">${t.map((x) => `<p>🔥 ${esc(x)}</p>`).join("")}</div>`);
+  }
+  function aplicarPromo(d) {
+    Object.entries(d.precos || {}).forEach(([id, pr]) => { const it = item(id); if (!it) return; if (it.precoOrig == null) it.precoOrig = it.preco; it.preco = d.ativa ? pr : it.precoOrig; });
+    if (d.ativa) PROMOS[d.id] = d.titulo; else delete PROMOS[d.id];
+    salvarCarrinho();
+    if (!MULTI && paginaAtual === "cardapio") { const y = window.scrollY; paginaAtual = null; irPara("cardapio"); window.scrollTo(0, y); } else faixaPromo();
+  }
   function irPara(pag) {
     if (pag === paginaAtual) return;
     paginaAtual = pag;
     const [html, ligar] = PAGINAS[pag];
     $("#conteudo").innerHTML = html();
     if (ligar) ligar();
+    faixaPromo();
     window.scrollTo(0, 0);
     marcarFotos();
     marcarNav(pag);
@@ -879,11 +893,12 @@
     $$("[data-abrir-pedido]").forEach((b) => (b.onclick = abrirGaveta));
     $("#fundo-gaveta").onclick = fecharGaveta;
     window.addEventListener("message", (ev) => {
+      if (ev.data?.tipo === "promo") return aplicarPromo(ev.data);
       if (ev.data?.tipo === "extrato" && String(ev.data.mesa) === String(mesa)) return mostrarConta(ev.data);
       if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
         const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");
         const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
-        if (alvo) alvo.innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Pagamento confirmado e conta fechada. Gostou? Sua avaliação ajuda muito a casa.</p><p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
+        if (alvo) alvo.innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Pagamento confirmado e conta fechada. Gostou? Sua avaliação ajuda muito a casa.</p>${ev.data.cashback ? `<p class="cashback">🎁 Você ganhou <b>${reais(ev.data.cashback)}</b> de cashback para usar na próxima visita.</p>` : ""}<p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
         return;
       }
       if (ev.data?.tipo !== "esgotado") return;

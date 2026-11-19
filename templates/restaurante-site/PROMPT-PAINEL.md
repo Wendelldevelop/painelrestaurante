@@ -88,6 +88,13 @@ São dois sistemas: o **do cliente** (o site que já existe) e o **da casa** (um
 - Abrir unidade nova copiando a configuração de outra.
 - Tipo de negócio na configuração (restaurante, pizzaria, hamburgueria, cafeteria, bar) liga só os recursos daquele tipo.
 
+### 10. Para o dono voltar todo dia e o cliente voltar sempre
+- **Resumo do dia no WhatsApp** do dono às 23h (faturamento, pedidos, campeão, preparo, cancelamentos, reservas de amanhã), via API oficial do WhatsApp.
+- **Fidelidade com cashback** (% configurável) ou "10ª visita grátis", válido na rede toda.
+- **Promoções por horário** (happy hour, prato do dia) que ligam e desligam sozinhas e mudam o preço no cardápio.
+- **Fila de espera virtual** pelo QR da porta, com aviso no WhatsApp quando a mesa libera.
+- **Assistente com IA** para o dono perguntar sobre os próprios dados (usar a API do Claude, só leitura, por restaurante).
+
 ## Segurança e confiabilidade (obrigatório)
 - Código da mesa no QR que muda quando a mesa é fechada, mais o aceite do garçom no primeiro pedido.
 - Limite de pedidos por minuto por mesa.
