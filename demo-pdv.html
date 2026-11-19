@@ -69,8 +69,8 @@ main{overflow:auto;padding:24px 28px 40px;min-width:0}
 .caixa label{display:block;font-size:13px;font-weight:600;color:var(--suave)}
 .caixa input,.caixa select{width:100%;font:15px system-ui;padding:11px;margin:6px 0 12px;border-radius:10px;border:1px solid var(--linha);background:var(--fundo);color:var(--texto)}
 .erro{color:var(--brasa);font-size:13px;min-height:1.2em;font-weight:600}
-.esg{display:flex;flex-wrap:wrap;gap:8px}.esg button{background:var(--fundo);color:var(--texto);border:1px solid var(--linha);font-weight:500}
-.esg button.on{background:var(--brasa-cl);color:var(--brasa);border-color:#f0c4b8;text-decoration:line-through}
+div.esg{display:flex;flex-wrap:wrap;gap:8px}div.esg button{background:var(--fundo);color:var(--texto);border:1px solid var(--linha);font-weight:500}
+div.esg button.on{background:var(--brasa-cl);color:var(--brasa);border-color:#f0c4b8;text-decoration:line-through}
 tbody.esg button{padding:7px 12px;background:var(--verde-cl);color:var(--verde);border-color:#cfe5cc;text-decoration:none}tbody.esg button.on{background:var(--brasa-cl);color:var(--brasa);border-color:#f0c4b8}
 .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .filtros button{background:var(--cartao);color:var(--suave);border:1px solid var(--linha);font-weight:600;border-radius:99px;padding:8px 14px}.filtros button.on{background:var(--texto);color:var(--cartao);border-color:var(--texto)}
@@ -104,6 +104,30 @@ body.modo-cel .alerta{flex-wrap:wrap}
 body.modo-cel .alerta .mx{margin-left:0;width:100%}
 body.modo-cel .alerta .mx button{flex:1}
 body.modo-cel .linha{flex-wrap:wrap}
+@media(max-width:700px){#modo-tela{display:none}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}nav button{white-space:normal;text-align:center;font-size:11px;line-height:1.2;padding:9px 4px;min-height:44px}nav .bolinha{top:2px;right:2px}.tabela{background:none;border:0;box-shadow:none;overflow:visible}.tabela table,.tabela tbody,.tabela tr,.tabela td{display:block}.tabela thead{display:none}.tabela tr{display:grid;gap:4px 10px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sombra)}.tabela td{padding:0;border:0;background:none!important}#aba-pedidos tr{grid-template-columns:auto 1fr auto}#aba-pedidos td:nth-child(3){font-weight:700}#aba-pedidos td:nth-child(4){grid-column:1/-1;padding:6px 0;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}#aba-pedidos td:nth-child(5){font-weight:700}#aba-pedidos td:nth-child(6){grid-column:2/-1;justify-self:end}#aba-cardapio tr{grid-template-columns:1fr auto;align-items:center}#aba-cardapio td:nth-child(1){font-weight:600}#aba-cardapio td:nth-child(2),#aba-cardapio td:nth-child(3){display:none}#aba-cardapio td:nth-child(6){grid-row:1/3;grid-column:2}#aba-cardapio td:nth-child(4),#aba-cardapio td:nth-child(5){color:var(--suave);font-size:13px;display:inline}#aba-cardapio td:nth-child(5)::after{content:" vendidos hoje"}.filtros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.filtros button{white-space:nowrap}.card .pe{flex-wrap:wrap}.linha .q{min-width:0}}
+body.modo-cel nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:6px;overflow:visible}
+body.modo-cel nav button{white-space:normal;text-align:center;font-size:11px;line-height:1.2;padding:9px 4px;min-height:44px}
+body.modo-cel nav .bolinha{top:2px;right:2px}
+body.modo-cel .tabela{background:none;border:0;box-shadow:none;overflow:visible}
+body.modo-cel .tabela table,body.modo-cel .tabela tbody,body.modo-cel .tabela tr,body.modo-cel .tabela td{display:block}
+body.modo-cel .tabela thead{display:none}
+body.modo-cel .tabela tr{display:grid;gap:4px 10px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sombra)}
+body.modo-cel .tabela td{padding:0;border:0;background:none!important}
+body.modo-cel #aba-pedidos tr{grid-template-columns:auto 1fr auto}
+body.modo-cel #aba-pedidos td:nth-child(3){font-weight:700}
+body.modo-cel #aba-pedidos td:nth-child(4){grid-column:1/-1;padding:6px 0;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+body.modo-cel #aba-pedidos td:nth-child(5){font-weight:700}
+body.modo-cel #aba-pedidos td:nth-child(6){grid-column:2/-1;justify-self:end}
+body.modo-cel #aba-cardapio tr{grid-template-columns:1fr auto;align-items:center}
+body.modo-cel #aba-cardapio td:nth-child(1){font-weight:600}
+body.modo-cel #aba-cardapio td:nth-child(2),body.modo-cel #aba-cardapio td:nth-child(3){display:none}
+body.modo-cel #aba-cardapio td:nth-child(6){grid-row:1/3;grid-column:2}
+body.modo-cel #aba-cardapio td:nth-child(4),body.modo-cel #aba-cardapio td:nth-child(5){color:var(--suave);font-size:13px;display:inline}
+body.modo-cel #aba-cardapio td:nth-child(5)::after{content:" vendidos hoje"}
+body.modo-cel body.modo-cel .filtros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+body.modo-cel .filtros button{white-space:nowrap}
+body.modo-cel .card .pe{flex-wrap:wrap}
+body.modo-cel .linha .q{min-width:0}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -138,7 +162,7 @@ body.modo-cel .linha{flex-wrap:wrap}
 <section class="aba" id="aba-reservas"><div class="lista" id="reservas"></div><p class="nota">Reservas feitas pelo site chegam aqui. "Confirmar no WhatsApp" abre a conversa com a mensagem pronta. Lista de exemplo.</p></section>
 <section class="aba" id="aba-gerencia">
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
-<div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras por sugestão</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
+<div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras (sugestão)</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
 <div class="duas"><div class="bloco"><h3>Mais pedidos hoje</h3><div id="g-top"><p class="nota">Faça um pedido no celular.</p></div></div>
 <div class="bloco"><h3>Clientes que não voltam há 30 dias</h3><div class="lista" id="crm"></div></div></div>
 <div class="duas" style="margin-top:14px"><div class="bloco"><h3>Aniversariantes da semana</h3><div class="lista" id="aniv"></div></div><div class="bloco"><h3>Cancelamentos (com senha do gerente)</h3><div id="g-canc"><p class="nota">Nenhum hoje.</p></div></div></div>
