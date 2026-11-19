@@ -141,6 +141,7 @@
   function calcConta() {
     $("#v-serv").textContent = reais($("#servico").checked ? extrato.total * pctServ() : 0);
     $("#v-total").textContent = reais(contaTotal());
+    if ($("#pix-valor")) $("#pix-valor").textContent = reais(contaTotal());
     const n = $("#pessoas").value, k = $("#servico").checked ? 1 + pctServ() : 1;
     $("#v-pessoa").innerHTML = n === "pessoa" ? partes().map((x) => `${esc(x.nome)}: <b>${reais(x.total * k)}</b>`).join("<br>") : +n > 1 ? `${reais(contaTotal() / +n)} por pessoa` : "";
   }
@@ -155,15 +156,22 @@
       <label class="entre"><span><input type="checkbox" id="servico" ${(d.servico ?? 10) ? "checked" : ""}> Serviço (${d.servico ?? 10}%, opcional)</span><span class="preco" id="v-serv"></span></label>
       <p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total" id="v-total"></span></p></div>
       <form class="form" style="margin-top:var(--e6);gap:var(--e5)" onsubmit="return false"><fieldset><legend>Como vai pagar</legend><div class="opcoes">
-        ${["Pix", "Crédito", "Débito", "Dinheiro"].map((f, i) => `<label class="opcao"><input type="radio" name="pagamento" value="${f}" ${i === 1 ? "checked" : ""}><strong>${f}</strong></label>`).join("")}</div></fieldset>
+        ${d.pix ? `<label class="opcao"><input type="radio" name="pagamento" value="Pix agora"><strong>Pix pelo celular</strong><small>Paga agora, sem esperar</small></label>` : ""}${["Pix", "Crédito", "Débito", "Dinheiro"].map((f, i) => `<label class="opcao"><input type="radio" name="pagamento" value="${f}" ${i === 1 ? "checked" : ""}><strong>${f}${f === "Pix" && d.pix ? " na maquininha" : ""}</strong></label>`).join("")}</div></fieldset>
       <label><span>Dividir a conta</span><select class="campo" id="pessoas">${varias ? `<option value="pessoa">Cada um paga o seu (comanda individual)</option>` : ""}${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n === 1 ? "Não dividir" : "Igual entre " + n + " pessoas"}</option>`).join("")}</select></label>
       <p class="lead" id="v-pessoa"></p>
-      <p class="nota">O pagamento é feito na maquininha do restaurante: o garçom leva até a sua mesa.</p>
+      ${d.pix ? `<div id="pix-box" class="pix-box" hidden><div class="pix-qr">${d.pix.qr}</div><p>Valor: <b id="pix-valor"></b></p><button type="button" class="btn btn-sec" data-copiar-pix>Copiar código Pix</button><p class="nota">Demonstração: chave Pix de exemplo, não pague.</p></div>` : ""}
+      <p class="nota" id="nota-maquininha">O pagamento é feito na maquininha do restaurante: o garçom leva até a sua mesa.</p>
       <button type="button" class="btn btn-pri" data-fechar-conta>Fechar conta e chamar a maquininha</button></form>`
       : `<p class="texto" style="margin-top:var(--e5)">Ainda não há pedidos nesta mesa.</p>`}</div>`;
     window.scrollTo(0, 0);
     if (!d.itens.length) return;
     $("#servico").onchange = calcConta;
+    $$(".pagina-conta input[name=pagamento]").forEach((r) => (r.onchange = () => {
+      const pix = $(".pagina-conta input[name=pagamento]:checked")?.value === "Pix agora";
+      if ($("#pix-box")) $("#pix-box").hidden = !pix;
+      $("#nota-maquininha").hidden = pix;
+      $("[data-fechar-conta]").textContent = pix ? "Já paguei pelo Pix" : "Fechar conta e chamar a maquininha";
+    }));
     $("#pessoas").onchange = calcConta;
     calcConta();
   }
@@ -198,7 +206,7 @@
   const pratoDaCasa = () => item(CONFIG.pratoDoChefe) || CARDAPIO.find((i) => i.foto) || CARDAPIO[0];
   const btnIfood = (cls = "link") => (canais.ifood ? `<a class="${cls}" href="${esc(canais.ifood)}" target="_blank" rel="noopener">Pedir no iFood</a>` : "");
 
-  const btnAdd = (it) => (!PEDIDOS ? "" : ESGOTADOS.has(it.id) ? `<button type="button" class="adicionar esgotado" data-add="${it.id}" disabled>Esgotado hoje</button>` : `<button type="button" class="adicionar" data-add="${it.id}" aria-label="Adicionar ${esc(it.nome)} ao pedido">Adicionar</button>`);
+  const btnAdd = (it) => (!PEDIDOS ? "" : ESGOTADOS.has(it.id) ? `<button type="button" class="adicionar esgotado" data-add="${it.id}" disabled>Esgotado hoje</button>` : `<button type="button" class="adicionar" data-add="${it.id}" aria-label="Adicionar ${esc(it.nome)} ao pedido">${TX.add[LANG]}</button>`);
   const insta = CONFIG.instagram || "";
   const redes = (cls = "link") => [insta && `<a class="${cls}" href="${esc(insta)}" target="_blank" rel="noopener">Instagram${CONFIG.instagramUsuario ? " " + esc(CONFIG.instagramUsuario) : ""}</a>`, CONFIG.facebook && `<a class="${cls}" href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>`, `<a class="${cls}" href="${linkWhats(`Olá, ${CONFIG.nome}!`)}" target="_blank" rel="noopener">WhatsApp</a>`].filter(Boolean).join("");
 
@@ -336,7 +344,7 @@
               <p class="roleta-n"></p>
               <h3 class="roleta-nome"></h3>
               <p class="roleta-preco preco"></p>
-              <div class="roleta-acoes">${PEDIDOS ? `<button type="button" class="btn btn-claro" data-roleta-add>Adicionar ao pedido</button>` : ""}<a class="link" data-roleta-ver href="#">Ver o prato</a></div>
+              <div class="roleta-acoes">${PEDIDOS ? `<button type="button" class="btn btn-claro" data-roleta-add>${TX.addPed[LANG]}</button>` : ""}<a class="link" data-roleta-ver href="#">Ver o prato</a></div>
             </div>
             <div class="roleta-nav">
               <button type="button" class="roleta-seta" data-passo="-1" aria-label="Prato anterior">${ic("volta")}</button>
@@ -697,7 +705,7 @@
       if (CONFIG.pedidos === "painel") {
         const num = Date.now() % 100000;
         const pedido = { tipo: "pedido", num, mesa: naMesa ? mesa : "", modo: naMesa ? "Mesa" : deliv ? "Delivery" : "Retirada", nome: d.nome.trim(), obs: d.obs.trim(),
-          itens: carrinho.map((c) => ({ nome: item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: precoUn(c), cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa };
+          itens: carrinho.map((c) => ({ nome: item(c.id).nome_pt || item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: precoUn(c), cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa };
         nomeMesa = d.nome.trim();
         try { localStorage.setItem("cb-nome", JSON.stringify(nomeMesa)); } catch (e) {}
         let confirmado = false;
@@ -775,7 +783,7 @@
           <p class="nota">Em caso de alergia grave, confirme com a equipe antes de pedir.</p>
         </div>
       </div>
-      ${PEDIDOS ? `<div class="ficha-barra"><div class="qtd"><button type="button" data-q="-1" aria-label="Diminuir quantidade">−</button><output id="q">1</output><button type="button" data-q="1" aria-label="Aumentar quantidade">+</button></div><button type="button" class="btn btn-pri" id="add-modal"><span>Adicionar ao pedido</span><span id="add-preco" class="preco">${reais(it.preco)}</span></button></div>` : ""}`;
+      ${PEDIDOS ? `<div class="ficha-barra"><div class="qtd"><button type="button" data-q="-1" aria-label="Diminuir quantidade">−</button><output id="q">1</output><button type="button" data-q="1" aria-label="Aumentar quantidade">+</button></div><button type="button" class="btn btn-pri" id="add-modal"><span>${TX.addPed[LANG]}</span><span id="add-preco" class="preco">${reais(it.preco)}</span></button></div>` : ""}`;
     m.hidden = false;
     m.scrollTop = 0;
     document.body.style.overflow = "hidden";
@@ -849,10 +857,56 @@
   }
   // o dono edita o cardápio no painel (preço, descrição, foto, prato novo) e muda aqui na hora
   function redesenhar() { if (!MULTI && paginaAtual === "cardapio") { const y = window.scrollY; paginaAtual = null; irPara("cardapio"); window.scrollTo(0, y); } }
+  // cardápio em inglês e espanhol (só o cardápio; o pedido chega em português na cozinha)
+  let LANG = "pt";
+  const TX = { add: { pt: "Adicionar", en: "Add", es: "Agregar" }, addPed: { pt: "Adicionar ao pedido", en: "Add to order", es: "Agregar al pedido" }, ok: { pt: "Adicionado", en: "Added", es: "Agregado" } };
+  const CAT_TR = { en: { entradas: "Starters", principais: "Mains", executivo: "Lunch menu", massas: "Pasta & pizza", sobremesas: "Desserts", bebidas: "Drinks", vinhos: "Wines" },
+    es: { entradas: "Entradas", principais: "Platos principales", executivo: "Menú del día", massas: "Pastas y pizza", sobremesas: "Postres", bebidas: "Bebidas", vinhos: "Vinos" } };
+  const CAT_PT = Object.assign({}, NOME_CAT);
+  function faixaIdioma() {
+    $("#faixa-idioma")?.remove();
+    if (paginaAtual !== "cardapio" || CONFIG.idiomas === false) return;
+    if (LANG !== "pt") setTimeout(traduzTela, 0);
+    $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-idioma" class="faixa-idioma" role="group" aria-label="Idioma do cardápio">🌐 ${[["pt", "Português"], ["en", "English"], ["es", "Español"]].map(([k, n]) => `<button type="button" data-lang="${k}" aria-pressed="${LANG === k}">${n}</button>`).join("")}</div>`);
+  }
+  // textos fixos da tela (título, botões da mesa, barra de baixo)
+  const TELA = {
+    en: { "Cardápio": "Menu", "Filtros": "Filters", "Chamar garçom": "Call waiter", "Pedir a conta": "Ask for the bill", "Reservar": "Book", "Ligar": "Call", "Pedido": "Order", "Você está na": "You're at",
+      "Toque no nome de um prato para ver os ingredientes e pedir do seu jeito.": "Tap a dish to see the ingredients and order your way.", ". Monte o pedido e envie: a equipe leva até você.": ". Build your order and send it: we bring it to your table.", "Ingredientes": "Ingredients", "Observações": "Notes", "Vai bem com": "Goes well with" },
+    es: { "Cardápio": "Carta", "Filtros": "Filtros", "Chamar garçom": "Llamar al mesero", "Pedir a conta": "Pedir la cuenta", "Reservar": "Reservar", "Ligar": "Llamar", "Pedido": "Pedido", "Você está na": "Estás en la",
+      "Toque no nome de um prato para ver os ingredientes e pedir do seu jeito.": "Toca un plato para ver los ingredientes y pedir a tu gusto.", ". Monte o pedido e envie: a equipe leva até você.": ". Arma tu pedido y envíalo: te lo llevamos a la mesa.", "Ingredientes": "Ingredientes", "Observações": "Observaciones", "Vai bem com": "Combina con" } };
+  const PH = { en: "Search dish or ingredient", es: "Buscar plato o ingrediente" };
+  function traduzTela() {
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (/^(SCRIPT|STYLE)$/.test(n.parentNode?.nodeName)) continue;
+      if (n.__tr == null || n.nodeValue !== n.__tr) n.__pt = n.nodeValue; // texto novo ou mudado por outra parte: vira o original
+      const orig = n.__pt, chave = orig.trim(), d = TELA[LANG];
+      let novo = orig;
+      if (d && chave && d[chave]) novo = orig.replace(chave, d[chave]);
+      else if (LANG === "en" && /^mesa \d+$/.test(chave)) novo = orig.replace("mesa", "table");
+      if (novo !== n.nodeValue) n.nodeValue = novo;
+      n.__tr = n.nodeValue;
+    }
+    document.querySelectorAll("input[placeholder]").forEach((i) => { if (i.__pt == null) i.__pt = i.placeholder; i.placeholder = LANG !== "pt" && /prato ou ingrediente/.test(i.__pt) ? PH[LANG] : i.__pt; });
+  }
+  function idioma(l) {
+    LANG = l;
+    CARDAPIO.forEach((it) => {
+      if (it.nome_pt == null) { it.nome_pt = it.nome; it.desc_pt = it.descricao; }
+      const t = it.i18n?.[l];
+      it.nome = l !== "pt" && t ? t.nome : it.nome_pt;
+      it.descricao = l !== "pt" && t ? t.descricao : it.desc_pt;
+    });
+    Object.assign(NOME_CAT, l === "pt" ? CAT_PT : CAT_TR[l]);
+    document.documentElement.lang = l === "pt" ? "pt-BR" : l;
+    redesenhar();
+    traduzTela();
+  }
   function aplicarMenu(d) {
     let it = item(d.item.id);
     if (!it) { it = Object.assign({ ingredientes: [], harmonizacao: [], alergenicos: [], restricoes: [], descricao: "" }, d.item); CARDAPIO.push(it); }
-    else { Object.assign(it, d.item); if (it.precoOrig != null && d.item.preco != null) it.precoOrig = d.item.preco; }
+    else { Object.assign(it, d.item); if (it.precoOrig != null && d.item.preco != null) it.precoOrig = d.item.preco; if (d.item.nome && it.nome_pt != null) { it.nome_pt = d.item.nome; if (LANG !== "pt") it.nome = it.i18n?.[LANG]?.nome || d.item.nome; } }
     salvarCarrinho();
     redesenhar();
   }
@@ -869,6 +923,7 @@
     $("#conteudo").innerHTML = html();
     if (ligar) ligar();
     faixaPromo();
+    faixaIdioma();
     window.scrollTo(0, 0);
     marcarFotos();
     marcarNav(pag);
@@ -917,6 +972,7 @@
       if (ev.data?.tipo === "promo") return aplicarPromo(ev.data);
       if (ev.data?.tipo === "marca") return aplicarMarca(ev.data);
       if (ev.data?.tipo === "menu") return aplicarMenu(ev.data);
+      if (ev.data?.tipo === "horario") { CONFIG.horarios = ev.data.horarios; $$("[data-dyn]").forEach((el) => { el.outerHTML = DYN[el.dataset.dyn](); }); return; }
       if (ev.data?.tipo === "extrato" && String(ev.data.mesa) === String(mesa)) return mostrarConta(ev.data);
       if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
         const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");
@@ -933,9 +989,12 @@
       if (add) {
         adicionar(add.dataset.add);
         add.classList.add("ok");
-        add.textContent = "Adicionado";
-        setTimeout(() => { add.classList.remove("ok"); add.textContent = "Adicionar"; }, 1300);
+        add.textContent = TX.ok[LANG];
+        setTimeout(() => { add.classList.remove("ok"); add.textContent = TX.add[LANG]; }, 1300);
       }
+      const lg = ev.target.closest("[data-lang]");
+      if (lg) idioma(lg.dataset.lang);
+      if (ev.target.closest("[data-copiar-pix]")) { try { navigator.clipboard.writeText(extrato.pix.copia); } catch (e) {} ev.target.closest("[data-copiar-pix]").textContent = "Código copiado"; }
       const sg = ev.target.closest("[data-sug]");
       if (sg) { adicionar(sg.dataset.sug, 1, "", true); $("#sugestao")?.remove(); }
       if (ev.target.closest("[data-sug-fechar]")) $("#sugestao")?.remove();
@@ -953,8 +1012,8 @@
       if (fc) {
         const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", dv = $("#pessoas").value, tot = contaTotal(), k = $("#servico").checked ? 1 + pctServ() : 1;
         const cada = dv === "pessoa" ? partes().map((x) => ({ nome: x.nome, total: x.total * k })) : null, pes = cada ? cada.length : +dv;
-        window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg, pessoas: pes, partes: cada, servico: $("#servico").checked, total: tot }, "*");
-        fc.outerHTML = `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${cada ? ", cada um paga o seu" : pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;
+        window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg === "Pix agora" ? "Pix pelo celular" : pg, pago: pg === "Pix agora", pessoas: pes, partes: cada, servico: $("#servico").checked, total: tot }, "*");
+        fc.outerHTML = pg === "Pix agora" ? `<p class="lead" id="status-pedido">Pix enviado! Assim que o restaurante confirmar, sua conta é fechada.</p>` : `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${cada ? ", cada um paga o seu" : pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;
       }
       if (ev.target.closest("#gaveta [data-fechar]")) fecharGaveta();
       if (ev.target.closest("[data-fechar-prato]")) { ev.preventDefault(); fecharPrato(); }

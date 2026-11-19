@@ -663,3 +663,9 @@ html:not([data-vitrine]) [data-so-vitrine] { display: none !important; }
 .faixa-promo { position: sticky; top: 0; z-index: 5; background: var(--brasa, #b23a1e); color: #fff; padding: var(--e3) var(--margem); font-weight: 600; font-size: var(--t-peq); text-align: center; }
 .faixa-promo p { margin: 0; }
 .cashback { margin-top: var(--e5); padding: var(--e4); border: 1px dashed currentColor; border-radius: var(--raio-m, 12px); font-size: var(--t-lead, 1.1rem); }
+/* idioma do cardápio e Pix pelo celular */
+.faixa-idioma { display: flex; gap: var(--e2); align-items: center; justify-content: center; flex-wrap: wrap; padding: var(--e3) var(--margem); font-size: var(--t-peq); border-bottom: 1px solid var(--linha, rgba(0,0,0,.1)); }
+.faixa-idioma button { padding: 4px 10px; border-radius: 99px; border: 1px solid currentColor; opacity: .7; font-size: inherit; }
+.faixa-idioma button[aria-pressed="true"] { opacity: 1; background: var(--brasa, #b23a1e); border-color: var(--brasa, #b23a1e); color: #fff; }
+.pix-box { margin: var(--e4) 0; padding: var(--e4); border: 1px solid currentColor; border-radius: var(--raio-m, 12px); text-align: center; }
+.pix-qr svg { width: 180px; height: 180px; background: #fff; padding: 8px; border-radius: 8px; }

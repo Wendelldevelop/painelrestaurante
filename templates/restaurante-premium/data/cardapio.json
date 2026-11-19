@@ -26,7 +26,17 @@
     ],
     "destaque": true,
     "foto": "fotos/pao-fermentacao",
-    "fotoRedonda": "fotos/r-pao-fermentacao.webp"
+    "fotoRedonda": "fotos/r-pao-fermentacao.webp",
+    "i18n": {
+      "en": {
+        "nome": "Sourdough bread",
+        "descricao": "Wood-fired house bread with herb butter and olive oil."
+      },
+      "es": {
+        "nome": "Pan de masa madre",
+        "descricao": "Pan de la casa al horno de leña, con mantequilla de hierbas y aceite de oliva."
+      }
+    }
   },
   {
     "id": "bruschetta-tomate",
@@ -55,7 +65,17 @@
     ],
     "destaque": false,
     "foto": "fotos/bruschetta-tomate",
-    "fotoRedonda": "fotos/r-bruschetta-tomate.webp"
+    "fotoRedonda": "fotos/r-bruschetta-tomate.webp",
+    "i18n": {
+      "en": {
+        "nome": "Tomato panzanella",
+        "descricao": "Roasted tomatoes, toasted bread cubes, feta and basil."
+      },
+      "es": {
+        "nome": "Panzanella de tomate",
+        "descricao": "Tomates asados, pan tostado en cubos, feta y albahaca."
+      }
+    }
   },
   {
     "id": "salada-quintal",
@@ -85,7 +105,17 @@
     ],
     "destaque": true,
     "foto": "fotos/salada-quintal",
-    "fotoRedonda": "fotos/r-salada-quintal.webp"
+    "fotoRedonda": "fotos/r-salada-quintal.webp",
+    "i18n": {
+      "en": {
+        "nome": "Garden salad",
+        "descricao": "Fresh greens, tomato, feta cheese, olives and lemon vinaigrette."
+      },
+      "es": {
+        "nome": "Ensalada de la huerta",
+        "descricao": "Hojas frescas, tomate, queso feta, aceitunas y vinagreta de limón."
+      }
+    }
   },
   {
     "id": "bolinho-costela",
@@ -112,7 +142,17 @@
     ],
     "destaque": false,
     "selo": "Para dividir",
-    "fotoRedonda": "fotos/r-bolinho-costela.webp"
+    "fotoRedonda": "fotos/r-bolinho-costela.webp",
+    "i18n": {
+      "en": {
+        "nome": "Beef rib croquettes",
+        "descricao": "Golden croquettes of shredded beef rib over arugula."
+      },
+      "es": {
+        "nome": "Croquetas de costilla",
+        "descricao": "Croquetas doradas de costilla desmenuzada sobre rúcula."
+      }
+    }
   },
   {
     "id": "camarao-alho",
@@ -141,7 +181,17 @@
     ],
     "destaque": true,
     "foto": "fotos/camarao-alho",
-    "fotoRedonda": "fotos/r-camarao-alho.webp"
+    "fotoRedonda": "fotos/r-camarao-alho.webp",
+    "i18n": {
+      "en": {
+        "nome": "Garlic shrimp",
+        "descricao": "Shrimp sautéed in garlic butter with lemon and basil."
+      },
+      "es": {
+        "nome": "Camarones al ajillo",
+        "descricao": "Camarones salteados en mantequilla de ajo, con limón y albahaca."
+      }
+    }
   },
   {
     "id": "file-espaguete",
@@ -168,7 +218,17 @@
       "vinho-tinto-malbec",
       "vinho-tinto-pinot"
     ],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Grilled filet over spaghetti",
+        "descricao": "Grilled filet mignon over buttered spaghetti, with roast jus and rosemary."
+      },
+      "es": {
+        "nome": "Lomo a la brasa con espagueti",
+        "descricao": "Lomo sellado a la brasa sobre espagueti a la mantequilla, con jugo del asado y romero."
+      }
+    }
   },
   {
     "id": "picanha-brasa",
@@ -244,7 +304,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Grilled picanha",
+        "descricao": "Aged picanha sliced, grilled asparagus, carrots and thyme."
+      },
+      "es": {
+        "nome": "Picaña a la brasa",
+        "descricao": "Picaña madurada en láminas, espárragos a la parrilla, zanahorias y tomillo."
+      }
+    }
   },
   {
     "id": "costela-12h",
@@ -318,7 +388,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "12-hour beef rib",
+        "descricao": "Beef rib roasted for twelve hours, house barbecue sauce, fries and pickles."
+      },
+      "es": {
+        "nome": "Costilla de 12 horas",
+        "descricao": "Costilla asada durante doce horas, salsa barbacoa de la casa, papas fritas y encurtidos."
+      }
+    }
   },
   {
     "id": "file-roti",
@@ -394,7 +474,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Filet with rôti sauce",
+        "descricao": "Filet mignon medallion, rôti sauce, asparagus and grilled corn."
+      },
+      "es": {
+        "nome": "Lomo en salsa rôti",
+        "descricao": "Medallón de lomo, salsa rôti, espárragos y maíz a la parrilla."
+      }
+    }
   },
   {
     "id": "salmao-brasa",
@@ -469,7 +559,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Grilled salmon",
+        "descricao": "Crispy-skin salmon grilled over embers, herb rice and citrus sauce."
+      },
+      "es": {
+        "nome": "Salmón a la brasa",
+        "descricao": "Salmón de piel crujiente a la brasa, arroz de hierbas y salsa cítrica."
+      }
+    }
   },
   {
     "id": "frango-caipira",
@@ -546,7 +646,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Grilled chicken",
+        "descricao": "Grilled chicken thigh, golden potatoes and roasted broccoli."
+      },
+      "es": {
+        "nome": "Pollo a la brasa",
+        "descricao": "Contramuslo a la brasa, papas doradas y brócoli tostado."
+      }
+    }
   },
   {
     "id": "moqueca-camarao",
@@ -576,7 +686,17 @@
     ],
     "destaque": false,
     "foto": "fotos/moqueca-camarao",
-    "fotoRedonda": "fotos/r-moqueca-camarao.webp"
+    "fotoRedonda": "fotos/r-moqueca-camarao.webp",
+    "i18n": {
+      "en": {
+        "nome": "Shrimp moqueca",
+        "descricao": "Shrimp in coconut milk and palm oil, with white rice and cilantro."
+      },
+      "es": {
+        "nome": "Moqueca de camarones",
+        "descricao": "Camarones en leche de coco y aceite de palma, con arroz blanco y cilantro."
+      }
+    }
   },
   {
     "id": "bowl-vegano",
@@ -607,7 +727,17 @@
     ],
     "destaque": false,
     "selo": "Vegetariano",
-    "fotoRedonda": "fotos/r-bowl-vegano.webp"
+    "fotoRedonda": "fotos/r-bowl-vegano.webp",
+    "i18n": {
+      "en": {
+        "nome": "Warm garden salad",
+        "descricao": "Arugula, grilled vegetables, tomatoes and creamy goat cheese."
+      },
+      "es": {
+        "nome": "Ensalada tibia de la huerta",
+        "descricao": "Rúcula, verduras a la parrilla, tomates y queso de cabra cremoso."
+      }
+    }
   },
   {
     "id": "exec-bife",
@@ -633,7 +763,17 @@
     ],
     "destaque": false,
     "detalhe": "Contra-filé fatiado, folhas e cebola roxa",
-    "fotoCima": "fotos/exec-bife.webp"
+    "fotoCima": "fotos/exec-bife.webp",
+    "i18n": {
+      "en": {
+        "nome": "Grilled steak",
+        "descricao": "Sliced sirloin, greens and red onion. Served with rice, beans and salad."
+      },
+      "es": {
+        "nome": "Bife a la brasa",
+        "descricao": "Bife de chorizo en láminas, hojas y cebolla morada. Con arroz, frijoles y ensalada."
+      }
+    }
   },
   {
     "id": "exec-frango",
@@ -659,7 +799,17 @@
     ],
     "destaque": false,
     "detalhe": "Peito na brasa, legumes grelhados e limão",
-    "fotoCima": "fotos/exec-frango.webp"
+    "fotoCima": "fotos/exec-frango.webp",
+    "i18n": {
+      "en": {
+        "nome": "Grilled chicken breast",
+        "descricao": "Chicken breast, grilled vegetables and lemon. Served with rice, beans and salad."
+      },
+      "es": {
+        "nome": "Pollo a la plancha",
+        "descricao": "Pechuga a la brasa, verduras y limón. Con arroz, frijoles y ensalada."
+      }
+    }
   },
   {
     "id": "exec-peixe",
@@ -684,7 +834,17 @@
     ],
     "destaque": false,
     "detalhe": "Salmão assado no molho cítrico com ervas",
-    "fotoCima": "fotos/exec-peixe.webp"
+    "fotoCima": "fotos/exec-peixe.webp",
+    "i18n": {
+      "en": {
+        "nome": "Salmon in orange sauce",
+        "descricao": "Roasted salmon in citrus herb sauce. Served with rice, beans and salad."
+      },
+      "es": {
+        "nome": "Salmón en salsa de naranja",
+        "descricao": "Salmón asado en salsa cítrica con hierbas. Con arroz, frijoles y ensalada."
+      }
+    }
   },
   {
     "id": "exec-vegetariano",
@@ -714,7 +874,17 @@
     ],
     "destaque": false,
     "detalhe": "Legumes e tofu ao curry, com arroz branco",
-    "fotoCima": "fotos/exec-vegetariano.webp"
+    "fotoCima": "fotos/exec-vegetariano.webp",
+    "i18n": {
+      "en": {
+        "nome": "Vegetable curry",
+        "descricao": "Vegetables and tofu in curry, with white rice."
+      },
+      "es": {
+        "nome": "Curry de verduras",
+        "descricao": "Verduras y tofu al curry, con arroz blanco."
+      }
+    }
   },
   {
     "id": "ravioli-dona-lucia",
@@ -774,7 +944,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Dona Lúcia's tagliatelle",
+        "descricao": "Fresh tagliatelle with slow-cooked house ragù, tomato and herbs."
+      },
+      "es": {
+        "nome": "Tagliatelle de Doña Lúcia",
+        "descricao": "Tagliatelle fresco con ragú de la casa cocido a fuego lento con tomate y hierbas."
+      }
+    }
   },
   {
     "id": "pizza-fermentacao",
@@ -858,7 +1038,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Margherita pizza",
+        "descricao": "Slow-fermented dough, tomato sauce, mozzarella and basil, wood-fired."
+      },
+      "es": {
+        "nome": "Pizza margarita",
+        "descricao": "Masa de fermentación lenta, salsa de tomate, mozzarella y albahaca, al horno de leña."
+      }
+    }
   },
   {
     "id": "espaguete-camarao",
@@ -918,7 +1108,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Shrimp spaghetti",
+        "descricao": "Spaghetti in tomato sauce with shrimp, cherry tomatoes and basil."
+      },
+      "es": {
+        "nome": "Espagueti con camarones",
+        "descricao": "Espagueti en salsa de tomate con camarones, tomatitos y albahaca."
+      }
+    }
   },
   {
     "id": "espaguete-arrabbiata",
@@ -979,7 +1179,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Penne arrabbiata",
+        "descricao": "Penne in spicy tomato sauce, garlic and basil."
+      },
+      "es": {
+        "nome": "Penne arrabbiata",
+        "descricao": "Penne en salsa de tomate picante, ajo y albahaca."
+      }
+    }
   },
   {
     "id": "lasanha-berinjela",
@@ -1040,7 +1250,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "House lasagna",
+        "descricao": "Layers of fresh pasta, tomato sauce, gratinated mozzarella and basil."
+      },
+      "es": {
+        "nome": "Lasaña de la casa",
+        "descricao": "Capas de pasta fresca, salsa de tomate, mozzarella gratinada y albahaca."
+      }
+    }
   },
   {
     "id": "carbonara",
@@ -1099,7 +1319,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Spaghetti carbonara",
+        "descricao": "Egg yolk, pecorino, crispy bacon and freshly ground black pepper."
+      },
+      "es": {
+        "nome": "Espagueti a la carbonara",
+        "descricao": "Yema, pecorino, tocino crujiente y pimienta negra recién molida."
+      }
+    }
   },
   {
     "id": "cheesecake-frutas",
@@ -1147,7 +1377,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Blueberry cheesecake",
+        "descricao": "Crunchy biscuit base, cream cheese and fresh blueberry sauce."
+      },
+      "es": {
+        "nome": "Cheesecake de arándanos",
+        "descricao": "Base crujiente de galleta, crema de queso y salsa de arándanos frescos."
+      }
+    }
   },
   {
     "id": "brownie-sorvete",
@@ -1192,7 +1432,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Chocolate brownie",
+        "descricao": "Warm dark chocolate brownie with fresh raspberries."
+      },
+      "es": {
+        "nome": "Brownie de chocolate",
+        "descricao": "Brownie caliente de chocolate semiamargo con frambuesas frescas."
+      }
+    }
   },
   {
     "id": "tiramisu",
@@ -1237,7 +1487,17 @@
           }
         ]
       }
-    ]
+    ],
+    "i18n": {
+      "en": {
+        "nome": "Tiramisù",
+        "descricao": "Mascarpone, coffee-soaked biscuits and cocoa."
+      },
+      "es": {
+        "nome": "Tiramisú",
+        "descricao": "Mascarpone, bizcocho empapado en café y cacao."
+      }
+    }
   },
   {
     "id": "sorbet-manga",
@@ -1261,7 +1521,17 @@
     "harmonizacao": [],
     "destaque": false,
     "foto": "fotos/sorbet-manga",
-    "fotoRedonda": "fotos/r-sorbet-manga.webp"
+    "fotoRedonda": "fotos/r-sorbet-manga.webp",
+    "i18n": {
+      "en": {
+        "nome": "Mango sorbet",
+        "descricao": "Handmade mango sorbet, dairy-free."
+      },
+      "es": {
+        "nome": "Sorbete de mango",
+        "descricao": "Sorbete artesanal de mango, sin leche."
+      }
+    }
   },
   {
     "id": "limonada-gengibre",
@@ -1285,7 +1555,17 @@
     "picante": 0,
     "harmonizacao": [],
     "destaque": true,
-    "foto": "fotos/limonada-gengibre"
+    "foto": "fotos/limonada-gengibre",
+    "i18n": {
+      "en": {
+        "nome": "Mint lemonade",
+        "descricao": "Freshly squeezed lime, mint and ice."
+      },
+      "es": {
+        "nome": "Limonada con menta",
+        "descricao": "Limón exprimido al momento, menta y hielo."
+      }
+    }
   },
   {
     "id": "suco-laranja",
@@ -1305,7 +1585,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Orange juice",
+        "descricao": "Freshly squeezed orange, no sugar."
+      },
+      "es": {
+        "nome": "Jugo de naranja",
+        "descricao": "Naranja exprimida al momento, sin azúcar."
+      }
+    }
   },
   {
     "id": "chope-pilsen",
@@ -1327,7 +1617,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Pilsner draft beer",
+        "descricao": "400 ml mug, light and ice-cold."
+      },
+      "es": {
+        "nome": "Cerveza tirada pilsen",
+        "descricao": "Jarra de 400 ml, ligera y bien fría."
+      }
+    }
   },
   {
     "id": "chope-ipa",
@@ -1349,7 +1649,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "IPA draft beer",
+        "descricao": "400 ml mug, bold bitterness and citrus aroma."
+      },
+      "es": {
+        "nome": "Cerveza tirada IPA",
+        "descricao": "Jarra de 400 ml, amargor marcado y aroma cítrico."
+      }
+    }
   },
   {
     "id": "caipirinha-limao",
@@ -1371,7 +1681,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Lime caipirinha",
+        "descricao": "Craft cachaça, lime, sugar and ice."
+      },
+      "es": {
+        "nome": "Caipiriña de limón",
+        "descricao": "Cachaza artesanal, limón, azúcar y hielo."
+      }
+    }
   },
   {
     "id": "vinho-tinto-malbec",
@@ -1391,7 +1711,17 @@
     "picante": 0,
     "harmonizacao": [],
     "destaque": true,
-    "foto": "fotos/vinho-tinto-malbec"
+    "foto": "fotos/vinho-tinto-malbec",
+    "i18n": {
+      "en": {
+        "nome": "Malbec",
+        "descricao": "Glass. Full-bodied red, great with grilled meats."
+      },
+      "es": {
+        "nome": "Malbec",
+        "descricao": "Copa. Tinto con cuerpo, ideal con las carnes a la brasa."
+      }
+    }
   },
   {
     "id": "vinho-tinto-pinot",
@@ -1410,7 +1740,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Pinot Noir",
+        "descricao": "Glass. Light, fruity red."
+      },
+      "es": {
+        "nome": "Pinot Noir",
+        "descricao": "Copa. Tinto ligero y frutado."
+      }
+    }
   },
   {
     "id": "vinho-branco-sauvignon",
@@ -1429,7 +1769,17 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Sauvignon Blanc",
+        "descricao": "Glass. Fresh white, ideal with fish and pasta."
+      },
+      "es": {
+        "nome": "Sauvignon Blanc",
+        "descricao": "Copa. Blanco fresco, ideal con pescados y pastas."
+      }
+    }
   },
   {
     "id": "vinho-rose",
@@ -1448,6 +1798,16 @@
     ],
     "picante": 0,
     "harmonizacao": [],
-    "destaque": false
+    "destaque": false,
+    "i18n": {
+      "en": {
+        "nome": "Rosé",
+        "descricao": "Glass. Dry, delicate rosé."
+      },
+      "es": {
+        "nome": "Rosado",
+        "descricao": "Copa. Rosado seco y delicado."
+      }
+    }
   }
 ]

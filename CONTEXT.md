@@ -70,6 +70,13 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **Aviso no celular do garçom:** aba Mesas > "Ativar avisos" (notificação + vibração).
 - **Cadastro de restaurante novo:** assistente de 4 passos (nome/tipo, logo/cor, cardápio/mesas, publicar).
 
+**Ajustes finais (já na demo):**
+- 🖨 continua no cartão depois de "Pronto".
+- Horário salvo em Configurações muda o "Aberto/Fechado agora" do site do cliente.
+- **Pix pelo celular** na conta do cliente (QR + copia e cola de demonstração); o painel recebe "pago no Pix" e libera a mesa.
+- **Estoque simples** (aba Cardápio): baixa por prato vendido, aviso de estoque baixo, prato vira esgotado quando zera, botão "+ Repor".
+- **Cardápio em inglês e espanhol** (traduções em `cardapio.json` > `i18n`); a cozinha sempre recebe em português.
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.
