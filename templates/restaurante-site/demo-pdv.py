@@ -299,3 +299,34 @@ rest = rest.replace('const site=()=>document.getElementById("site").contentWindo
 rest = rest.replace("display:grid;grid-template-columns:auto 1fr;overflow:hidden}", "display:grid;grid-template-columns:1fr;overflow:hidden}").replace("<title>Demonstração: pedido na mesa e painel da casa</title>", "<title>Casa Brasa · Painel do restaurante</title>")
 (AQUI / "restaurante.html").write_text(rest, encoding="utf-8")
 print("cliente.html e restaurante.html")
+
+# ---- tudo em um: sistema.html, com a escolha "Cliente | Restaurante" no topo
+TROCA_CSS = """<style>
+body.um{grid-template-columns:1fr;padding-top:64px}
+.troca{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:4px;padding:4px;background:var(--cartao);border:1px solid var(--linha);border-radius:99px;box-shadow:0 6px 20px rgba(60,40,20,.15)}
+.troca button{background:none;color:var(--suave);border-radius:99px;padding:9px 22px;font-size:14px;position:relative}
+.troca button[aria-pressed=true]{background:var(--brasa);color:#fff}
+.troca .bolinha{position:absolute;top:-4px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--ouro);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 4px}
+body.ver-cliente .painel,body.ver-restaurante .lado{display:none}
+body.ver-cliente .lado{border:0}body.ver-cliente .lado p{display:none}
+body.um .celular{height:min(800px,calc(100vh - 100px))}
+body.ver-restaurante .painel{height:calc(100vh - 64px)}
+@media(max-width:600px){body.ver-cliente .lado{padding:0}body.ver-cliente .celular{width:100vw;height:calc(100vh - 64px);border:0;border-radius:0;box-shadow:none}}
+</style></head>"""
+TROCA_HTML = """<body class="um ver-cliente"><div class="troca" role="group" aria-label="Escolher a tela">
+<button type="button" data-ver="cliente" aria-pressed="true">Cliente</button><button type="button" data-ver="restaurante" aria-pressed="false">Restaurante<span class="bolinha" id="b-troca" hidden></span></button></div>"""
+TROCA_JS = """<script>
+(()=>{const ver=v=>{document.body.classList.toggle("ver-cliente",v==="cliente");document.body.classList.toggle("ver-restaurante",v==="restaurante");
+document.querySelectorAll(".troca [data-ver]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.ver===v));try{localStorage.setItem("cb-ver",v)}catch(e){}};
+document.querySelectorAll(".troca [data-ver]").forEach(b=>b.onclick=()=>ver(b.dataset.ver));
+try{const v=localStorage.getItem("cb-ver");if(v)ver(v)}catch(e){}
+// avisa no botão "Restaurante" quando chega algo novo enquanto se está na tela do cliente
+setInterval(()=>{const n=document.querySelectorAll(".alerta").length+document.querySelectorAll(".card.novo").length,b=document.getElementById("b-troca");b.hidden=!n;b.textContent=n},500)})();
+</script></body></html>"""
+um = PAINEL.replace("%%MENU%%", MENU).replace("%%SITE%%", base64.b64encode(site.encode("utf-8")).decode())
+um = um.replace("</style></head>", "</style>" + TROCA_CSS, 1).replace("<body>", TROCA_HTML, 1)
+um = um.replace("<title>Demonstração: pedido na mesa e painel da casa</title>", "<title>Casa Brasa · Sistema</title>")
+assert um.rstrip().endswith("</body></html>")
+um = um.rstrip()[: -len("</body></html>")] + TROCA_JS
+(AQUI / "sistema.html").write_text(um, encoding="utf-8")
+print("sistema.html")

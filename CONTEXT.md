@@ -35,6 +35,8 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
      - cancelar só com senha do gerente (1234 na demo);
      - pedido reenviado até o restaurante confirmar.
 
+**Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante** no topo, no centro.
+
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.
 
 ## Arquivos
