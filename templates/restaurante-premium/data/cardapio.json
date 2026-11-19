@@ -196,7 +196,55 @@
     "destaque": true,
     "selo": "Prato da casa",
     "foto": "fotos/picanha-brasa",
-    "fotoRedonda": "fotos/r-picanha-brasa.webp"
+    "fotoRedonda": "fotos/r-picanha-brasa.webp",
+    "opcoes": [
+      {
+        "nome": "Acompanhamento",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Arroz e farofa",
+            "preco": 0
+          },
+          {
+            "nome": "Fritas",
+            "preco": 0
+          },
+          {
+            "nome": "Purê de batata",
+            "preco": 0
+          },
+          {
+            "nome": "Salada da casa",
+            "preco": 0
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Queijo coalho",
+            "preco": 8
+          },
+          {
+            "nome": "Ovo frito",
+            "preco": 4
+          },
+          {
+            "nome": "Farofa de bacon",
+            "preco": 7
+          },
+          {
+            "nome": "Vinagrete extra",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "costela-12h",
@@ -222,7 +270,55 @@
     "destaque": false,
     "selo": "Desmancha",
     "foto": "fotos/costela-12h",
-    "fotoRedonda": "fotos/r-costela-12h.webp"
+    "fotoRedonda": "fotos/r-costela-12h.webp",
+    "opcoes": [
+      {
+        "nome": "Acompanhamento",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Arroz e farofa",
+            "preco": 0
+          },
+          {
+            "nome": "Fritas",
+            "preco": 0
+          },
+          {
+            "nome": "Purê de batata",
+            "preco": 0
+          },
+          {
+            "nome": "Salada da casa",
+            "preco": 0
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Queijo coalho",
+            "preco": 8
+          },
+          {
+            "nome": "Ovo frito",
+            "preco": 4
+          },
+          {
+            "nome": "Farofa de bacon",
+            "preco": 7
+          },
+          {
+            "nome": "Vinagrete extra",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "file-roti",
@@ -250,7 +346,55 @@
     ],
     "destaque": true,
     "foto": "fotos/file-roti",
-    "fotoRedonda": "fotos/r-file-roti.webp"
+    "fotoRedonda": "fotos/r-file-roti.webp",
+    "opcoes": [
+      {
+        "nome": "Acompanhamento",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Arroz e farofa",
+            "preco": 0
+          },
+          {
+            "nome": "Fritas",
+            "preco": 0
+          },
+          {
+            "nome": "Purê de batata",
+            "preco": 0
+          },
+          {
+            "nome": "Salada da casa",
+            "preco": 0
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Queijo coalho",
+            "preco": 8
+          },
+          {
+            "nome": "Ovo frito",
+            "preco": 4
+          },
+          {
+            "nome": "Farofa de bacon",
+            "preco": 7
+          },
+          {
+            "nome": "Vinagrete extra",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "salmao-brasa",
@@ -277,7 +421,55 @@
     ],
     "destaque": true,
     "foto": "fotos/salmao-brasa",
-    "fotoRedonda": "fotos/r-salmao-brasa.webp"
+    "fotoRedonda": "fotos/r-salmao-brasa.webp",
+    "opcoes": [
+      {
+        "nome": "Acompanhamento",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Arroz e farofa",
+            "preco": 0
+          },
+          {
+            "nome": "Fritas",
+            "preco": 0
+          },
+          {
+            "nome": "Purê de batata",
+            "preco": 0
+          },
+          {
+            "nome": "Salada da casa",
+            "preco": 0
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Queijo coalho",
+            "preco": 8
+          },
+          {
+            "nome": "Ovo frito",
+            "preco": 4
+          },
+          {
+            "nome": "Farofa de bacon",
+            "preco": 7
+          },
+          {
+            "nome": "Vinagrete extra",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "frango-caipira",
@@ -306,7 +498,55 @@
     ],
     "destaque": false,
     "foto": "fotos/frango-caipira",
-    "fotoRedonda": "fotos/r-frango-caipira.webp"
+    "fotoRedonda": "fotos/r-frango-caipira.webp",
+    "opcoes": [
+      {
+        "nome": "Acompanhamento",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Arroz e farofa",
+            "preco": 0
+          },
+          {
+            "nome": "Fritas",
+            "preco": 0
+          },
+          {
+            "nome": "Purê de batata",
+            "preco": 0
+          },
+          {
+            "nome": "Salada da casa",
+            "preco": 0
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Queijo coalho",
+            "preco": 8
+          },
+          {
+            "nome": "Ovo frito",
+            "preco": 4
+          },
+          {
+            "nome": "Farofa de bacon",
+            "preco": 7
+          },
+          {
+            "nome": "Vinagrete extra",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "moqueca-camarao",
@@ -502,7 +742,39 @@
     "destaque": false,
     "selo": "Receita de 1998",
     "foto": "fotos/ravioli-dona-lucia",
-    "fotoRedonda": "fotos/r-ravioli-dona-lucia.webp"
+    "fotoRedonda": "fotos/r-ravioli-dona-lucia.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Individual",
+            "preco": 0
+          },
+          {
+            "nome": "Para dois",
+            "preco": 38
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Parmesão extra",
+            "preco": 6
+          },
+          {
+            "nome": "Burrata",
+            "preco": 18
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "pizza-fermentacao",
@@ -531,7 +803,62 @@
     ],
     "destaque": false,
     "foto": "fotos/pizza-fermentacao",
-    "fotoRedonda": "fotos/r-pizza-fermentacao.webp"
+    "fotoRedonda": "fotos/r-pizza-fermentacao.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Média (6 fatias)",
+            "preco": 0
+          },
+          {
+            "nome": "Grande (8 fatias)",
+            "preco": 18
+          }
+        ]
+      },
+      {
+        "nome": "Borda",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Tradicional",
+            "preco": 0
+          },
+          {
+            "nome": "Recheada de catupiry",
+            "preco": 12
+          },
+          {
+            "nome": "Recheada de cheddar",
+            "preco": 12
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Calabresa",
+            "preco": 9
+          },
+          {
+            "nome": "Bacon",
+            "preco": 8
+          },
+          {
+            "nome": "Rúcula",
+            "preco": 5
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "espaguete-camarao",
@@ -559,7 +886,39 @@
     ],
     "destaque": false,
     "foto": "fotos/espaguete-camarao",
-    "fotoRedonda": "fotos/r-espaguete-camarao.webp"
+    "fotoRedonda": "fotos/r-espaguete-camarao.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Individual",
+            "preco": 0
+          },
+          {
+            "nome": "Para dois",
+            "preco": 38
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Parmesão extra",
+            "preco": 6
+          },
+          {
+            "nome": "Burrata",
+            "preco": 18
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "espaguete-arrabbiata",
@@ -588,7 +947,39 @@
     ],
     "destaque": true,
     "foto": "fotos/espaguete-arrabbiata",
-    "fotoRedonda": "fotos/r-espaguete-arrabbiata.webp"
+    "fotoRedonda": "fotos/r-espaguete-arrabbiata.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Individual",
+            "preco": 0
+          },
+          {
+            "nome": "Para dois",
+            "preco": 38
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Parmesão extra",
+            "preco": 6
+          },
+          {
+            "nome": "Burrata",
+            "preco": 18
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "lasanha-berinjela",
@@ -617,7 +1008,39 @@
     ],
     "destaque": true,
     "foto": "fotos/lasanha-berinjela",
-    "fotoRedonda": "fotos/r-lasanha-berinjela.webp"
+    "fotoRedonda": "fotos/r-lasanha-berinjela.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Individual",
+            "preco": 0
+          },
+          {
+            "nome": "Para dois",
+            "preco": 38
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Parmesão extra",
+            "preco": 6
+          },
+          {
+            "nome": "Burrata",
+            "preco": 18
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "carbonara",
@@ -644,7 +1067,39 @@
     ],
     "destaque": true,
     "foto": "fotos/carbonara",
-    "fotoRedonda": "fotos/r-carbonara.webp"
+    "fotoRedonda": "fotos/r-carbonara.webp",
+    "opcoes": [
+      {
+        "nome": "Tamanho",
+        "escolha": "uma",
+        "obrigatorio": true,
+        "itens": [
+          {
+            "nome": "Individual",
+            "preco": 0
+          },
+          {
+            "nome": "Para dois",
+            "preco": 38
+          }
+        ]
+      },
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Parmesão extra",
+            "preco": 6
+          },
+          {
+            "nome": "Burrata",
+            "preco": 18
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "cheesecake-frutas",
@@ -675,7 +1130,24 @@
     "destaque": true,
     "selo": "A mais pedida",
     "foto": "fotos/cheesecake-frutas",
-    "fotoRedonda": "fotos/r-cheesecake-frutas.webp"
+    "fotoRedonda": "fotos/r-cheesecake-frutas.webp",
+    "opcoes": [
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Bola de sorvete",
+            "preco": 9
+          },
+          {
+            "nome": "Calda extra",
+            "preco": 4
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "brownie-sorvete",
@@ -703,7 +1175,24 @@
     "harmonizacao": [],
     "destaque": true,
     "foto": "fotos/brownie-sorvete",
-    "fotoRedonda": "fotos/r-brownie-sorvete.webp"
+    "fotoRedonda": "fotos/r-brownie-sorvete.webp",
+    "opcoes": [
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Bola de sorvete",
+            "preco": 9
+          },
+          {
+            "nome": "Calda extra",
+            "preco": 4
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "tiramisu",
@@ -731,7 +1220,24 @@
     "harmonizacao": [],
     "destaque": true,
     "foto": "fotos/tiramisu",
-    "fotoRedonda": "fotos/r-tiramisu.webp"
+    "fotoRedonda": "fotos/r-tiramisu.webp",
+    "opcoes": [
+      {
+        "nome": "Adicionais",
+        "escolha": "varias",
+        "obrigatorio": false,
+        "itens": [
+          {
+            "nome": "Bola de sorvete",
+            "preco": 9
+          },
+          {
+            "nome": "Calda extra",
+            "preco": 4
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "sorbet-manga",

@@ -128,6 +128,31 @@ body.modo-cel body.modo-cel .filtros{flex-wrap:nowrap;overflow-x:auto;padding-bo
 body.modo-cel .filtros button{white-space:nowrap}
 body.modo-cel .card .pe{flex-wrap:wrap}
 body.modo-cel .linha .q{min-width:0}
+.m .lancar{margin-top:6px;padding:7px 10px;font-size:12px}.m button+.lancar{margin-top:6px}.m .lancar:only-of-type{margin-top:auto}
+.origem{display:block;font:600 12px system-ui;color:var(--ouro);margin-top:3px}
+.l-menu{max-height:42vh;overflow:auto;margin:6px 0 12px;border:1px solid var(--linha);border-radius:10px}
+.l-cat{margin:0;padding:7px 12px;background:var(--cartao2);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--suave);position:sticky;top:0}
+.l-it{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-top:1px solid var(--linha);font-size:14px}.l-it small{display:block;color:var(--suave)}.l-it.on{background:var(--ouro-cl)}
+.l-q{display:flex;align-items:center;gap:8px}.l-q button{padding:5px 11px}.l-q b{min-width:18px;text-align:center}
+.integ{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.ig{background:var(--cartao);border:1px solid var(--linha);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--sombra)}
+.ig b{font:600 18px Georgia,serif}.ig small{color:var(--suave)}.ig .st{align-self:flex-start}.ig button{margin-top:8px}.ig.on{border-color:#cfe5cc;background:#fbfef9}
+#integ-log p{margin:6px 0;font-size:13px;cursor:pointer}#integ-log p:hover{color:var(--brasa)}
+#integ-json{background:var(--cartao2);padding:12px;border-radius:10px;font-size:12px;overflow:auto;max-height:240px;white-space:pre-wrap;margin:10px 0 0}
+.acoes-g{display:flex;justify-content:flex-end;margin-bottom:14px}
+#relatorio{position:fixed;inset:0;z-index:40;background:rgba(43,32,24,.55);overflow:auto;padding:24px 14px}
+.rel-acoes{display:flex;gap:8px;justify-content:flex-end;max-width:860px;margin:0 auto 12px}
+.folha{background:#fff;color:#2b2018;max-width:860px;margin:0 auto;border-radius:14px;padding:40px 44px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.folha header{all:unset;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #b23a1e;padding-bottom:14px;margin-bottom:22px}
+.folha h1{margin:0;font:600 28px Georgia,serif}.folha h2{font:600 17px Georgia,serif;margin:26px 0 10px}.folha .sub{color:#7c6b58;font-size:13px}
+.rel-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.rel-kpis div{border:1px solid #e6dccb;border-radius:10px;padding:12px}.rel-kpis small{color:#7c6b58;font-size:11px;display:block}.rel-kpis b{font:600 20px Georgia,serif}
+.rel-kpis .up{display:block;color:#2f7d3b;font-size:11px;font-weight:700}
+.folha svg{width:100%;height:auto;display:block}.folha table{font-size:13px}.folha td,.folha th{padding:7px 8px}.folha .nota{font-size:11px}
+.rel-duas{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.folha{padding:22px 18px}.rel-kpis{grid-template-columns:1fr 1fr}.rel-duas{grid-template-columns:1fr}}
+@media print{body{display:block!important;height:auto!important;overflow:visible!important;padding:0!important;background:#fff!important}
+body>*:not(#relatorio){display:none!important}#relatorio{position:static!important;overflow:visible!important;background:#fff!important;padding:0!important}
+.rel-acoes{display:none!important}.folha{box-shadow:none!important;padding:0!important;max-width:none!important}.folha h2{break-after:avoid}.rel-bloco{break-inside:avoid}@page{size:A4;margin:14mm}}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -145,6 +170,7 @@ body.modo-cel .linha .q{min-width:0}
 <button role="tab" aria-selected="false" data-aba="reservas">Reservas</button>
 <button role="tab" aria-selected="false" data-aba="cardapio">Cardápio</button>
 <button role="tab" aria-selected="false" data-aba="gerencia">Gerência e CRM</button>
+<button role="tab" aria-selected="false" data-aba="integracoes">Integrações</button>
 </nav>
 <main>
 <div class="alertas" id="alertas"></div>
@@ -158,7 +184,11 @@ body.modo-cel .linha .q{min-width:0}
 <div class="col"><h2>Em preparo</h2><div id="bar-Em preparo"></div></div><div class="col"><h2>Prontos</h2><div id="bar-Pronto"></div></div></div><div class="bloco" style="margin-top:14px"><h3>Acabou alguma bebida?</h3><div class="esg" data-setor="bar"></div></div></section>
 <section class="aba" id="aba-mesas"><div class="mapa" id="mapa"></div><p class="nota">O garçom vê o mapa no celular dele: aceita o primeiro pedido de cada mesa e leva o que ficou pronto. O cliente fecha a conta pelo celular e o garçom só leva a maquininha.</p></section>
 <section class="aba" id="aba-reservas"><div class="lista" id="reservas"></div><p class="nota">Reservas feitas pelo site chegam aqui. "Confirmar no WhatsApp" abre a conversa com a mensagem pronta. Lista de exemplo.</p></section>
-<section class="aba" id="aba-gerencia">
+<section class="aba" id="aba-integracoes"><p class="nota" style="margin-top:0">Ligue o sistema ao caixa que o restaurante já usa: cada pedido e cada conta fechada vão direto para lá, sem lançar duas vezes.</p>
+<div class="integ" id="integ"></div>
+<div class="bloco" style="margin-top:18px"><h3>Últimos envios ao caixa</h3><div id="integ-log"><p class="nota">Conecte um sistema e faça um pedido.</p></div><pre id="integ-json" hidden></pre></div>
+<p class="nota">Na demonstração o envio é simulado. A integração real usa a API de cada sistema (Saipos, Consumer, Colibri) ou um webhook para qualquer outro.</p></section>
+<section class="aba" id="aba-gerencia"><div class="acoes-g"><button id="btn-rel" type="button">📄 Relatório do mês (PDF)</button></div>
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
 <div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras (sugestão)</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
 <div class="duas"><div class="bloco"><h3>Mais pedidos hoje</h3><div id="g-top"><p class="nota">Faça um pedido no celular.</p></div></div>
@@ -167,6 +197,7 @@ body.modo-cel .linha .q{min-width:0}
 <div class="bloco" style="margin-top:14px"><h3>Segurança</h3><div class="seguro"><span>Primeiro pedido da mesa só entra com aceite do garçom</span><span>QR muda quando a mesa é fechada</span><span>Cancelar item só com senha do gerente</span><span>Cada restaurante vê só os próprios dados</span><span>Pedido é reenviado até a cozinha confirmar</span><span>Máximo de 3 pedidos por minuto por mesa</span><span>Login por função</span></div></div>
 <p class="nota">Números do celular são reais nesta demonstração; clientes, reservas e a senha do gerente (1234) são exemplos.</p></section>
 </main></section>
+<div id="relatorio" hidden></div>
 <div class="modal" id="modal" hidden><div class="caixa" id="caixa"></div></div>
 
 <script>
@@ -174,11 +205,11 @@ body.modo-cel .linha .q{min-width:0}
 const $=s=>document.querySelector(s),reais=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const canal=new BroadcastChannel("casa-brasa-pdv"),site=()=>({postMessage:d=>canal.postMessage(d)});canal.onmessage=e=>window.dispatchEvent(new MessageEvent("message",{data:e.data}));
 const BAR=["bebidas","vinhos"],PROX={"Recebido":["Em preparo","Começar"],"Em preparo":["Pronto","Pronto"]};
-const qr=()=>Math.random().toString(36).slice(2,6).toUpperCase(),MENU=[{"id": "pao-fermentacao", "nome": "Pão de fermentação natural", "cat": "entradas", "preco": 24}, {"id": "bruschetta-tomate", "nome": "Panzanella de tomate", "cat": "entradas", "preco": 32}, {"id": "salada-quintal", "nome": "Salada do quintal", "cat": "entradas", "preco": 36}, {"id": "bolinho-costela", "nome": "Bolinho de costela", "cat": "entradas", "preco": 38}, {"id": "camarao-alho", "nome": "Camarão no alho", "cat": "entradas", "preco": 58}, {"id": "file-espaguete", "nome": "Filé na brasa sobre espaguete", "cat": "principais", "preco": 96}, {"id": "picanha-brasa", "nome": "Picanha na brasa", "cat": "principais", "preco": 89}, {"id": "costela-12h", "nome": "Costela 12 horas", "cat": "principais", "preco": 84}, {"id": "file-roti", "nome": "Filé ao molho rôti", "cat": "principais", "preco": 92}, {"id": "salmao-brasa", "nome": "Salmão na brasa", "cat": "principais", "preco": 86}, {"id": "frango-caipira", "nome": "Frango na brasa", "cat": "principais", "preco": 68}, {"id": "moqueca-camarao", "nome": "Moqueca de camarão", "cat": "principais", "preco": 82}, {"id": "bowl-vegano", "nome": "Salada morna da horta", "cat": "principais", "preco": 52}, {"id": "exec-bife", "nome": "Bife na brasa", "cat": "executivo", "preco": 49}, {"id": "exec-frango", "nome": "Frango grelhado", "cat": "executivo", "preco": 42}, {"id": "exec-peixe", "nome": "Salmão ao molho de laranja", "cat": "executivo", "preco": 54}, {"id": "exec-vegetariano", "nome": "Curry de legumes", "cat": "executivo", "preco": 39}, {"id": "ravioli-dona-lucia", "nome": "Tagliatelle da Dona Lúcia", "cat": "massas", "preco": 64}, {"id": "pizza-fermentacao", "nome": "Pizza margherita", "cat": "massas", "preco": 58}, {"id": "espaguete-camarao", "nome": "Espaguete com camarão", "cat": "massas", "preco": 78}, {"id": "espaguete-arrabbiata", "nome": "Penne arrabbiata", "cat": "massas", "preco": 48}, {"id": "lasanha-berinjela", "nome": "Lasanha da casa", "cat": "massas", "preco": 56}, {"id": "carbonara", "nome": "Espaguete à carbonara", "cat": "massas", "preco": 62}, {"id": "cheesecake-frutas", "nome": "Cheesecake de mirtilo", "cat": "sobremesas", "preco": 32}, {"id": "brownie-sorvete", "nome": "Brownie de chocolate", "cat": "sobremesas", "preco": 29}, {"id": "tiramisu", "nome": "Tiramisù", "cat": "sobremesas", "preco": 30}, {"id": "sorbet-manga", "nome": "Sorbet de manga", "cat": "sobremesas", "preco": 22}, {"id": "limonada-gengibre", "nome": "Limonada com hortelã", "cat": "bebidas", "preco": 14}, {"id": "suco-laranja", "nome": "Suco de laranja", "cat": "bebidas", "preco": 12}, {"id": "chope-pilsen", "nome": "Chope pilsen", "cat": "bebidas", "preco": 14}, {"id": "chope-ipa", "nome": "Chope IPA", "cat": "bebidas", "preco": 19}, {"id": "caipirinha-limao", "nome": "Caipirinha de limão", "cat": "bebidas", "preco": 24}, {"id": "vinho-tinto-malbec", "nome": "Malbec", "cat": "vinhos", "preco": 34}, {"id": "vinho-tinto-pinot", "nome": "Pinot Noir", "cat": "vinhos", "preco": 38}, {"id": "vinho-branco-sauvignon", "nome": "Sauvignon Blanc", "cat": "vinhos", "preco": 32}, {"id": "vinho-rose", "nome": "Rosé", "cat": "vinhos", "preco": 32}];
+const qr=()=>Math.random().toString(36).slice(2,6).toUpperCase(),MENU=[{"id": "pao-fermentacao", "nome": "Pão de fermentação natural", "cat": "entradas", "preco": 24, "opc": 0}, {"id": "bruschetta-tomate", "nome": "Panzanella de tomate", "cat": "entradas", "preco": 32, "opc": 0}, {"id": "salada-quintal", "nome": "Salada do quintal", "cat": "entradas", "preco": 36, "opc": 0}, {"id": "bolinho-costela", "nome": "Bolinho de costela", "cat": "entradas", "preco": 38, "opc": 0}, {"id": "camarao-alho", "nome": "Camarão no alho", "cat": "entradas", "preco": 58, "opc": 0}, {"id": "file-espaguete", "nome": "Filé na brasa sobre espaguete", "cat": "principais", "preco": 96, "opc": 0}, {"id": "picanha-brasa", "nome": "Picanha na brasa", "cat": "principais", "preco": 89, "opc": 2}, {"id": "costela-12h", "nome": "Costela 12 horas", "cat": "principais", "preco": 84, "opc": 2}, {"id": "file-roti", "nome": "Filé ao molho rôti", "cat": "principais", "preco": 92, "opc": 2}, {"id": "salmao-brasa", "nome": "Salmão na brasa", "cat": "principais", "preco": 86, "opc": 2}, {"id": "frango-caipira", "nome": "Frango na brasa", "cat": "principais", "preco": 68, "opc": 2}, {"id": "moqueca-camarao", "nome": "Moqueca de camarão", "cat": "principais", "preco": 82, "opc": 0}, {"id": "bowl-vegano", "nome": "Salada morna da horta", "cat": "principais", "preco": 52, "opc": 0}, {"id": "exec-bife", "nome": "Bife na brasa", "cat": "executivo", "preco": 49, "opc": 0}, {"id": "exec-frango", "nome": "Frango grelhado", "cat": "executivo", "preco": 42, "opc": 0}, {"id": "exec-peixe", "nome": "Salmão ao molho de laranja", "cat": "executivo", "preco": 54, "opc": 0}, {"id": "exec-vegetariano", "nome": "Curry de legumes", "cat": "executivo", "preco": 39, "opc": 0}, {"id": "ravioli-dona-lucia", "nome": "Tagliatelle da Dona Lúcia", "cat": "massas", "preco": 64, "opc": 2}, {"id": "pizza-fermentacao", "nome": "Pizza margherita", "cat": "massas", "preco": 58, "opc": 3}, {"id": "espaguete-camarao", "nome": "Espaguete com camarão", "cat": "massas", "preco": 78, "opc": 2}, {"id": "espaguete-arrabbiata", "nome": "Penne arrabbiata", "cat": "massas", "preco": 48, "opc": 2}, {"id": "lasanha-berinjela", "nome": "Lasanha da casa", "cat": "massas", "preco": 56, "opc": 2}, {"id": "carbonara", "nome": "Espaguete à carbonara", "cat": "massas", "preco": 62, "opc": 2}, {"id": "cheesecake-frutas", "nome": "Cheesecake de mirtilo", "cat": "sobremesas", "preco": 32, "opc": 1}, {"id": "brownie-sorvete", "nome": "Brownie de chocolate", "cat": "sobremesas", "preco": 29, "opc": 1}, {"id": "tiramisu", "nome": "Tiramisù", "cat": "sobremesas", "preco": 30, "opc": 1}, {"id": "sorbet-manga", "nome": "Sorbet de manga", "cat": "sobremesas", "preco": 22, "opc": 0}, {"id": "limonada-gengibre", "nome": "Limonada com hortelã", "cat": "bebidas", "preco": 14, "opc": 0}, {"id": "suco-laranja", "nome": "Suco de laranja", "cat": "bebidas", "preco": 12, "opc": 0}, {"id": "chope-pilsen", "nome": "Chope pilsen", "cat": "bebidas", "preco": 14, "opc": 0}, {"id": "chope-ipa", "nome": "Chope IPA", "cat": "bebidas", "preco": 19, "opc": 0}, {"id": "caipirinha-limao", "nome": "Caipirinha de limão", "cat": "bebidas", "preco": 24, "opc": 0}, {"id": "vinho-tinto-malbec", "nome": "Malbec", "cat": "vinhos", "preco": 34, "opc": 0}, {"id": "vinho-tinto-pinot", "nome": "Pinot Noir", "cat": "vinhos", "preco": 38, "opc": 0}, {"id": "vinho-branco-sauvignon", "nome": "Sauvignon Blanc", "cat": "vinhos", "preco": 32, "opc": 0}, {"id": "vinho-rose", "nome": "Rosé", "cat": "vinhos", "preco": 32, "opc": 0}];
 const mesas={};for(let i=1;i<=12;i++)mesas[i]={n:i,estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()};
 Object.assign(mesas[2],{estado:"ocupada",total:186,aceita:true,itens:[{nome:"Picanha na brasa",qtd:2,preco:89}]});
 Object.assign(mesas[7],{estado:"ocupada",total:64,aceita:true,itens:[{nome:"Tagliatelle da Dona Lúcia",qtd:1,preco:64}]});
-Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84},{nome:"Chope pilsen",qtd:3,preco:14}]});
+Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84,pessoa:"Lucas"},{nome:"Chope pilsen",qtd:3,preco:14,pessoa:"Marina"}]});
 const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
 let filtro="Todos";
 function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;listaPedidos()}
@@ -199,17 +230,17 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.query
 // mapa das mesas
 const ROT={livre:"Livre",ocupada:"Ocupada",pronto:"Pronto para levar",conta:"Pediu a conta"};
 function mapa(){$("#mapa").innerHTML=Object.values(mesas).map(m=>`<div class="m ${m.estado}"><span class="n">Mesa ${m.n}</span><span class="s">${ROT[m.estado]}</span><span class="v">QR ${m.qr}${m.total?` · ${reais(m.total)}`:""}</span>
-${m.estado==="pronto"?`<button data-entregar="${m.n}">Entregue na mesa</button>`:m.estado==="conta"||(m.estado==="ocupada"&&m.total)?`<button class="${m.estado==="conta"?"perigo":"sec"}" data-fechar="${m.n}">Fechar conta</button>`:""}</div>`).join("");contar()}
-$("#mapa").onclick=e=>{const en=e.target.closest("[data-entregar]"),fe=e.target.closest("[data-fechar]");
+${m.estado==="pronto"?`<button data-entregar="${m.n}">Entregue na mesa</button>`:m.estado==="conta"||(m.estado==="ocupada"&&m.total)?`<button class="${m.estado==="conta"?"perigo":"sec"}" data-fechar="${m.n}">Fechar conta</button>`:""}<button class="sec lancar" data-lancar="${m.n}">+ Lançar pedido</button></div>`).join("");contar()}
+$("#mapa").onclick=e=>{const la=e.target.closest("[data-lancar]");if(la)return lancar(la.dataset.lancar);const en=e.target.closest("[data-entregar]"),fe=e.target.closest("[data-fechar]");
 if(en){const m=mesas[en.dataset.entregar];m.pronto=0;m.estado="ocupada";pedidos.filter(o=>+o.mesa===+m.n&&o.status==="Pronto").forEach(o=>{o.status="Entregue";site().postMessage({tipo:"status",num:o.num,status:"Entregue na mesa"},"*")});listaPedidos();mapa()}
 if(fe){const m=mesas[fe.dataset.fechar],serv=m.total*.1;$("#caixa").innerHTML=`<h3>Fechar mesa ${m.n}</h3>${m.itens.map(i=>`<div class="l"><span>${i.qtd}× ${esc(i.nome)}</span><span>${reais(i.qtd*i.preco)}</span></div>`).join("")}
-<div class="l"><span>Subtotal</span><span>${reais(m.total)}</span></div><div class="l"><span>Serviço (10%)</span><span>${reais(serv)}</span></div><div class="l t"><span>Total</span><span>${reais(m.total+serv)}</span></div>
-<p class="nota">O resumo vai para o caixa lançar no sistema dele. A mesa é liberada e o código do QR muda (${m.qr} deixa de valer), então ninguém pede de casa com foto do QR.</p><div class="pe" style="margin-top:12px"><button class="sec" data-cancelar>Voltar</button><button data-confirmar="${m.n}">Enviar ao caixa e liberar</button></div>`;$("#modal").hidden=false}};
+${comandas(m)}<div class="l"><span>Subtotal</span><span>${reais(m.total)}</span></div><div class="l"><span>Serviço (10%)</span><span>${reais(serv)}</span></div><div class="l t"><span>Total</span><span>${reais(m.total+serv)}</span></div>
+<p class="nota">Com a integração ligada, a conta vai direto para o caixa (aba Integrações). A mesa é liberada e o código do QR muda (${m.qr} deixa de valer), então ninguém pede de casa com foto do QR.</p><div class="pe" style="margin-top:12px"><button class="sec" data-cancelar>Voltar</button><button data-confirmar="${m.n}">Enviar ao caixa e liberar</button></div>`;$("#modal").hidden=false}};
 $("#caixa").onclick=e=>{if(e.target.closest("[data-cancelar]"))$("#modal").hidden=true;const c=e.target.closest("[data-confirmar]");
-if(c){const m=mesas[c.dataset.confirmar];site().postMessage({tipo:"fechada",mesa:m.n},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
+if(c){const m=mesas[c.dataset.confirmar];enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*1.1)}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*.1).toFixed(2),total:+(m.total*1.1).toFixed(2)});site().postMessage({tipo:"fechada",mesa:m.n},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
 // cozinha e bar
 function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo";c.dataset.status="Recebido";c.dataset.ini=Date.now();
-c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Retirada"}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
+c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Retirada"}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
 <ul>${itens.map(i=>`<li>${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}</li>`).join("")}</ul><div class="pe"><span class="hora">${setor==="bar"?"Bar":"Cozinha"}</span><span class="mx"><button>Começar</button><button class="sec" data-cancel>Cancelar</button></span></div>`;
 c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);
 c.querySelector("button").onclick=()=>{const s=PROX[c.dataset.status][0];c.dataset.status=s;c.classList.remove("novo");
@@ -218,9 +249,9 @@ reg(p,s);site().postMessage({tipo:"status",num:p.num,status:s==="Pronto"?"Pronto
 $(`#${setor}-Recebido .vazio`)?.remove();$(`#${setor}-Recebido`).prepend(c)}
 setInterval(()=>document.querySelectorAll(".card[data-ini]").forEach(c=>{if(c.dataset.status==="Pronto")return;const s=Math.floor((Date.now()-c.dataset.ini)/1000);
 c.querySelector(".tempo").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;c.classList.toggle("atraso",s>90)}),1000);
-function entrar(p){reg(p,"Recebido");const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
+function entrar(p){reg(p,"Recebido");enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
 if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);
-const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>m.itens.push(i))}
+const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>{i.pessoa=i.pessoa||p.nome||"Mesa";m.itens.push(i)})}
 ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.qtd;if(i.sug)sug+=i.qtd*i.preco});gerencia();mapa();bip()}
 // alertas: aceite do primeiro pedido, garçom, conta
 function alerta(html,mesa,acoes){const a=document.createElement("div");a.className="alerta";a.dataset.mesa=mesa;a.innerHTML=html+`<span class="mx">${acoes}</span>`;$("#alertas").prepend(a);bip(660);contar();return a}
@@ -235,7 +266,7 @@ a.querySelector("[data-ok]").onclick=()=>{m.aceita=true;a.remove();entrar(p)};a.
 else entrar(p)}
 if(p.tipo==="ver-conta"){const m=mesas[p.mesa];if(m){m.estado="conta";mapa();site().postMessage({tipo:"extrato",mesa:p.mesa,itens:m.itens,total:m.total},"*")}return}
 if(p.tipo==="conta"&&p.pagamento){const m=mesas[p.mesa];if(m){m.estado="conta";mapa()}
-const a=alerta(`<b>Mesa ${esc(p.mesa)} fechou a conta</b><span>${reais(p.total)} no ${esc(p.pagamento)}${p.pessoas>1?` · dividir em ${p.pessoas} (${reais(p.total/p.pessoas)} cada)`:""}${p.servico?"":" · sem os 10%"} · levar a maquininha</span>`,p.mesa,`<button data-pago>Pago na maquininha</button>`);
+const a=alerta(`<b>Mesa ${esc(p.mesa)} fechou a conta</b><span>${reais(p.total)} no ${esc(p.pagamento)}${p.partes?` · cada um paga o seu: ${p.partes.map(x=>esc(x.nome)+" "+reais(x.total)).join(", ")}`:p.pessoas>1?` · dividir em ${p.pessoas} (${reais(p.total/p.pessoas)} cada)`:""}${p.servico?"":" · sem os 10%"} · levar a maquininha</span>`,p.mesa,`<button data-pago>Pago na maquininha</button>`);
 a.querySelector("[data-pago]").onclick=()=>{a.remove();pagos.push(p);liberar(p.mesa)};return}
 if(p.tipo==="garcom"||p.tipo==="conta"){const m=mesas[p.mesa];if(p.tipo==="conta"&&m){m.estado="conta";mapa()}
 const a=alerta(`<b>Mesa ${esc(p.mesa)}</b><span>${p.tipo==="conta"?"pediu a conta":"chamou o garçom"}</span>`,p.mesa,`<button data-vou>Estou indo</button>`);a.querySelector("[data-vou]").onclick=()=>{a.remove();contar()}}});
@@ -271,5 +302,52 @@ cancel.unshift(`${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"
 c.remove();reg(p,"Cancelado");site().postMessage({tipo:"status",num:p.num,status:"Item cancelado pela casa: "+$("#motivo").value},"*");$("#modal").hidden=true;gerencia();mapa()}}
 // aniversários (exemplo)
 $("#aniv").innerHTML=[["Bruno Teixeira","5511900000021","sexta-feira"],["Camila Rocha","5511900000022","domingo"]].map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Aniversário ${c[2]}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Feliz aniversário, ${c[0]}! Venha comemorar na Casa Brasa: a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar parabéns</button></a></div>`).join("");
+// comanda individual no fechamento
+function comandas(m){const g={};m.itens.forEach(i=>{const k=i.pessoa||"Mesa";g[k]=(g[k]||0)+i.qtd*i.preco});const k=Object.keys(g);
+return k.length>1?`<p class="nota" style="margin:8px 0">Comanda individual (com 10%): ${k.map(n=>`<b>${esc(n)}</b> ${reais(g[n]*1.1)}`).join(" · ")}</p>`:""}
+// pedido lançado pelo garçom (cliente que não quer usar o QR)
+const CATS=[...new Set(MENU.map(i=>i.cat))];
+function lancar(n){const qt={};
+$("#caixa").innerHTML=`<h3>Lançar pedido · mesa ${esc(n)}</h3><label>Para quem (comanda)<input id="l-pessoa" placeholder="Ex.: Carla"></label>
+<div class="l-menu">${CATS.map(c=>`<p class="l-cat">${esc(c)}</p>`+MENU.filter(i=>i.cat===c).map(i=>`<div class="l-it" data-id="${i.id}"><span>${esc(i.nome)}<small>${reais(i.preco)}</small></span><span class="l-q"><button class="sec" data-m="-1" aria-label="Menos">−</button><b>0</b><button class="sec" data-m="1" aria-label="Mais">+</button></span></div>`).join("")).join("")}</div>
+<label>Observação<input id="l-obs" placeholder="Ex.: sem cebola, ponto da carne"></label>
+<div class="pe"><button class="sec" data-cancelar>Voltar</button><button id="l-ok">Enviar · <span id="l-tot">R$ 0,00</span></button></div>`;$("#modal").hidden=false;
+$(".l-menu").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;const r=b.closest(".l-it"),id=r.dataset.id;qt[id]=Math.max(0,(qt[id]||0)+ +b.dataset.m);
+r.querySelector("b").textContent=qt[id];r.classList.toggle("on",qt[id]>0);$("#l-tot").textContent=reais(MENU.reduce((t,i)=>t+(qt[i.id]||0)*i.preco,0))};
+$("#l-ok").onclick=()=>{const its=MENU.filter(i=>qt[i.id]).map(i=>({nome:i.nome,qtd:qt[i.id],obs:$("#l-obs").value.trim(),preco:i.preco,cat:i.cat,sug:false}));if(!its.length)return;
+const p={tipo:"pedido",num:Date.now()%100000,mesa:String(n),modo:"Mesa",nome:$("#l-pessoa").value.trim()||"Mesa",origem:"garcom",itens:its,total:its.reduce((t,i)=>t+i.qtd*i.preco,0)};
+vistos.add(p.num);mesas[n].aceita=true;$("#modal").hidden=true;entrar(p)}}
+// integração com o caixa (simulada na demonstração)
+const INTEG=[["saipos","Saipos","PDV para restaurantes"],["consumer","Consumer","PDV e gestão"],["colibri","Colibri","PDV NCR Colibri"],["webhook","Outro sistema","Webhook (qualquer PDV com API)"]],ligadas=new Set(),envios=[];
+function integ(){$("#integ").innerHTML=INTEG.map(([id,n,d])=>{const on=ligadas.has(id);return `<div class="ig ${on?"on":""}"><b>${n}</b><small>${d}</small><span class="st ${on?"confirmada":"pendente"}">${on?"Conectado":"Desconectado"}</span><button class="${on?"sec":""}" data-ig="${id}">${on?"Desconectar":"Conectar"}</button></div>`}).join("")}
+$("#integ").onclick=e=>{const b=e.target.closest("[data-ig]");if(!b)return;const id=b.dataset.ig;if(ligadas.has(id)){ligadas.delete(id);integ()}else{b.textContent="Conectando…";b.disabled=true;setTimeout(()=>{ligadas.add(id);integ()},600)}};
+function enviarCaixa(ev,txt,dados){if(!ligadas.size)return;const para=[...ligadas].map(id=>INTEG.find(x=>x[0]===id)[1]).join(", ");
+envios.unshift({h:new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),txt,para,json:JSON.stringify(Object.assign({evento:ev,restaurante:"casa-brasa"},dados,{enviado_em:new Date().toISOString()}),null,2)});
+$("#integ-log").innerHTML=envios.slice(0,8).map((x,i)=>`<p data-env="${i}">✓ ${x.h} · ${esc(x.txt)} → <b>${esc(x.para)}</b></p>`).join("")}
+$("#integ-log").onclick=e=>{const r=e.target.closest("[data-env]");if(!r)return;const j=$("#integ-json");j.textContent=envios[r.dataset.env].json;j.hidden=false};
+// relatório do mês (dados de exemplo + o que entrou hoje), salvo em PDF pelo "Imprimir > Salvar como PDF"
+function relatorio(){let sd=7;const rnd=()=>(sd=(sd*9301+49297)%233280)/233280;
+const hoje=new Date(),ini=new Date(hoje.getFullYear(),hoje.getMonth()-1,1),dias=new Date(hoje.getFullYear(),hoje.getMonth(),0).getDate();
+const mes=ini.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+const porDia=[...Array(dias)].map((_,i)=>{const w=new Date(ini.getFullYear(),ini.getMonth(),i+1).getDay();return w===1?0:Math.round((w===5||w===6?7600:w===0?6200:3900)*(.8+rnd()*.4))});
+const fatM=porDia.reduce((a,b)=>a+b,0),pedM=Math.round(fatM/92),mesasM=Math.round(pedM/1.6);
+const horas=[11,12,13,14,15,16,17,18,19,20,21,22,23],peso=[3,9,10,6,2,1,1,3,6,10,9,5,2],pt=peso.reduce((a,b)=>a+b,0);
+const pratos=MENU.filter(i=>!BAR.includes(i.cat)).map(i=>({n:i.nome,q:Math.round(20+rnd()*140+(vendidos[i.nome]||0))})).sort((a,b)=>b.q-a.q).slice(0,8);
+const maxD=Math.max(...porDia),bw=760/dias;
+const barras=`<svg viewBox="0 0 780 190" role="img" aria-label="Vendas por dia">${porDia.map((v,i)=>`<rect x="${10+i*bw}" y="${165-v/maxD*150}" width="${bw-4}" height="${v/maxD*150}" rx="3" fill="${v===maxD?"#b23a1e":"#d9a46a"}"/><text x="${10+i*bw+(bw-4)/2}" y="182" font-size="9" text-anchor="middle" fill="#7c6b58">${i+1}</text>`).join("")}</svg>`;
+const pico=`<svg viewBox="0 0 380 170" role="img" aria-label="Pedidos por horário">${horas.map((h,i)=>`<rect x="${8+i*28}" y="${140-peso[i]/10*120}" width="22" height="${peso[i]/10*120}" rx="3" fill="${peso[i]>=9?"#b23a1e":"#d9a46a"}"/><text x="${19+i*28}" y="158" font-size="10" text-anchor="middle" fill="#7c6b58">${h}h</text>`).join("")}</svg>`;
+const tmp=tempos.length?tempos.reduce((a,b)=>a+b,0)/tempos.length/60:14.2;
+$("#relatorio").innerHTML=`<div class="rel-acoes"><button class="sec" data-rel-fechar>Fechar</button><button data-rel-pdf>Baixar PDF</button></div><div class="folha">
+<header><div><h1>Relatório de ${mes}</h1><p class="sub">Casa Brasa · gerado em ${hoje.toLocaleDateString("pt-BR")}</p></div><p class="sub">Stack Solution</p></header>
+<div class="rel-kpis rel-bloco"><div><small>Faturamento no mês</small><b>${reais(fatM)}</b><span class="up">▲ 9,4% vs mês anterior</span></div><div><small>Pedidos</small><b>${pedM.toLocaleString("pt-BR")}</b></div><div><small>Ticket médio por mesa</small><b>${reais(fatM/mesasM)}</b></div><div><small>Tempo médio de preparo</small><b>${tmp.toFixed(1).replace(".",",")} min</b></div>
+<div><small>Vendas extras (sugestão)</small><b>${reais(fatM*.064)}</b></div><div><small>Reservas</small><b>186</b></div><div><small>Compareceram</small><b>171 (92%)</b></div><div><small>Pedidos pelo QR</small><b>78%</b></div></div>
+<div class="rel-bloco"><h2>Vendas por dia</h2>${barras}<p class="nota">Segundas-feiras: fechado. Melhor dia em vermelho.</p></div>
+<div class="rel-duas rel-bloco"><div><h2>Horários de pico</h2>${pico}<p class="nota">Almoço 12h–13h e jantar 20h–21h concentram ${Math.round((peso[1]+peso[2]+peso[9]+peso[10])/pt*100)}% dos pedidos: reforce a equipe nesses horários.</p></div>
+<div><h2>Pratos mais vendidos</h2><table><tbody>${pratos.map((x,i)=>`<tr><td>${i+1}. ${esc(x.n)}</td><td style="text-align:right"><b>${x.q}</b></td></tr>`).join("")}</tbody></table></div></div>
+<div class="rel-bloco"><h2>Recomendações para o próximo mês</h2><p>• Destacar <b>${esc(pratos[0].n)}</b> no topo do cardápio e criar combo com bebida.<br>• Mandar convite para os 38 clientes que não voltam há 30 dias.<br>• Quinta-feira está 35% abaixo de sexta: testar um prato do dia ou happy hour.</p></div>
+<p class="nota">Demonstração: números do mês são exemplos (os pedidos de hoje entram na lista de pratos). No sistema real vêm dos pedidos registrados.</p></div>`;$("#relatorio").hidden=false}
+$("#btn-rel").onclick=relatorio;
+$("#relatorio").onclick=e=>{if(e.target.closest("[data-rel-fechar]"))$("#relatorio").hidden=true;if(e.target.closest("[data-rel-pdf]"))window.print()};
+integ();
 mapa();listaReservas();gerencia();listaPedidos();
 </script></body></html>

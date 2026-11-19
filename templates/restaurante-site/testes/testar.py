@@ -65,5 +65,11 @@ finally:
         ok = codigo == 0 and "FALHAS 0" in saida
         falhou |= not ok
         print(f"[tudo em um] sistema.js: {'ok' if ok else 'FALHOU'}")
+        codigo, saida = rodar(["node", str(AQUI / "recursos.js")])
+        ok = codigo == 0 and "FALHAS 0" in saida
+        falhou |= not ok
+        print(f"[adicionais, comanda, garçom, caixa, relatório] recursos.js: {'ok' if ok else 'FALHOU'}")
+        if not ok:
+            print("   " + "\n   ".join(saida.splitlines()[-4:]))
 print("RESULTADO:", "FALHOU" if falhou else "tudo ok")
 sys.exit(1 if falhou else 0)

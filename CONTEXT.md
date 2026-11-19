@@ -35,6 +35,13 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
      - cancelar só com senha do gerente (1234 na demo);
      - pedido reenviado até o restaurante confirmar.
 
+**Recursos de mercado (já na demo):**
+- **Adicionais e opções no prato** (`opcoes` em `cardapio.json`): acompanhamento, tamanho, borda, adicionais com preço extra; o preço soma na hora.
+- **Comanda individual:** cada pessoa põe o nome no pedido; a conta sai separada por pessoa e dá para "cada um paga o seu".
+- **Pedido lançado pelo garçom** na aba Mesas ("+ Lançar pedido"), para quem não quer usar o QR.
+- **Relatório do mês em PDF** (Gerência > "Relatório do mês"): faturamento, pedidos, ticket, vendas por dia, horários de pico, pratos mais vendidos e recomendações. Números do mês são de exemplo.
+- **Integrações com o caixa** (aba Integrações): Saipos, Consumer, Colibri ou webhook; cada pedido e conta fechada é enviado (simulado na demo, com o JSON que seria enviado).
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

@@ -116,11 +116,17 @@
     $$("[data-abrir-pedido]").forEach((b) => b.setAttribute("aria-label", `Abrir pedido, ${n} ${n === 1 ? "item" : "itens"}`));
     if (!$("#gaveta").hidden) desenharGaveta();
   }
-  function adicionar(id, qtd = 1, obs = "", sug = false) {
+  function adicionar(id, qtd = 1, obs = "", sug = false, extra = 0) {
     if (ESGOTADOS.has(id)) return;
+    // botão rápido "Adicionar": prato com escolha obrigatória entra com a primeira opção (dá para trocar na ficha do prato)
+    if (!obs && item(id)?.opcoes) {
+      const pad = item(id).opcoes.filter((g) => g.obrigatorio).map((g) => g.itens[0]);
+      obs = pad.map((o) => o.nome).join(", ");
+      extra = pad.reduce((t, o) => t + (o.preco || 0), 0);
+    }
     const chave = id + "::" + obs.trim().toLowerCase();
     const ex = carrinho.find((c) => c.chave === chave);
-    if (ex) ex.qtd += qtd; else carrinho.push({ chave, id, qtd, obs: obs.trim(), sug });
+    if (ex) ex.qtd += qtd; else carrinho.push({ chave, id, qtd, obs: obs.trim(), sug, extra });
     salvarCarrinho();
     if (!sug) sugerir(id);
   }
@@ -131,19 +137,22 @@
   function calcConta() {
     $("#v-serv").textContent = reais($("#servico").checked ? extrato.total * 0.1 : 0);
     $("#v-total").textContent = reais(contaTotal());
-    const n = +$("#pessoas").value;
-    $("#v-pessoa").textContent = n > 1 ? `${reais(contaTotal() / n)} por pessoa` : "";
+    const n = $("#pessoas").value, k = $("#servico").checked ? 1.1 : 1;
+    $("#v-pessoa").innerHTML = n === "pessoa" ? partes().map((x) => `${esc(x.nome)}: <b>${reais(x.total * k)}</b>`).join("<br>") : +n > 1 ? `${reais(contaTotal() / +n)} por pessoa` : "";
   }
+  // comanda individual: total de cada pessoa da mesa
+  const partes = () => Object.values(extrato.itens.reduce((g, i) => { const k = i.pessoa || "Mesa"; (g[k] = g[k] || { nome: k, total: 0 }).total += i.qtd * i.preco; return g; }, {}));
   function mostrarConta(d) {
     extrato = d;
+    const pes = partes(), varias = pes.length > 1;
     $("#conteudo").innerHTML = `<div class="largura pagina estreita pagina-conta"><p class="sobre">Mesa ${esc(mesa)}</p><h1>Sua conta</h1>
-      ${d.itens.length ? `<div class="conta" style="margin-top:var(--e6)"><ul>${d.itens.map((i) => `<li class="entre"><span>${i.qtd}× ${esc(i.nome)}</span><span class="preco">${reais(i.qtd * i.preco)}</span></li>`).join("")}</ul>
+      ${d.itens.length ? `<div class="conta" style="margin-top:var(--e6)">${(varias ? pes : [{ nome: "" }]).map((pp) => `${varias ? `<p class="entre comanda-nome"><b>${esc(pp.nome)}</b><span class="preco">${reais(pp.total)}</span></p>` : ""}<ul>${d.itens.filter((i) => !varias || (i.pessoa || "Mesa") === pp.nome).map((i) => `<li class="entre"><span>${i.qtd}× ${esc(i.nome)}${i.obs ? `<br><small class="nota">${esc(i.obs)}</small>` : ""}</span><span class="preco">${reais(i.qtd * i.preco)}</span></li>`).join("")}</ul>`).join("")}
       <p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(d.total)}</span></p>
       <label class="entre"><span><input type="checkbox" id="servico" checked> Serviço (10%, opcional)</span><span class="preco" id="v-serv"></span></label>
       <p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total" id="v-total"></span></p></div>
       <form class="form" style="margin-top:var(--e6);gap:var(--e5)" onsubmit="return false"><fieldset><legend>Como vai pagar</legend><div class="opcoes">
         ${["Pix", "Crédito", "Débito", "Dinheiro"].map((f, i) => `<label class="opcao"><input type="radio" name="pagamento" value="${f}" ${i === 1 ? "checked" : ""}><strong>${f}</strong></label>`).join("")}</div></fieldset>
-      <label><span>Dividir a conta</span><select class="campo" id="pessoas">${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n === 1 ? "Não dividir" : n + " pessoas"}</option>`).join("")}</select></label>
+      <label><span>Dividir a conta</span><select class="campo" id="pessoas">${varias ? `<option value="pessoa">Cada um paga o seu (comanda individual)</option>` : ""}${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n === 1 ? "Não dividir" : "Igual entre " + n + " pessoas"}</option>`).join("")}</select></label>
       <p class="lead" id="v-pessoa"></p>
       <p class="nota">O pagamento é feito na maquininha do restaurante: o garçom leva até a sua mesa.</p>
       <button type="button" class="btn btn-pri" data-fechar-conta>Fechar conta e chamar a maquininha</button></form>`
@@ -169,7 +178,9 @@
     carrinho = qtd <= 0 ? carrinho.filter((c) => c.chave !== chave) : carrinho.map((c) => (c.chave === chave ? { ...c, qtd } : c));
     salvarCarrinho();
   }
-  const subtotal = () => carrinho.reduce((s, c) => s + (item(c.id)?.preco ?? 0) * c.qtd, 0);
+  let nomeMesa = ler("cb-nome", ""); // comanda individual: quem está pedindo neste celular
+  const precoUn = (c) => (item(c.id)?.preco ?? 0) + (c.extra || 0); // preço do prato + adicionais escolhidos
+  const subtotal = () => carrinho.reduce((s, c) => s + precoUn(c) * c.qtd, 0);
 
   /* ---------- peças comuns ---------- */
   const e = CONFIG.endereco;
@@ -637,7 +648,7 @@
         </div></fieldset>`}
         <div class="conta" id="itens-pedido"></div>
         <div class="form-duas">
-          <label><span>${PAINEL ? "Seu nome (opcional)" : "Nome"}</span><input class="campo" name="nome" autocomplete="name"></label>
+          <label><span>${PAINEL ? "Seu nome (para a sua comanda)" : "Nome"}</span><input class="campo" name="nome" autocomplete="name" ${PAINEL ? `value="${esc(nomeMesa)}" placeholder="Ex.: Ana"` : ""}></label>
           <label class="fora-mesa"><span>Telefone com DDD</span><input class="campo" name="tel" type="tel" inputmode="tel" autocomplete="tel"></label>
           <label class="so-delivery" style="grid-column:1/-1"><span>Endereço de entrega</span><input class="campo" name="end" autocomplete="street-address" placeholder="Rua, número e bairro"></label>
           <label class="so-delivery" style="grid-column:1/-1"><span>Complemento (opcional)</span><input class="campo" name="comp" placeholder="Apto, bloco, referência"></label>
@@ -656,7 +667,7 @@
     const tipo = () => (PAINEL ? "mesa" : f.tipo.value);
     function desenhar() {
       const sub = subtotal(), taxa = tipo() === "delivery" ? CONFIG.entrega.taxa : 0;
-      $("#itens-pedido").innerHTML = `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li class="entre"><span>${c.qtd}× ${esc(it.nome)}${c.obs ? `<br><small class="nota">${esc(c.obs)}</small>` : ""}</span><span class="preco">${reais(it.preco * c.qtd)}</span></li>`; }).join("")}</ul><p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(sub)}</span></p>${taxa ? `<p class="entre"><span>Taxa de entrega</span><span class="preco">${reais(taxa)}</span></p>` : ""}<p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total">${reais(sub + taxa)}</span></p>`;
+      $("#itens-pedido").innerHTML = `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li class="entre"><span>${c.qtd}× ${esc(it.nome)}${c.obs ? `<br><small class="nota">${esc(c.obs)}</small>` : ""}</span><span class="preco">${reais(precoUn(c) * c.qtd)}</span></li>`; }).join("")}</ul><p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(sub)}</span></p>${taxa ? `<p class="entre"><span>Taxa de entrega</span><span class="preco">${reais(taxa)}</span></p>` : ""}<p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total">${reais(sub + taxa)}</span></p>`;
       $$(".so-delivery").forEach((x) => (x.hidden = tipo() !== "delivery"));
       $$(".fora-mesa").forEach((x) => (x.hidden = tipo() === "mesa"));
       $("#enviar-pedido").textContent = `${PAINEL ? "Enviar pedido para a cozinha" : "Enviar pedido pelo WhatsApp"} · ${reais(sub + taxa)}`;
@@ -674,14 +685,16 @@
       $("#p-erros").hidden = !err.length;
       $("#p-erros").innerHTML = err.join("<br>");
       if (err.length) return;
-      const linhas = carrinho.map((c) => { const it = item(c.id); return `• ${c.qtd}x ${it.nome} — ${reais(it.preco * c.qtd)}${c.obs ? `\n   _Obs.: ${c.obs}_` : ""}`; });
+      const linhas = carrinho.map((c) => { const it = item(c.id); return `• ${c.qtd}x ${it.nome} — ${reais(precoUn(c) * c.qtd)}${c.obs ? `\n   _Obs.: ${c.obs}_` : ""}`; });
       const naMesa = tipo() === "mesa";
       const msg = [`*Novo pedido — ${CONFIG.nome}*`, `*Tipo:* ${naMesa ? "Na mesa " + mesa : deliv ? "Delivery" : "Retirada no balcão"}`, "", "*Itens*", ...linhas, "", `Subtotal: ${reais(sub)}`, ...(deliv ? [`Taxa de entrega: ${reais(taxa)}`] : []), `*Total: ${reais(sub + taxa)}*`, "", `*Nome:* ${d.nome.trim()}`, `*Telefone:* ${d.tel.trim()}`, ...(deliv ? [`*Endereço:* ${d.end.trim()}${d.comp.trim() ? " — " + d.comp.trim() : ""}`] : []), ...(naMesa ? [] : [`*Pagamento:* ${d.pag}`]), ...(d.obs.trim() ? [`*Observações:* ${d.obs.trim()}`] : [])].join("\n");
       // modo painel: o pedido vai direto para o PDV (aqui, a tela ao lado na demonstração)
       if (CONFIG.pedidos === "painel") {
         const num = Date.now() % 100000;
         const pedido = { tipo: "pedido", num, mesa: naMesa ? mesa : "", modo: naMesa ? "Mesa" : deliv ? "Delivery" : "Retirada", nome: d.nome.trim(), obs: d.obs.trim(),
-          itens: carrinho.map((c) => ({ nome: item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: item(c.id).preco, cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa };
+          itens: carrinho.map((c) => ({ nome: item(c.id).nome, qtd: c.qtd, obs: c.obs, preco: precoUn(c), cat: item(c.id).categoria, sug: !!c.sug })), total: sub + taxa };
+        nomeMesa = d.nome.trim();
+        try { localStorage.setItem("cb-nome", JSON.stringify(nomeMesa)); } catch (e) {}
         let confirmado = false;
         const enviar = () => { if (!confirmado) { window.parent.postMessage(pedido, "*"); setTimeout(enviar, 3000); } };
         enviar();
@@ -710,7 +723,7 @@
     const falta = Math.max(0, CONFIG.entrega.pedidoMinimo - sub);
     g.innerHTML = `<header><h2 id="titulo-gaveta">Seu pedido</h2><button type="button" class="fechar" data-fechar aria-label="Fechar pedido">${ic("x")}</button></header>${
       carrinho.length
-        ? `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li><div class="entre"><b>${esc(it.nome)}</b><span class="preco">${reais(it.preco * c.qtd)}</span></div>${c.obs ? `<p class="nota">${esc(c.obs)}</p>` : ""}<div class="contas"><button type="button" data-menos="${esc(c.chave)}" aria-label="Diminuir ${esc(it.nome)}">−</button><b>${c.qtd}</b><button type="button" data-mais="${esc(c.chave)}" aria-label="Aumentar ${esc(it.nome)}">+</button><button type="button" class="remover" data-remover="${esc(c.chave)}">Remover</button></div></li>`; }).join("")}</ul>
+        ? `<ul>${carrinho.map((c) => { const it = item(c.id); return `<li><div class="entre"><b>${esc(it.nome)}</b><span class="preco">${reais(precoUn(c) * c.qtd)}</span></div>${c.obs ? `<p class="nota">${esc(c.obs)}</p>` : ""}<div class="contas"><button type="button" data-menos="${esc(c.chave)}" aria-label="Diminuir ${esc(it.nome)}">−</button><b>${c.qtd}</b><button type="button" data-mais="${esc(c.chave)}" aria-label="Aumentar ${esc(it.nome)}">+</button><button type="button" class="remover" data-remover="${esc(c.chave)}">Remover</button></div></li>`; }).join("")}</ul>
           <footer><p class="entre"><span>Subtotal</span><span class="preco conta-total">${reais(sub)}</span></p>${PAINEL ? `<p class="nota">Mesa ${esc(mesa)}: o pedido vai direto para a cozinha.</p>` : `<p class="nota">Delivery: mais ${reais(CONFIG.entrega.taxa)}, ${esc(CONFIG.entrega.tempoDelivery)}. Retirada sem taxa.</p>`}${!PAINEL && falta ? `<p class="nota">Faltam ${reais(falta)} para o pedido mínimo de delivery.</p>` : ""}<a class="btn btn-pri btn-bloco" href="${L.pedido}" data-fechar>Finalizar pedido</a></footer>`
         : `<div class="vazio"><h3>Seu pedido está vazio</h3><p class="nota">Escolha os pratos no cardápio.</p><a class="btn btn-sec" href="${L.cardapio}" data-fechar>Ver o cardápio</a></div>`
     }`;
@@ -751,6 +764,7 @@
           </div>
           ${PEDIDOS ? `<div class="ficha-grupo"><h2 class="rotulo">Ingredientes</h2><div class="tira">${it.ingredientes.map((x) => `<button type="button" class="marcador ingrediente" aria-pressed="false" data-ing="${esc(x)}">${esc(x)}</button>`).join("")}</div><p class="nota">Toque num ingrediente para pedir sem ele.</p></div>
           ${comPonto ? `<div class="ficha-grupo"><h2 class="rotulo">Ponto da carne</h2><div class="tira" id="ponto">${["Mal passado", "Ao ponto", "Bem passado"].map((s) => `<button type="button" class="marcador" aria-pressed="false">${s}</button>`).join("")}</div></div>` : ""}
+          ${(it.opcoes || []).map((g, gi) => `<div class="ficha-grupo opc" data-g="${gi}"><h2 class="rotulo">${esc(g.nome)} <span class="opc-tipo">${g.obrigatorio ? "escolha 1" : "opcional"}</span></h2><div class="tira">${g.itens.map((o, oi) => `<button type="button" class="marcador" aria-pressed="${g.obrigatorio && oi === 0}" data-o="${oi}">${esc(o.nome)}${o.preco ? `<small> + ${reais(o.preco)}</small>` : ""}</button>`).join("")}</div></div>`).join("")}
           <div class="ficha-grupo"><label for="obs" class="rotulo">Observações</label><textarea id="obs" rows="2" maxlength="140" placeholder="Molho à parte, sem pimenta"></textarea></div>` : `<div class="ficha-grupo"><h2 class="rotulo">Ingredientes</h2><p>${esc(it.ingredientes.map((x, i) => (i ? x : x.charAt(0).toUpperCase() + x.slice(1))).join(", "))}.</p></div>`}
           ${harm.length ? `<div class="ficha-grupo"><h2 class="rotulo">Vai bem com</h2><div class="combina">${harm.map((h) => `<a class="link" href="${lp(h.id)}">${esc(h.nome)}, ${reais(h.preco)}</a>`).join("")}</div></div>` : ""}
           <p class="nota">Em caso de alergia grave, confirme com a equipe antes de pedir.</p>
@@ -764,6 +778,18 @@
 
     let q = 1, ponto = "";
     const tirados = new Set();
+    const escolhas = (it.opcoes || []).map((g) => new Set(g.obrigatorio ? [0] : []));
+    const extraUn = () => escolhas.reduce((t, set, gi) => t + [...set].reduce((u, oi) => u + (it.opcoes[gi].itens[oi].preco || 0), 0), 0);
+    const atualizaPreco = () => { if ($("#add-preco")) $("#add-preco").textContent = reais((it.preco + extraUn()) * q); };
+    $$(".opc", m).forEach((el) => (el.onclick = (ev) => {
+      const b = ev.target.closest("[data-o]"); if (!b) return;
+      const gi = +el.dataset.g, g = it.opcoes[gi], oi = +b.dataset.o, set = escolhas[gi];
+      if (g.escolha === "varias") { if (set.has(oi)) set.delete(oi); else set.add(oi); }
+      else if (set.has(oi) && !g.obrigatorio) set.clear();
+      else { set.clear(); set.add(oi); }
+      $$("[data-o]", el).forEach((x) => x.setAttribute("aria-pressed", String(set.has(+x.dataset.o))));
+      atualizaPreco();
+    }));
     $$(".ingrediente", m).forEach((b) => (b.onclick = () => {
       const x = b.dataset.ing;
       if (tirados.has(x)) tirados.delete(x); else tirados.add(x);
@@ -774,10 +800,11 @@
       ponto = ponto === b.textContent ? "" : b.textContent;
       $$("#ponto button").forEach((x) => x.setAttribute("aria-pressed", String(x.textContent === ponto)));
     });
-    $$("[data-q]", m).forEach((b) => (b.onclick = () => { q = Math.min(20, Math.max(1, q + +b.dataset.q)); $("#q").textContent = q; $("#add-preco").textContent = reais(it.preco * q); }));
+    $$("[data-q]", m).forEach((b) => (b.onclick = () => { q = Math.min(20, Math.max(1, q + +b.dataset.q)); $("#q").textContent = q; atualizaPreco(); }));
     if (PEDIDOS) $("#add-modal").onclick = () => {
-      const obs = [ponto, ...[...tirados].map((x) => "sem " + x), $("#obs").value.trim()].filter(Boolean).join(", ");
-      adicionar(it.id, q, obs);
+      const opc = escolhas.flatMap((set, gi) => [...set].sort().map((oi) => (it.opcoes[gi].escolha === "varias" ? "+ " : "") + it.opcoes[gi].itens[oi].nome));
+      const obs = [...opc, ponto, ...[...tirados].map((x) => "sem " + x), $("#obs").value.trim()].filter(Boolean).join(", ");
+      adicionar(it.id, q, obs, false, extraUn());
       fecharPrato();
       abrirGaveta();
     };
@@ -882,9 +909,10 @@
       }
       const fc = ev.target.closest("[data-fechar-conta]");
       if (fc) {
-        const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", pes = +$("#pessoas").value, tot = contaTotal();
-        window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg, pessoas: pes, servico: $("#servico").checked, total: tot }, "*");
-        fc.outerHTML = `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;
+        const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", dv = $("#pessoas").value, tot = contaTotal(), k = $("#servico").checked ? 1.1 : 1;
+        const cada = dv === "pessoa" ? partes().map((x) => ({ nome: x.nome, total: x.total * k })) : null, pes = cada ? cada.length : +dv;
+        window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg, pessoas: pes, partes: cada, servico: $("#servico").checked, total: tot }, "*");
+        fc.outerHTML = `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${cada ? ", cada um paga o seu" : pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;
       }
       if (ev.target.closest("#gaveta [data-fechar]")) fecharGaveta();
       if (ev.target.closest("[data-fechar-prato]")) { ev.preventDefault(); fecharPrato(); }
