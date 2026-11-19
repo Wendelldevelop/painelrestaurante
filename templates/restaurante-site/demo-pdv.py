@@ -34,7 +34,7 @@ button.sec{background:var(--cartao);color:var(--texto);border:1px solid var(--li
 .painel{display:grid;grid-template-columns:210px 1fr;grid-template-rows:auto 1fr;min-width:0;min-height:0}
 header{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:14px 24px;background:var(--cartao);border-bottom:1px solid var(--linha)}
 header h1{margin:0;font:600 20px/1 Georgia,serif;letter-spacing:-.01em}
-header h1::before{content:"CB";display:inline-grid;place-items:center;width:34px;height:34px;margin-right:10px;border-radius:50%;background:var(--brasa);color:#fff;font:700 13px system-ui;vertical-align:middle}
+header h1::before{content:attr(data-ini);display:inline-grid;place-items:center;width:34px;height:34px;margin-right:10px;border-radius:50%;background:var(--brasa);color:#fff;font:700 13px system-ui;vertical-align:middle}
 .tag{padding:4px 10px;border-radius:99px;background:var(--verde-cl);color:var(--verde);font-size:11px;font-weight:700}
 .tag::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--verde);margin-right:6px;vertical-align:1px;animation:pulsa 1.6s infinite}
 .usuario{margin-left:auto;font-size:13px;color:var(--suave)}
@@ -213,6 +213,15 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 .btn-ia{position:fixed;right:22px;bottom:22px;z-index:25;border-radius:99px;padding:13px 20px;font-size:14px;box-shadow:0 10px 24px rgba(178,58,30,.35)}
 body.ver-cliente .btn-ia,body.ver-tv .btn-ia,body.modo-cel .btn-ia{display:none}
 @media(max-width:700px){.btn-ia{bottom:150px;right:12px;padding:11px 16px}}
+.demo-menu{position:relative}
+.demo-pop{position:absolute;top:calc(100% + 8px);left:0;z-index:30;width:270px;display:grid;gap:10px;padding:14px;background:var(--cartao);border:1px solid var(--linha);border-radius:14px;box-shadow:0 18px 40px rgba(60,40,20,.18)}
+.demo-pop label{display:grid;gap:5px;font-size:13px;font-weight:600;color:var(--suave)}.demo-pop select{font:600 14px system-ui;padding:9px;border-radius:10px;border:1px solid var(--linha);background:var(--fundo);color:var(--texto)}
+#btn-auto.on{background:var(--verde)}
+.aviso-flutua{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;max-width:min(560px,92vw);padding:13px 18px;border-radius:12px;background:var(--texto);color:var(--cartao);font-size:14px;box-shadow:0 14px 30px rgba(0,0,0,.25);animation:chega .3s ease}
+.cores{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}.cores button{width:34px;height:34px;border-radius:50%;padding:0;border:3px solid transparent}.cores button.on{border-color:var(--texto)}
+.caixa input[type=color]{height:42px;padding:3px}
+nav .c{display:none}
+@media(max-width:700px){nav .l{display:none}nav .c{display:inline}}body.modo-cel nav .l{display:none}body.modo-cel nav .c{display:inline}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -223,7 +232,11 @@ body.ver-cliente .btn-ia,body.ver-tv .btn-ia,body.modo-cel .btn-ia{display:none}
 <section class="lado"><div><p>Cliente na <b>mesa 5</b>: escolha os pratos, aceite a sugestão de bebida, finalize e use "Chamar garçom" e "Pedir a conta".</p>
 <div class="celular"><iframe id="site" title="Cardápio do cliente"></iframe></div></div></section>
 <section class="painel">
-<header><h1>Casa Brasa · Painel</h1><select id="unidade" aria-label="Unidade"></select><span class="tag">Ao vivo</span><button class="sec" id="modo-tela" type="button">📱 Ver no celular</button><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option><option value="balcao">Balcão</option><option value="rede">Dono da rede</option></select></label></header>
+<header><h1 data-ini="CB"><span id="marca-nome">Casa Brasa</span> · Painel</h1><select id="unidade" aria-label="Unidade"></select><span class="tag">Ao vivo</span><div class="demo-menu"><button class="sec" id="btn-demo" type="button" aria-expanded="false">⚙ Demo</button><div class="demo-pop" id="demo-pop" hidden>
+<label>Tipo de negócio<select id="tipo-neg"><option value="restaurante">Restaurante</option><option value="pizzaria">Pizzaria</option><option value="hamburgueria">Hamburgueria / lanchonete</option><option value="cafeteria">Cafeteria / padaria</option><option value="bar">Bar / choperia</option></select></label>
+<button type="button" id="btn-marca" class="sec">🎨 Personalizar marca</button><button type="button" id="btn-auto">▶ Modo apresentação</button>
+<p class="nota" style="margin:0">Ajustes para mostrar ao cliente durante a reunião.</p></div></div>
+<button class="sec" id="modo-tela" type="button">📱 Ver no celular</button><label class="usuario">Entrar como<select id="funcao"><option value="">Gerente (vê tudo)</option><option value="cozinha">Cozinha</option><option value="bar">Bar</option><option value="mesas">Garçom</option><option value="reservas">Recepção</option><option value="pedidos">Caixa (só pedidos)</option><option value="balcao">Balcão</option><option value="rede">Dono da rede</option></select></label></header>
 <nav role="tablist">
 <button role="tab" aria-selected="false" data-aba="pedidos">Pedidos<span class="bolinha" id="b-pedidos" hidden></span></button>
 <button role="tab" aria-selected="true" data-aba="cozinha">Cozinha<span class="bolinha" id="b-cozinha" hidden></span></button>
@@ -288,13 +301,18 @@ body.ver-cliente .btn-ia,body.ver-tv .btn-ia,body.modo-cel .btn-ia{display:none}
 </main></section>
 <button type="button" class="btn-ia" id="btn-ia">✨ Assistente</button>
 <div id="relatorio" hidden></div>
-<section id="tv" class="tv" hidden aria-label="Tela de senhas"><div class="tv-topo"><b>Casa Brasa</b><span class="tv-hora" id="tv-hora"></span><button class="sec" id="tv-sair" type="button">Sair da TV</button></div>
+<section id="tv" class="tv" hidden aria-label="Tela de senhas"><div class="tv-topo"><b id="tv-nome">Casa Brasa</b><span class="tv-hora" id="tv-hora"></span><button class="sec" id="tv-sair" type="button">Sair da TV</button></div>
 <div class="tv-corpo"><div class="tv-col"><h2>Preparando</h2><div class="tv-prep" id="tv-prep"></div></div><div class="tv-col"><h2>Pode retirar</h2><div id="tv-agora" class="tv-agora"></div><div class="tv-prontos" id="tv-prontos"></div></div></div></section>
 <div class="modal" id="modal" hidden><div class="caixa" id="caixa"></div></div>
 <script id="site-html" type="text/plain">%%SITE%%</script>
 <script>
 (()=>{const b=atob(document.getElementById("site-html").textContent.trim()),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
 document.getElementById("site").src=URL.createObjectURL(new Blob([u],{type:"text/html"}))+"#cardapio"})();
+const MARCA={nome:"Casa Brasa",ini:"CB",cor:"#b23a1e"};
+// nomes curtos das abas para o menu de baixo no celular
+{const CURTO={pedidos:"Pedidos",cozinha:"Cozinha",bar:"Bar",mesas:"Mesas",balcao:"Balcão",reservas:"Reservas",cardapio:"Cardápio",marketing:"Fidelidade",gerencia:"Gerência",integracoes:"Integrar",rede:"Rede"};
+document.querySelectorAll("nav button").forEach(b=>{const tx=[...b.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());if(!tx)return;const l=document.createElement("span");l.className="l";l.textContent=tx.nodeValue;tx.replaceWith(l);
+const c=document.createElement("span");c.className="c";c.textContent=CURTO[b.dataset.aba]||l.textContent;l.after(c)})}
 const $=s=>document.querySelector(s),reais=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const site=()=>document.getElementById("site").contentWindow;
 const BAR=["bebidas","vinhos"],PROX={"Recebido":["Em preparo","Começar"],"Em preparo":["Pronto","Pronto"]};
@@ -366,18 +384,21 @@ const a=alerta(`<b>Mesa ${esc(p.mesa)}</b><span>${p.tipo==="conta"?"pediu a cont
 // reservas (exemplo)
 const reservas=[["19:30","Família Souza",4,"5511900000001","pendente","Aniversário"],["20:00","Carlos Mendes",2,"5511900000002","confirmada",""],["20:30","Ana Lima",6,"5511900000003","pendente","Cadeirão para criança"],["21:00","Pedro Alves",2,"5511900000004","pendente","Jantar a dois"]];
 function listaReservas(){$("#reservas").innerHTML=reservas.map((r,i)=>`<div class="linha"><span class="q">${r[0]}</span><span class="d"><b>${esc(r[1])}</b> · ${r[2]} pessoas<small>${esc(r[5]||"Sem observações")}</small></span><span class="st ${r[4]}">${r[4]}</span>
-${r[4]==="pendente"?`<a href="https://wa.me/${r[3]}?text=${encodeURIComponent(`Olá, ${r[1]}! Aqui é da Casa Brasa. Confirmamos sua reserva hoje às ${r[0]} para ${r[2]} pessoas. Até logo!`)}" target="_blank" rel="noopener"><button data-conf="${i}">Confirmar no WhatsApp</button></a>`:""}</div>`).join("")}
+${r[4]==="pendente"?`<a href="https://wa.me/${r[3]}?text=${encodeURIComponent(`Olá, ${r[1]}! Aqui é da ${MARCA.nome}. Confirmamos sua reserva hoje às ${r[0]} para ${r[2]} pessoas. Até logo!`)}" target="_blank" rel="noopener"><button data-conf="${i}">Confirmar no WhatsApp</button></a>`:""}</div>`).join("")}
 $("#reservas").onclick=e=>{const b=e.target.closest("[data-conf]");if(b)setTimeout(()=>{reservas[b.dataset.conf][4]="confirmada";listaReservas()},300)};
 // gerência e CRM
 const crm=[["Marina Costa","5511900000011","34 dias","Picanha na brasa"],["Rafael Nunes","5511900000012","41 dias","Tagliatelle da Dona Lúcia"],["Juliana Prado","5511900000013","52 dias","Cheesecake de mirtilo"]];
-$("#crm").innerHTML=crm.map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Última visita há ${c[2]} · gosta de ${esc(c[3])}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Olá, ${c[0]}! Sentimos sua falta na Casa Brasa. Esta semana a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar convite</button></a></div>`).join("");
+$("#crm").innerHTML=crm.map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Última visita há ${c[2]} · gosta de ${esc(c[3])}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Olá, ${c[0]}! Sentimos sua falta na ${MARCA.nome}. Esta semana a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar convite</button></a></div>`).join("");
 function gerencia(){const ocup=Object.values(mesas).filter(m=>m.total).length||1;$("#g-ped").textContent=ped;$("#g-fat").textContent=reais(fat);$("#g-tkt").textContent=reais(fat/Math.max(1,new Set(Object.values(mesas).filter(m=>m.ultimo).map(m=>m.n)).size));$("#g-sug").textContent=reais(sug);try{rede()}catch(e){}if(typeof cardapio==="function"&&$('.esg[data-setor="todos"]').innerHTML)cardapio();if(tempos.length){const md=tempos.reduce((a,b)=>a+b,0)/tempos.length;$("#g-tmp").textContent=`${Math.floor(md/60)}:${String(Math.round(md%60)).padStart(2,"0")} min`}
 if(cancel.length)$("#g-canc").innerHTML=cancel.map(x=>`<p class="nota" style="margin:4px 0">${x}</p>`).join("");
 const top=Object.entries(vendidos).sort((a,b)=>b[1]-a[1]).slice(0,5),max=top[0]?top[0][1]:1;
 $("#g-top").innerHTML=top.length?top.map(([n,q])=>`<div class="barra"><span style="flex:0 0 46%">${esc(n)}</span><i style="width:${q/max*45}%"></i><b>${q}</b></div>`).join(""):'<p class="nota">Faça um pedido no celular.</p>'}
 $("#modo-tela").onclick=e=>{const c=document.body.classList.toggle("modo-cel");e.target.textContent=c?"💻 Ver no PC":"📱 Ver no celular"};
 // login por função: cada um vê só a sua tela
-$("#funcao").onchange=e=>{const f=e.target.value;document.querySelectorAll("nav button").forEach(b=>b.hidden=!!f&&b.dataset.aba!==f);document.querySelector(`nav [data-aba="${f||"cozinha"}"]`).click()};
+let funcaoAtual="",tipoAtual="restaurante";const OCULTAS={restaurante:[],pizzaria:[],hamburgueria:["reservas","bar"],cafeteria:["reservas","bar","mesas"],bar:["balcao"]};
+function aplicarVisao(ir){document.querySelectorAll("nav button").forEach(b=>b.hidden=(!!funcaoAtual&&b.dataset.aba!==funcaoAtual)||OCULTAS[tipoAtual].includes(b.dataset.aba));
+const alvo=ir&&document.querySelector(`nav [data-aba="${ir}"]`),at=document.querySelector('nav [aria-selected="true"]');if(alvo&&!alvo.hidden)alvo.click();else if(!at||at.hidden)[...document.querySelectorAll("nav button")].find(b=>!b.hidden)?.click()}
+$("#funcao").onchange=e=>{funcaoAtual=e.target.value;aplicarVisao(funcaoAtual||"cozinha")};
 // esgotado hoje
 const esgot=new Set();function cardapio(){$('.esg[data-setor="todos"]').innerHTML=MENU.map(i=>`<tr><td>${esc(i.nome)}</td><td>${esc(i.cat)}</td><td>${BAR.includes(i.cat)?"Bar":"Cozinha"}</td><td>${reais(i.preco)}</td><td>${vendidos[i.nome]||0}</td><td><button class="${esgot.has(i.id)?"on":""}" data-id="${i.id}">${esgot.has(i.id)?"Esgotado":"Disponível"}</button></td></tr>`).join("")}
 document.querySelectorAll(".esg").forEach(el=>{const bar=el.dataset.setor==="bar";if(el.dataset.setor!=="todos")el.innerHTML=MENU.filter(i=>BAR.includes(i.cat)===bar).map(i=>`<button data-id="${i.id}">${esc(i.nome)}</button>`).join("");
@@ -394,7 +415,7 @@ const m=mesas[p.mesa];if(m){m.total-=v;m.itens=m.itens.filter(i=>!itens.includes
 cancel.unshift(`${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · ${p.mesa?"Mesa "+esc(p.mesa):"Retirada"} · ${itens.map(i=>esc(i.nome)).join(", ")} · ${reais(v)} · ${esc($("#motivo").value)}`);
 c.remove();reg(p,"Cancelado");site().postMessage({tipo:"status",num:p.num,status:"Item cancelado pela casa: "+$("#motivo").value},"*");$("#modal").hidden=true;gerencia();mapa()}}
 // aniversários (exemplo)
-$("#aniv").innerHTML=[["Bruno Teixeira","5511900000021","sexta-feira"],["Camila Rocha","5511900000022","domingo"]].map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Aniversário ${c[2]}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Feliz aniversário, ${c[0]}! Venha comemorar na Casa Brasa: a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar parabéns</button></a></div>`).join("");
+$("#aniv").innerHTML=[["Bruno Teixeira","5511900000021","sexta-feira"],["Camila Rocha","5511900000022","domingo"]].map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Aniversário ${c[2]}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Feliz aniversário, ${c[0]}! Venha comemorar na ${MARCA.nome}: a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar parabéns</button></a></div>`).join("");
 // comanda individual no fechamento
 function comandas(m){const g={};m.itens.forEach(i=>{const k=i.pessoa||"Mesa";g[k]=(g[k]||0)+i.qtd*i.preco});const k=Object.keys(g);
 return k.length>1?`<p class="nota" style="margin:8px 0">Comanda individual (com 10%): ${k.map(n=>`<b>${esc(n)}</b> ${reais(g[n]*1.1)}`).join(" · ")}</p>`:""}
@@ -431,7 +452,7 @@ const barras=`<svg viewBox="0 0 780 190" role="img" aria-label="Vendas por dia">
 const pico=`<svg viewBox="0 0 380 170" role="img" aria-label="Pedidos por horário">${horas.map((h,i)=>`<rect x="${8+i*28}" y="${140-peso[i]/10*120}" width="22" height="${peso[i]/10*120}" rx="3" fill="${peso[i]>=9?"#b23a1e":"#d9a46a"}"/><text x="${19+i*28}" y="158" font-size="10" text-anchor="middle" fill="#7c6b58">${h}h</text>`).join("")}</svg>`;
 const tmp=tempos.length?tempos.reduce((a,b)=>a+b,0)/tempos.length/60:14.2;
 $("#relatorio").innerHTML=`<div class="rel-acoes"><button class="sec" data-rel-fechar>Fechar</button><button data-rel-pdf>Baixar PDF</button></div><div class="folha">
-<header><div><h1>Relatório de ${mes}</h1><p class="sub">Casa Brasa · gerado em ${hoje.toLocaleDateString("pt-BR")}</p></div><p class="sub">Stack Solution</p></header>
+<header><div><h1 data-ini="${MARCA.ini}">Relatório de ${mes}</h1><p class="sub">${MARCA.nome} · gerado em ${hoje.toLocaleDateString("pt-BR")}</p></div><p class="sub">Stack Solution</p></header>
 <div class="rel-kpis rel-bloco"><div><small>Faturamento no mês</small><b>${reais(fatM)}</b><span class="up">▲ 9,4% vs mês anterior</span></div><div><small>Pedidos</small><b>${pedM.toLocaleString("pt-BR")}</b></div><div><small>Ticket médio por mesa</small><b>${reais(fatM/mesasM)}</b></div><div><small>Tempo médio de preparo</small><b>${tmp.toFixed(1).replace(".",",")} min</b></div>
 <div><small>Vendas extras (sugestão)</small><b>${reais(fatM*.064)}</b></div><div><small>Reservas</small><b>186</b></div><div><small>Compareceram</small><b>171 (92%)</b></div><div><small>Pedidos pelo QR</small><b>78%</b></div></div>
 <div class="rel-bloco"><h2>Vendas por dia</h2>${barras}<p class="nota">Segundas-feiras: fechado. Melhor dia em vermelho.</p></div>
@@ -481,15 +502,15 @@ $("#promos").onclick=e=>{const b=e.target.closest("[data-promo]");if(!b)return;c
 // fila de espera
 const fila=[{nome:"Paula",pes:4,tel:"5511900000031",desde:Date.now()-18*60000},{nome:"Diego",pes:2,tel:"5511900000032",desde:Date.now()-9*60000}];
 function listaFila(){const at=fila.filter(f=>!f.fim);$("#fila").innerHTML=at.map((f,i)=>{const min=Math.round((Date.now()-f.desde)/60000);return `<div class="linha"><span class="q">${i+1}º</span><span class="d"><b>${esc(f.nome)}</b> · ${f.pes} pessoas<small>esperando há ${min} min${f.avisado?" · avisado no WhatsApp":""}</small></span>
-${f.avisado?`<span class="mx"><button data-sentou="${fila.indexOf(f)}">Sentou</button><button class="sec" data-desistiu="${fila.indexOf(f)}">Desistiu</button></span>`:`<a href="https://wa.me/${f.tel}?text=${encodeURIComponent(`Olá, ${f.nome}! Sua mesa na Casa Brasa está pronta. Te esperamos em até 10 minutos.`)}" target="_blank" rel="noopener"><button data-avisar="${fila.indexOf(f)}">Mesa pronta: avisar</button></a>`}</div>`}).join("")||'<p class="nota">Ninguém na fila.</p>'}
+${f.avisado?`<span class="mx"><button data-sentou="${fila.indexOf(f)}">Sentou</button><button class="sec" data-desistiu="${fila.indexOf(f)}">Desistiu</button></span>`:`<a href="https://wa.me/${f.tel}?text=${encodeURIComponent(`Olá, ${f.nome}! Sua mesa na ${MARCA.nome} está pronta. Te esperamos em até 10 minutos.`)}" target="_blank" rel="noopener"><button data-avisar="${fila.indexOf(f)}">Mesa pronta: avisar</button></a>`}</div>`}).join("")||'<p class="nota">Ninguém na fila.</p>'}
 $("#fila").onclick=e=>{const a=e.target.closest("[data-avisar]"),s=e.target.closest("[data-sentou]"),d=e.target.closest("[data-desistiu]");
 if(a)setTimeout(()=>{fila[a.dataset.avisar].avisado=true;listaFila()},200);if(s){fila[s.dataset.sentou].fim=1;listaFila()}if(d){fila[d.dataset.desistiu].fim=1;listaFila()}};
 $("#f-entrar").onclick=()=>{const nome=$("#f-nome").value.trim();if(!nome)return $("#f-nome").focus();const f={nome,pes:+$("#f-pes").value,tel:$("#f-tel").value.replace(/\D/g,"")||"5511900000000",desde:Date.now()};fila.push(f);listaFila();
-const pos=fila.filter(x=>!x.fim).indexOf(f)+1;const cel=$("#cel-fila");cel.hidden=false;cel.innerHTML=`<small>Casa Brasa · fila de espera</small><b>Olá, ${esc(nome)}!</b>Você é o<div class="grande">${pos}º</div>da fila. Espera estimada: ~${pos*8} min.<br><br>Pode esperar onde quiser: avisamos no WhatsApp quando a mesa estiver pronta.`;$("#f-nome").value="";$("#f-tel").value=""};
+const pos=fila.filter(x=>!x.fim).indexOf(f)+1;const cel=$("#cel-fila");cel.hidden=false;cel.innerHTML=`<small>${MARCA.nome} · fila de espera</small><b>Olá, ${esc(nome)}!</b>Você é o<div class="grande">${pos}º</div>da fila. Espera estimada: ~${pos*8} min.<br><br>Pode esperar onde quiser: avisamos no WhatsApp quando a mesa estiver pronta.`;$("#f-nome").value="";$("#f-tel").value=""};
 setInterval(listaFila,30000);
 // resumo do dia no WhatsApp do dono
 $("#btn-zap").onclick=()=>{const top=Object.entries(vendidos).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1])[0],tm=tempos.length?tempos.reduce((a,b)=>a+b,0)/tempos.length/60:0,hoje=new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"});
-const linhas=[`*Casa Brasa · resumo de hoje (${hoje})*`,"",`💰 Faturamento: ${reais(fat)}`,`🧾 Pedidos: ${ped} · ticket médio ${reais(fat/Math.max(1,new Set(pedidos.filter(o=>o.mesa).map(o=>o.mesa)).size))}`,`🏆 Campeão do dia: ${top?top[0]+" ("+top[1]+")":"—"}`,`⏱️ Preparo médio: ${tm?tm.toFixed(1).replace(".",",")+" min":"—"}`,`✨ Vendas extras (sugestão): ${reais(sug)}`,`🎁 Cashback dado: ${reais(fidDist)}`,`❌ Cancelamentos: ${cancel.length}`,`📅 Reservas amanhã: 4 (1 aniversário)`,"","Bom descanso! Relatório completo no painel."];
+const linhas=[`*${MARCA.nome} · resumo de hoje (${hoje})*`,"",`💰 Faturamento: ${reais(fat)}`,`🧾 Pedidos: ${ped} · ticket médio ${reais(fat/Math.max(1,new Set(pedidos.filter(o=>o.mesa).map(o=>o.mesa)).size))}`,`🏆 Campeão do dia: ${top?top[0]+" ("+top[1]+")":"—"}`,`⏱️ Preparo médio: ${tm?tm.toFixed(1).replace(".",",")+" min":"—"}`,`✨ Vendas extras (sugestão): ${reais(sug)}`,`🎁 Cashback dado: ${reais(fidDist)}`,`❌ Cancelamentos: ${cancel.length}`,`📅 Reservas amanhã: 4 (1 aniversário)`,"","Bom descanso! Relatório completo no painel."];
 $("#caixa").innerHTML=`<h3>Resumo do dia no WhatsApp</h3><div class="zap"><div class="zap-topo">Stack Solution · mensagem automática</div><div class="zap-msg">${linhas.map(l=>esc(l).replace(/\*(.+?)\*/g,"<b>$1</b>")).join("<br>")}<span class="zap-h">23:00 ✓✓</span></div></div>
 <label class="lin"><input type="checkbox" checked> Enviar todo dia às 23h para o dono e o gerente</label><div class="pe"><button class="sec" data-cancelar>Fechar</button><a href="https://wa.me/?text=${encodeURIComponent(linhas.join("\n"))}" target="_blank" rel="noopener"><button>Enviar agora</button></a></div>`;$("#modal").hidden=false};
 // assistente de IA (respostas prontas a partir dos dados da demonstração)
@@ -510,6 +531,39 @@ setTimeout(()=>{const r=c.querySelector(".ia-digitando");r.classList.remove("ia-
 $("#ia-chips").onclick=e=>{const b=e.target.closest("[data-q]");if(b)perguntar(b.dataset.q)};
 $("#ia-form").onsubmit=e=>{e.preventDefault();perguntar($("#ia-q").value);$("#ia-q").value=""};
 fidelidade();promos();listaFila();
+function avisar(t){document.querySelector(".aviso-flutua")?.remove();document.body.insertAdjacentHTML("beforeend",`<div class="aviso-flutua" role="status">${t}</div>`);clearTimeout(avisar.t);avisar.t=setTimeout(()=>document.querySelector(".aviso-flutua")?.remove(),4200)}
+// menu ⚙ Demo
+$("#btn-demo").onclick=e=>{e.stopPropagation();const p=$("#demo-pop");p.hidden=!p.hidden;$("#btn-demo").setAttribute("aria-expanded",!p.hidden)};
+document.addEventListener("click",e=>{if(e.isTrusted&&!e.target.closest(".demo-menu"))$("#demo-pop").hidden=true});
+// tipo de negócio: liga só os recursos daquele tipo
+const TIPOS={restaurante:"Restaurante: mesas, reservas, cozinha e bar.",pizzaria:"Pizzaria: mesa e retirada; pizza com tamanho, borda e adicionais.",hamburgueria:"Hamburgueria: pedido no balcão com senha na TV. Reservas e bar desligados.",cafeteria:"Cafeteria: pedido rápido no balcão com senha. Sem mesas e reservas.",bar:"Bar: comandas por mesa e por pessoa, cozinha e bar. Sem senha de balcão."};
+$("#tipo-neg").onchange=e=>{tipoAtual=e.target.value;aplicarVisao(["hamburgueria","cafeteria"].includes(tipoAtual)?"balcao":null);avisar(TIPOS[tipoAtual])};
+// marca do cliente
+const CORES=["#b23a1e","#c2410c","#1f6f5c","#2457a6","#6b2fa0","#1f2937"];
+$("#btn-marca").onclick=()=>{$("#demo-pop").hidden=true;
+$("#caixa").innerHTML=`<h3>Marca do cliente</h3><label>Nome do restaurante<input id="m-nome" value="${esc(MARCA.nome)}"></label><label>Iniciais do logo<input id="m-ini" maxlength="3" value="${esc(MARCA.ini)}"></label>
+<label>Cor principal</label><div class="cores">${CORES.map(c=>`<button type="button" data-cor="${c}" class="${c===MARCA.cor?"on":""}" style="background:${c}" aria-label="Cor ${c}"></button>`).join("")}<input type="color" id="m-cor" value="${MARCA.cor}" aria-label="Outra cor"></div>
+<p class="nota">Muda o painel, a TV e o cardápio do cliente na hora.</p><div class="pe"><button class="sec" data-cancelar>Voltar</button><button id="m-ok">Aplicar</button></div>`;$("#modal").hidden=false;
+$(".cores").onclick=e=>{const b=e.target.closest("[data-cor]");if(!b)return;$("#m-cor").value=b.dataset.cor;document.querySelectorAll(".cores [data-cor]").forEach(x=>x.classList.toggle("on",x===b))};
+$("#m-ok").onclick=()=>{const nome=$("#m-nome").value.trim()||MARCA.nome,ini=($("#m-ini").value.trim()||nome.split(/\s+/).map(w=>w[0]).join("").slice(0,2)).toUpperCase(),cor=$("#m-cor").value;
+const r=document.documentElement.style;r.setProperty("--brasa",cor);r.setProperty("--brasa-cl",`color-mix(in srgb, ${cor} 12%, white)`);
+$("#marca-nome").textContent=nome;$("#tv-nome").textContent=nome;document.querySelector("header h1").dataset.ini=ini;document.title=document.title.split(MARCA.nome).join(nome);
+site().postMessage({tipo:"marca",nome,ini,cor},"*");Object.assign(MARCA,{nome,ini,cor});$("#modal").hidden=true;avisar(`Pronto: o sistema agora está com a marca <b>${esc(nome)}</b>.`)}};
+// modo apresentação: pedidos de exemplo chegando sozinhos e a casa trabalhando
+let autoT=null,autoN=0;const NOMES=["Ana","Bruno","Carla","Diego","Lia","Rafa","Theo","Bia","Júlia","Caio"];
+const sorteia=a=>a[Math.floor(Math.random()*a.length)];
+function autoPedido(){const balc=tipoAtual==="hamburgueria"||tipoAtual==="cafeteria"||Math.random()<.3,mesa=balc?"":String(sorteia([1,2,3,4,6,7,8,9,10,11,12]));
+const disp=MENU.filter(i=>!esgot.has(i.id)),its=[...Array(1+Math.floor(Math.random()*3))].map(()=>{const i=sorteia(disp);return {nome:i.nome,qtd:1+(Math.random()<.25?1:0),obs:"",preco:i.preco,cat:i.cat,sug:Math.random()<.2}});
+window.dispatchEvent(new MessageEvent("message",{data:{tipo:"pedido",num:Date.now()%100000,mesa,modo:balc?"Retirada":"Mesa",nome:sorteia(NOMES),itens:its,total:its.reduce((t,i)=>t+i.qtd*i.preco,0)}}))}
+function autoPasso(){autoN++;document.querySelectorAll(".alerta [data-ok]").forEach(b=>b.click());
+const cards=[...document.querySelectorAll(".card .mx button:first-child")];if(cards.length&&autoN%2===0)sorteia(cards).click();
+if(autoN%2===1&&document.querySelectorAll(".card").length<10)autoPedido();
+if(autoN%5===0)document.querySelector("[data-entregar]")?.click();
+if(autoN%6===0)document.querySelector("[data-retirado]")?.click();
+if(autoN%7===0){const m=sorteia(Object.values(mesas).filter(x=>x.estado==="ocupada"&&+x.n!==5));if(m)window.dispatchEvent(new MessageEvent("message",{data:{tipo:"garcom",mesa:String(m.n)}}))}
+if(autoN%9===0)document.querySelectorAll(".alerta [data-vou]").forEach(b=>b.click())}
+$("#btn-auto").onclick=()=>{const b=$("#btn-auto");if(autoT){clearInterval(autoT);autoT=null;b.classList.remove("on");b.textContent="▶ Modo apresentação";avisar("Modo apresentação desligado.")}
+else{autoPedido();autoT=setInterval(autoPasso,2600);b.classList.add("on");b.textContent="■ Parar apresentação";$("#demo-pop").hidden=true;avisar("Modo apresentação ligado: pedidos de exemplo chegando sozinhos. Navegue pelas abas.")}};
 // botão fixo: abre a Gerência direto no assistente
 $("#btn-ia").onclick=()=>{$("#funcao").value="";$("#funcao").onchange({target:$("#funcao")});document.querySelector('nav [data-aba="gerencia"]').click();$("#assistente").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#ia-q").focus({preventScroll:true}),400)};
 integ();
@@ -550,18 +604,40 @@ body.um{grid-template-columns:1fr;padding-top:64px}
 .troca button[aria-pressed=true]{background:var(--brasa);color:#fff}
 .troca .bolinha{position:absolute;top:-4px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--ouro);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 4px}
 body.ver-cliente .painel,body.ver-restaurante .lado,body.ver-tv .painel,body.ver-tv .lado{display:none}
+.troca .tour-btn{color:var(--brasa);font-weight:700;border-left:1px solid var(--linha);border-radius:0 99px 99px 0}
+.tour{position:fixed;inset:0;z-index:70}.tour-luz{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(30,20,12,.62);transition:all .3s ease;pointer-events:none}
+.tour-card{position:fixed;width:min(340px,90vw);background:var(--cartao);color:var(--texto);border-radius:16px;padding:18px 18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.35);transition:top .3s,left .3s}
+.tour-card p{margin:0 0 14px;font-size:15px;line-height:1.5}.tour-card small{color:var(--suave);font-weight:700;letter-spacing:.08em}.tour-card .pe{gap:8px}
 body.ver-cliente .lado{border:0}body.ver-cliente .lado p{display:none}
 body.um .celular{height:min(800px,calc(100vh - 100px))}
 body.ver-restaurante .painel{height:calc(100vh - 64px)}
 @media(max-width:600px){body.ver-cliente .lado{padding:0}body.ver-cliente .celular{width:100vw;height:calc(100vh - 64px);border:0;border-radius:0;box-shadow:none}}
 </style></head>"""
 TROCA_HTML = """<body class="um ver-cliente"><div class="troca" role="group" aria-label="Escolher a tela">
-<button type="button" data-ver="cliente" aria-pressed="true">Cliente</button><button type="button" data-ver="restaurante" aria-pressed="false">Restaurante<span class="bolinha" id="b-troca" hidden></span></button><button type="button" data-ver="tv" aria-pressed="false">TV senhas</button></div>"""
+<button type="button" data-ver="cliente" aria-pressed="true">Cliente</button><button type="button" data-ver="restaurante" aria-pressed="false">Restaurante<span class="bolinha" id="b-troca" hidden></span></button><button type="button" data-ver="tv" aria-pressed="false">TV senhas</button><button type="button" class="tour-btn" id="tour-btn">▶ Tour</button></div>"""
 TROCA_JS = """<script>
 (()=>{const ver=v=>{document.body.classList.toggle("ver-cliente",v==="cliente");document.body.classList.toggle("ver-restaurante",v==="restaurante");
 document.body.classList.toggle("ver-tv",v==="tv");document.getElementById("tv").hidden=v!=="tv";document.querySelectorAll(".troca [data-ver]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.ver===v));try{localStorage.setItem("cb-ver",v)}catch(e){}};
 document.querySelectorAll(".troca [data-ver]").forEach(b=>b.onclick=()=>ver(b.dataset.ver));
 try{const v=localStorage.getItem("cb-ver");if(v)ver(v)}catch(e){}
+// tour guiado
+const PASSOS=[["cliente",".celular","Este é o celular do cliente na mesa. Ele escaneia o QR, escolhe os pratos (com adicionais) e envia o pedido."],
+["cliente",".troca","Aqui você troca entre o que o cliente vê, o painel do restaurante e a TV de senhas do balcão."],
+["restaurante","nav","Este é o painel do restaurante. Cada função (cozinha, bar, garçom, caixa, dono) vê só a sua tela."],
+["restaurante",'nav [data-aba="cozinha"]',"Os pedidos chegam na Cozinha e no Bar separados, com som e o tempo correndo."],
+["restaurante",'nav [data-aba="mesas"]',"O garçom vê o mapa das mesas, aceita o primeiro pedido, lança pedidos e fecha a conta."],
+["restaurante","#btn-demo","Em ⚙ Demo você escolhe o tipo de negócio, coloca a marca do cliente e liga o modo apresentação."],
+["restaurante","#btn-ia","O assistente com IA responde perguntas do dono sobre vendas, horários e clientes."],
+["tv","#tv-agora","Na TV, a senha do balcão é chamada quando o pedido fica pronto. Pronto, é só usar!"]];
+function tour(i){document.querySelector(".tour")?.remove();if(i>=PASSOS.length){ver("cliente");return}const [v,sel,txt]=PASSOS[i];ver(v);
+setTimeout(()=>{const el=document.querySelector(sel);if(!el)return tour(i+1);const r=el.getBoundingClientRect(),pad=8;
+document.body.insertAdjacentHTML("beforeend",`<div class="tour" role="dialog" aria-label="Tour"><div class="tour-luz" style="top:${r.top-pad}px;left:${r.left-pad}px;width:${r.width+pad*2}px;height:${r.height+pad*2}px"></div>
+<div class="tour-card"><small>${i+1} DE ${PASSOS.length}</small><p>${txt}</p><div class="pe"><button class="sec" data-tour-sair>Pular</button><button data-tour-prox>${i+1<PASSOS.length?"Próximo":"Começar"}</button></div></div></div>`);
+const c=document.querySelector(".tour-card"),cw=c.offsetWidth,ch=c.offsetHeight,abaixo=r.bottom+pad+16+ch<innerHeight;
+c.style.top=Math.max(12,Math.min(innerHeight-ch-12,abaixo?r.bottom+pad+12:r.top-pad-12-ch))+"px";c.style.left=Math.max(12,Math.min(innerWidth-cw-12,r.left+r.width/2-cw/2))+"px";
+if(r.height>innerHeight*.6){c.style.top=Math.max(12,r.top+20)+"px";c.style.left=(r.right+16+cw<innerWidth?r.right+16:Math.max(12,r.left-cw-16))+"px"}
+document.querySelector("[data-tour-prox]").onclick=()=>tour(i+1);document.querySelector("[data-tour-sair]").onclick=()=>{document.querySelector(".tour").remove();ver("cliente")};document.querySelector("[data-tour-prox]").focus()},250)}
+document.getElementById("tour-btn").onclick=()=>tour(0);
 // avisa no botão "Restaurante" quando chega algo novo enquanto se está na tela do cliente
 setInterval(()=>{const n=document.querySelectorAll(".alerta").length+document.querySelectorAll(".card.novo").length,b=document.getElementById("b-troca");b.hidden=!n;b.textContent=n},500)})();
 </script></body></html>"""

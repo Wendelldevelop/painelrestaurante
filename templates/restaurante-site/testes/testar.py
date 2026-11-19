@@ -77,6 +77,12 @@ finally:
         ok = codigo == 0 and "FALHAS 0" in saida
         falhou |= not ok
         print(f"[WhatsApp, IA, promoção, fila, cashback] marketing.js: {'ok' if ok else 'FALHOU'}")
+        codigo, saida = rodar(["node", str(AQUI / "demo.js")])
+        ok = codigo == 0 and "FALHAS 0" in saida
+        falhou |= not ok
+        print(f"[tour, tipo de negócio, marca, apresentação] demo.js: {'ok' if ok else 'FALHOU'}")
+        if not ok:
+            print("   " + "\n   ".join(saida.splitlines()[-4:]))
         if not ok:
             print("   " + "\n   ".join(saida.splitlines()[-4:]))
         if not ok:

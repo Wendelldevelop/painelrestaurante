@@ -835,6 +835,17 @@
     const t = Object.values(PROMOS);
     if (t.length && paginaAtual === "cardapio") $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-promo" class="faixa-promo" role="status">${t.map((x) => `<p>🔥 ${esc(x)}</p>`).join("")}</div>`);
   }
+  // demonstração: o painel troca nome, iniciais e cor para mostrar o sistema "com a cara" do cliente
+  let marcaAtual = { nome: CONFIG.nome, ini: CONFIG.logo?.iniciais || "" };
+  function aplicarMarca(d) {
+    if (d.cor) document.documentElement.style.setProperty("--brasa", d.cor);
+    const pares = [[marcaAtual.nome, d.nome], [marcaAtual.nome.toUpperCase(), d.nome.toUpperCase()], [marcaAtual.ini, d.ini]].filter(([a, b]) => a && b && a !== b);
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) { let t = n.nodeValue; pares.forEach(([a, b]) => { if (t.includes(a)) t = t.split(a).join(b); }); if (t !== n.nodeValue) n.nodeValue = t; }
+    document.title = document.title.split(marcaAtual.nome).join(d.nome);
+    CONFIG.nome = d.nome; if (CONFIG.logo) CONFIG.logo.iniciais = d.ini;
+    marcaAtual = { nome: d.nome, ini: d.ini };
+  }
   function aplicarPromo(d) {
     Object.entries(d.precos || {}).forEach(([id, pr]) => { const it = item(id); if (!it) return; if (it.precoOrig == null) it.precoOrig = it.preco; it.preco = d.ativa ? pr : it.precoOrig; });
     if (d.ativa) PROMOS[d.id] = d.titulo; else delete PROMOS[d.id];
@@ -894,6 +905,7 @@
     $("#fundo-gaveta").onclick = fecharGaveta;
     window.addEventListener("message", (ev) => {
       if (ev.data?.tipo === "promo") return aplicarPromo(ev.data);
+      if (ev.data?.tipo === "marca") return aplicarMarca(ev.data);
       if (ev.data?.tipo === "extrato" && String(ev.data.mesa) === String(mesa)) return mostrarConta(ev.data);
       if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
         const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");

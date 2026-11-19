@@ -54,6 +54,11 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **Promoções por horário:** happy hour e prato do dia; "Ligar agora" muda o preço e mostra a faixa no cardápio do cliente.
 - **Fila de espera** (aba Reservas e fila): entrada pelo QR da porta, posição e espera estimada, "Mesa pronta: avisar" no WhatsApp.
 
+**Para apresentar (já na demo):**
+- **▶ Tour** no topo do `sistema.html`: 8 passos explicando cliente, painel, cozinha, garçom, ⚙ Demo, assistente e TV.
+- **⚙ Demo** no topo do painel: tipo de negócio (restaurante, pizzaria, hamburgueria, cafeteria, bar) mostra só as abas daquele tipo; **Personalizar marca** (nome, iniciais e cor no painel, TV e cardápio do cliente); **Modo apresentação** (pedidos de exemplo chegando sozinhos e a casa trabalhando).
+- Botão **✨ Assistente** fixo no canto do painel.
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.
