@@ -26,6 +26,7 @@ const { chromium } = require('playwright');
   // resumo no WhatsApp e assistente
   await aba('gerencia'); await p.click('#btn-zap'); ok('resumo', /Faturamento/.test(await p.locator('.zap-msg').textContent()), 'sem resumo');
   await p.click('[data-cancelar]');
+  await aba('pedidos'); await p.click('#btn-ia'); await p.waitForTimeout(300); ok('botão assistente', await p.locator('#aba-gerencia').isVisible(), 'não abriu');
   await p.click('#ia-chips [data-q]'); await p.waitForTimeout(900);
   ok('assistente responde', /Picanha|campeão/.test(await p.locator('#ia-conversa .ia-r').first().textContent()), await p.locator('#ia-conversa').textContent());
   if (process.env.FOTO) await p.screenshot({ path: process.env.FOTO + '-ger.png' });

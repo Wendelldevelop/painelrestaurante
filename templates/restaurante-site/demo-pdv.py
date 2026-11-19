@@ -210,6 +210,9 @@ body.um #tv{top:64px}
 @media(max-width:800px){.tv-corpo{grid-template-columns:1fr}.tv-agora b{font-size:84px}.tv-prep span,.tv-prontos span{font-size:32px}.tv-topo{padding:14px 18px}.tv-col{padding:18px}}
 @media(max-width:700px){#unidade{max-width:150px}#aba-rede .tabela tr{grid-template-columns:1fr 1fr}#aba-rede .tabela td:nth-child(1){grid-column:1/-1;font-weight:700}}
 body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #aba-rede .tabela td:nth-child(1){grid-column:1/-1;font-weight:700}body.modo-cel #unidade{max-width:150px}
+.btn-ia{position:fixed;right:22px;bottom:22px;z-index:25;border-radius:99px;padding:13px 20px;font-size:14px;box-shadow:0 10px 24px rgba(178,58,30,.35)}
+body.ver-cliente .btn-ia,body.ver-tv .btn-ia,body.modo-cel .btn-ia{display:none}
+@media(max-width:700px){.btn-ia{bottom:150px;right:12px;padding:11px 16px}}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -274,7 +277,7 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 <section class="aba" id="aba-gerencia"><div class="acoes-g"><button id="btn-zap" type="button" class="sec">📱 Resumo do dia (WhatsApp)</button><button id="btn-rel" type="button">📄 Relatório do mês (PDF)</button></div>
 <div class="kpis"><div class="k"><small>Pedidos hoje</small><b id="g-ped">0</b></div><div class="k"><small>Faturamento hoje</small><b id="g-fat">R$ 0,00</b></div>
 <div class="k"><small>Ticket médio por mesa</small><b id="g-tkt">R$ 0,00</b></div><div class="k lucro"><small>Vendas extras (sugestão)</small><b id="g-sug">R$ 0,00</b></div><div class="k"><small>Tempo médio de preparo</small><b id="g-tmp">—</b></div></div>
-<div class="bloco ia"><h3>✨ Pergunte ao assistente</h3><div class="ia-chips" id="ia-chips"></div><div class="ia-conversa" id="ia-conversa"></div>
+<div class="bloco ia" id="assistente"><h3>✨ Pergunte ao assistente</h3><div class="ia-chips" id="ia-chips"></div><div class="ia-conversa" id="ia-conversa"></div>
 <form id="ia-form" class="ia-form"><input id="ia-q" placeholder="Ex.: qual prato vende menos?" aria-label="Pergunta"><button>Perguntar</button></form>
 <p class="nota">Demonstração: respostas a partir dos dados desta tela e de exemplos. No sistema real a IA lê todos os pedidos, reservas e clientes.</p></div>
 <div class="duas" style="margin-top:18px"><div class="bloco"><h3>Mais pedidos hoje</h3><div id="g-top"><p class="nota">Faça um pedido no celular.</p></div></div>
@@ -283,6 +286,7 @@ body.modo-cel #aba-rede .tabela tr{grid-template-columns:1fr 1fr}body.modo-cel #
 <div class="bloco" style="margin-top:14px"><h3>Segurança</h3><div class="seguro"><span>Primeiro pedido da mesa só entra com aceite do garçom</span><span>QR muda quando a mesa é fechada</span><span>Cancelar item só com senha do gerente</span><span>Cada restaurante vê só os próprios dados</span><span>Pedido é reenviado até a cozinha confirmar</span><span>Máximo de 3 pedidos por minuto por mesa</span><span>Login por função</span></div></div>
 <p class="nota">Números do celular são reais nesta demonstração; clientes, reservas e a senha do gerente (1234) são exemplos.</p></section>
 </main></section>
+<button type="button" class="btn-ia" id="btn-ia">✨ Assistente</button>
 <div id="relatorio" hidden></div>
 <section id="tv" class="tv" hidden aria-label="Tela de senhas"><div class="tv-topo"><b>Casa Brasa</b><span class="tv-hora" id="tv-hora"></span><button class="sec" id="tv-sair" type="button">Sair da TV</button></div>
 <div class="tv-corpo"><div class="tv-col"><h2>Preparando</h2><div class="tv-prep" id="tv-prep"></div></div><div class="tv-col"><h2>Pode retirar</h2><div id="tv-agora" class="tv-agora"></div><div class="tv-prontos" id="tv-prontos"></div></div></div></section>
@@ -506,6 +510,8 @@ setTimeout(()=>{const r=c.querySelector(".ia-digitando");r.classList.remove("ia-
 $("#ia-chips").onclick=e=>{const b=e.target.closest("[data-q]");if(b)perguntar(b.dataset.q)};
 $("#ia-form").onsubmit=e=>{e.preventDefault();perguntar($("#ia-q").value);$("#ia-q").value=""};
 fidelidade();promos();listaFila();
+// botão fixo: abre a Gerência direto no assistente
+$("#btn-ia").onclick=()=>{$("#funcao").value="";$("#funcao").onchange({target:$("#funcao")});document.querySelector('nav [data-aba="gerencia"]').click();$("#assistente").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#ia-q").focus({preventScroll:true}),400)};
 integ();
 mapa();listaReservas();gerencia();listaPedidos();
 </script></body></html>"""
