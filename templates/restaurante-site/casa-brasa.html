@@ -890,11 +890,12 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
 
   // conta da mesa: itens vêm do painel (já sem os cancelados); serviço e divisão escolhidos pelo cliente
   let extrato = { itens: [], total: 0 };
-  const contaTotal = () => extrato.total * ($("#servico")?.checked ? 1.1 : 1);
+  const pctServ = () => (extrato.servico ?? 10) / 100; // taxa de serviço configurada no painel
+  const contaTotal = () => extrato.total * ($("#servico")?.checked ? 1 + pctServ() : 1);
   function calcConta() {
-    $("#v-serv").textContent = reais($("#servico").checked ? extrato.total * 0.1 : 0);
+    $("#v-serv").textContent = reais($("#servico").checked ? extrato.total * pctServ() : 0);
     $("#v-total").textContent = reais(contaTotal());
-    const n = $("#pessoas").value, k = $("#servico").checked ? 1.1 : 1;
+    const n = $("#pessoas").value, k = $("#servico").checked ? 1 + pctServ() : 1;
     $("#v-pessoa").innerHTML = n === "pessoa" ? partes().map((x) => `${esc(x.nome)}: <b>${reais(x.total * k)}</b>`).join("<br>") : +n > 1 ? `${reais(contaTotal() / +n)} por pessoa` : "";
   }
   // comanda individual: total de cada pessoa da mesa
@@ -905,7 +906,7 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
     $("#conteudo").innerHTML = `<div class="largura pagina estreita pagina-conta"><p class="sobre">Mesa ${esc(mesa)}</p><h1>Sua conta</h1>
       ${d.itens.length ? `<div class="conta" style="margin-top:var(--e6)">${(varias ? pes : [{ nome: "" }]).map((pp) => `${varias ? `<p class="entre comanda-nome"><b>${esc(pp.nome)}</b><span class="preco">${reais(pp.total)}</span></p>` : ""}<ul>${d.itens.filter((i) => !varias || (i.pessoa || "Mesa") === pp.nome).map((i) => `<li class="entre"><span>${i.qtd}× ${esc(i.nome)}${i.obs ? `<br><small class="nota">${esc(i.obs)}</small>` : ""}</span><span class="preco">${reais(i.qtd * i.preco)}</span></li>`).join("")}</ul>`).join("")}
       <p class="entre" style="margin-top:var(--e4)"><span>Subtotal</span><span class="preco">${reais(d.total)}</span></p>
-      <label class="entre"><span><input type="checkbox" id="servico" checked> Serviço (10%, opcional)</span><span class="preco" id="v-serv"></span></label>
+      <label class="entre"><span><input type="checkbox" id="servico" ${(d.servico ?? 10) ? "checked" : ""}> Serviço (${d.servico ?? 10}%, opcional)</span><span class="preco" id="v-serv"></span></label>
       <p class="entre" style="margin-top:var(--e3)"><b>Total</b><span class="preco conta-total" id="v-total"></span></p></div>
       <form class="form" style="margin-top:var(--e6);gap:var(--e5)" onsubmit="return false"><fieldset><legend>Como vai pagar</legend><div class="opcoes">
         ${["Pix", "Crédito", "Débito", "Dinheiro"].map((f, i) => `<label class="opcao"><input type="radio" name="pagamento" value="${f}" ${i === 1 ? "checked" : ""}><strong>${f}</strong></label>`).join("")}</div></fieldset>
@@ -1600,6 +1601,15 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
     CONFIG.nome = d.nome; if (CONFIG.logo) CONFIG.logo.iniciais = d.ini;
     marcaAtual = { nome: d.nome, ini: d.ini };
   }
+  // o dono edita o cardápio no painel (preço, descrição, foto, prato novo) e muda aqui na hora
+  function redesenhar() { if (!MULTI && paginaAtual === "cardapio") { const y = window.scrollY; paginaAtual = null; irPara("cardapio"); window.scrollTo(0, y); } }
+  function aplicarMenu(d) {
+    let it = item(d.item.id);
+    if (!it) { it = Object.assign({ ingredientes: [], harmonizacao: [], alergenicos: [], restricoes: [], descricao: "" }, d.item); CARDAPIO.push(it); }
+    else { Object.assign(it, d.item); if (it.precoOrig != null && d.item.preco != null) it.precoOrig = d.item.preco; }
+    salvarCarrinho();
+    redesenhar();
+  }
   function aplicarPromo(d) {
     Object.entries(d.precos || {}).forEach(([id, pr]) => { const it = item(id); if (!it) return; if (it.precoOrig == null) it.precoOrig = it.preco; it.preco = d.ativa ? pr : it.precoOrig; });
     if (d.ativa) PROMOS[d.id] = d.titulo; else delete PROMOS[d.id];
@@ -1660,6 +1670,7 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
     window.addEventListener("message", (ev) => {
       if (ev.data?.tipo === "promo") return aplicarPromo(ev.data);
       if (ev.data?.tipo === "marca") return aplicarMarca(ev.data);
+      if (ev.data?.tipo === "menu") return aplicarMenu(ev.data);
       if (ev.data?.tipo === "extrato" && String(ev.data.mesa) === String(mesa)) return mostrarConta(ev.data);
       if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
         const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");
@@ -1694,7 +1705,7 @@ const CARDAPIO = [{"id": "pao-fermentacao", "nome": "Pão de fermentação natur
       }
       const fc = ev.target.closest("[data-fechar-conta]");
       if (fc) {
-        const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", dv = $("#pessoas").value, tot = contaTotal(), k = $("#servico").checked ? 1.1 : 1;
+        const pg = $(".pagina-conta input[name=pagamento]:checked")?.value || "Crédito", dv = $("#pessoas").value, tot = contaTotal(), k = $("#servico").checked ? 1 + pctServ() : 1;
         const cada = dv === "pessoa" ? partes().map((x) => ({ nome: x.nome, total: x.total * k })) : null, pes = cada ? cada.length : +dv;
         window.parent.postMessage({ tipo: "conta", mesa, pagamento: pg, pessoas: pes, partes: cada, servico: $("#servico").checked, total: tot }, "*");
         fc.outerHTML = `<p class="lead" id="status-pedido">Pronto! O garçom já está levando a maquininha (${esc(pg)}${cada ? ", cada um paga o seu" : pes > 1 ? `, dividido em ${pes}` : ""}).</p>`;

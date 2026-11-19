@@ -59,6 +59,17 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **⚙ Demo** no topo do painel: tipo de negócio (restaurante, pizzaria, hamburgueria, cafeteria, bar) mostra só as abas daquele tipo; **Personalizar marca** (nome, iniciais e cor no painel, TV e cardápio do cliente); **Modo apresentação** (pedidos de exemplo chegando sozinhos e a casa trabalhando).
 - Botão **✨ Assistente** fixo no canto do painel.
 
+**Operação e controle (já na demo):**
+- **Configurações:** mesas e QR Codes (plaquinhas para imprimir), taxa de serviço (liga/desliga e %), horário de funcionamento, impressora térmica, funcionários com senha ("Entrar com senha") e **registro de atividades** (quem fez o quê).
+- **Cardápio editável:** "Editar" e "+ Novo prato" (nome, preço, descrição, foto) mudam o celular do cliente na hora.
+- **Histórico:** hoje, ontem ou 7 dias, busca por mesa/cliente/prato e **Exportar Excel** (CSV).
+- **Desconto e cortesia** no fechamento da conta, com senha do gerente (1234 na demo).
+- **LGPD:** "Apagar" dados de um cliente no CRM, com senha do gerente.
+- **Comanda impressa:** botão 🖨 em cada cartão da cozinha/bar (ticket 80 mm) e opção de imprimir automático.
+- **Queda de internet:** ⚙ Demo > "Simular queda de internet"; o pedido fica guardado no celular e entra quando volta.
+- **Aviso no celular do garçom:** aba Mesas > "Ativar avisos" (notificação + vibração).
+- **Cadastro de restaurante novo:** assistente de 4 passos (nome/tipo, logo/cor, cardápio/mesas, publicar).
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.
