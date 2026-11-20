@@ -446,7 +446,7 @@
       <h1>Cardápio</h1>
       <span class="fio-orn" aria-hidden="true"></span>
       <p class="texto">${PEDIDOS ? "Toque no nome de um prato para ver os ingredientes e pedir do seu jeito." : "Toque no nome de um prato para ver os ingredientes. Preços em reais."}</p>
-      <div class="busca"><label class="sr" for="busca">Buscar no cardápio</label><input id="busca" type="search" placeholder="Buscar prato ou ingrediente"><button type="button" class="marcador" id="btn-filtros" aria-expanded="false" aria-controls="filtros">Filtros</button></div>
+      <div class="busca"><label class="sr" for="busca">Buscar no cardápio</label><input id="busca" type="search" placeholder="Buscar prato…"><button type="button" class="marcador" id="btn-filtros" aria-expanded="false" aria-controls="filtros">Filtros</button></div>
       <div class="filtros" id="filtros" hidden>${Object.entries(FILTROS).map(([k, v]) => `<button type="button" class="marcador" data-filtro="${k}" aria-pressed="false">${v}</button>`).join("")}</div>
     </section>
     <nav class="indice" aria-label="Categorias do cardápio"><div class="largura"><ul>${ORDEM.map((c) => `<li><a href="${L.cardapio}" data-ir="${c}">${NOME_CAT[c]}</a></li>`).join("")}</ul></div></nav>
@@ -875,7 +875,7 @@
       "Toque no nome de um prato para ver os ingredientes e pedir do seu jeito.": "Tap a dish to see the ingredients and order your way.", ". Monte o pedido e envie: a equipe leva até você.": ". Build your order and send it: we bring it to your table.", "Ingredientes": "Ingredients", "Observações": "Notes", "Vai bem com": "Goes well with" },
     es: { "Cardápio": "Carta", "Filtros": "Filtros", "Chamar garçom": "Llamar al mesero", "Pedir a conta": "Pedir la cuenta", "Reservar": "Reservar", "Ligar": "Llamar", "Pedido": "Pedido", "Você está na": "Estás en la",
       "Toque no nome de um prato para ver os ingredientes e pedir do seu jeito.": "Toca un plato para ver los ingredientes y pedir a tu gusto.", ". Monte o pedido e envie: a equipe leva até você.": ". Arma tu pedido y envíalo: te lo llevamos a la mesa.", "Ingredientes": "Ingredientes", "Observações": "Observaciones", "Vai bem com": "Combina con" } };
-  const PH = { en: "Search dish or ingredient", es: "Buscar plato o ingrediente" };
+  const PH = { en: "Search dishes…", es: "Buscar plato…" };
   function traduzTela() {
     const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     for (let n = w.nextNode(); n; n = w.nextNode()) {
@@ -888,7 +888,7 @@
       if (novo !== n.nodeValue) n.nodeValue = novo;
       n.__tr = n.nodeValue;
     }
-    document.querySelectorAll("input[placeholder]").forEach((i) => { if (i.__pt == null) i.__pt = i.placeholder; i.placeholder = LANG !== "pt" && /prato ou ingrediente/.test(i.__pt) ? PH[LANG] : i.__pt; });
+    document.querySelectorAll("input[placeholder]").forEach((i) => { if (i.__pt == null) i.__pt = i.placeholder; i.placeholder = LANG !== "pt" && /^Buscar prato/.test(i.__pt) ? PH[LANG] : i.__pt; });
   }
   function idioma(l) {
     LANG = l;
@@ -922,6 +922,7 @@
     const [html, ligar] = PAGINAS[pag];
     $("#conteudo").innerHTML = html();
     if (ligar) ligar();
+    $("#sugestao")?.remove();
     faixaPromo();
     faixaIdioma();
     window.scrollTo(0, 0);

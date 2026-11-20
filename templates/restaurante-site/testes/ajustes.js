@@ -22,6 +22,9 @@ const { chromium } = require('playwright');
   // 🖨 continua no pedido pronto
   await aba('cozinha'); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.locator('#cozinha-Em\\ preparo [data-av]').first().click(); await p.waitForTimeout(200);
   ok('🖨 no pronto', await p.locator('#cozinha-Pronto .card [data-imp]').count() === 1, 'sem botão');
+  // detalhe do pedido com horário de cada etapa
+  await aba('pedidos'); await p.locator('#lista-pedidos tr.clic').first().click(); await p.waitForTimeout(200);
+  ok('detalhe do pedido', await p.locator('.linha-tempo li').count() >= 3, await p.locator('.linha-tempo li').count()); await p.click('[data-cancelar]');
   // Pix pelo celular
   await ver('cliente'); await f.locator('[data-chamar="conta"]').first().click(); await p.waitForTimeout(700);
   await f.locator('input[value="Pix agora"]').check(); ok('QR Pix', await f.locator('#pix-box svg').isVisible(), 'sem QR');

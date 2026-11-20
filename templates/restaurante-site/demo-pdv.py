@@ -271,6 +271,32 @@ tbody.esg button[data-editar]{background:var(--cartao);color:var(--texto);border
 body.modo-cel #aba-historico .tabela tr{grid-template-columns:1fr auto}body.modo-cel #aba-historico .tabela td:nth-child(5){grid-column:1/-1}body.modo-cel .form-func{grid-template-columns:1fr 1fr}body.modo-cel .duas{grid-template-columns:1fr}
 @media(max-width:700px){#crm .linha .d,#aniv .linha .d{flex:1 1 100%}}body.modo-cel #crm .linha .d,body.modo-cel #aniv .linha .d{flex:1 1 100%}
 .est-barra{display:block;height:6px;border-radius:3px;background:var(--cartao2);margin-top:6px;overflow:hidden}.est-barra i{display:block;height:100%}
+/* revisão de layout */
+.card .pe{flex-wrap:wrap;row-gap:8px}.card .mx{margin-left:auto;flex-wrap:wrap;justify-content:flex-end}.card .mx button{padding:9px 12px}.card .mx .sec{padding:9px 10px}
+.card .topo{flex-wrap:wrap}.mesa{line-height:1.15}
+.aviso-flutua{bottom:auto;top:82px}body.um .aviso-flutua{top:146px}
+.tv-agora.vazio span{display:block;margin-top:10px;font-size:22px;opacity:.7}
+tr.clic{cursor:pointer}tr.clic:hover td{background:var(--ouro-cl)}#lista-pedidos td small{display:block;color:var(--suave);font-size:12px}
+.linha-tempo{list-style:none;margin:10px 0;padding:0;border-left:2px solid var(--linha)}.linha-tempo li{position:relative;padding:4px 0 8px 16px}.linha-tempo li::before{content:"";position:absolute;left:-6px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--verde)}
+.linha-tempo small{color:var(--suave);margin-left:6px}
+#nav-mais{display:none}
+@media(max-width:700px){
+ header{gap:6px 8px;padding:8px 12px}header h1{font-size:16px;flex:1 1 auto}#unidade{display:none}.tag{font-size:10px;padding:3px 8px}
+ .troca button{padding:8px 11px;font-size:13px;white-space:nowrap}.troca .tour-btn{padding:8px 10px}
+ nav:not(.aberta){grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+ nav:not(.aberta) button[data-aba]:not(.prim):not([aria-selected=true]){display:none}
+ nav.aberta{grid-template-columns:repeat(4,minmax(0,1fr));max-height:60vh;overflow:auto}
+ #nav-mais{display:block;font-size:11px;padding:9px 4px;min-height:44px;color:var(--brasa)}
+ .btn-ia{bottom:96px;right:10px;padding:11px 14px;font-size:16px}.btn-ia .t{display:none}
+ .aviso-flutua{top:auto;bottom:100px}body.um .aviso-flutua{top:auto}
+}
+body.modo-cel header{gap:6px 8px;padding:8px 12px}body.modo-cel header h1{font-size:16px;flex:1 1 auto}body.modo-cel #unidade{display:none}
+body.modo-cel nav:not(.aberta){grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+body.modo-cel nav:not(.aberta) button[data-aba]:not(.prim):not([aria-selected=true]){display:none}
+body.modo-cel nav.aberta{grid-template-columns:repeat(4,minmax(0,1fr));max-height:60vh;overflow:auto}
+body.modo-cel #nav-mais{display:block;font-size:11px;padding:9px 4px;min-height:44px;color:var(--brasa)}
+body.ver-tv .aviso-flutua{display:none}
+@media(max-width:600px){.troca{gap:2px;padding:3px}.troca button{padding:7px 10px;font-size:12.5px}.troca .tour-btn .t{display:none}}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -300,6 +326,7 @@ body.modo-cel #aba-historico .tabela tr{grid-template-columns:1fr auto}body.modo
 <button role="tab" aria-selected="false" data-aba="integracoes">Integrações</button>
 <button role="tab" aria-selected="false" data-aba="rede">Rede de lojas</button>
 <button role="tab" aria-selected="false" data-aba="config">Configurações</button>
+<button type="button" id="nav-mais" aria-expanded="false">☰ Mais</button>
 </nav>
 <main>
 <p class="aviso-rede" id="aviso-rede" hidden></p>
@@ -368,7 +395,7 @@ body.modo-cel #aba-historico .tabela tr{grid-template-columns:1fr auto}body.modo
 <div class="bloco" style="margin-top:14px"><h3>Segurança</h3><div class="seguro"><span>Primeiro pedido da mesa só entra com aceite do garçom</span><span>QR muda quando a mesa é fechada</span><span>Cancelar item só com senha do gerente</span><span>Cada restaurante vê só os próprios dados</span><span>Pedido é reenviado até a cozinha confirmar</span><span>Máximo de 3 pedidos por minuto por mesa</span><span>Login por função</span></div></div>
 <p class="nota">Números do celular são reais nesta demonstração; clientes, reservas e a senha do gerente (1234) são exemplos.</p></section>
 </main></section>
-<button type="button" class="btn-ia" id="btn-ia">✨ Assistente</button>
+<button type="button" class="btn-ia" id="btn-ia" aria-label="Assistente">✨<span class="t"> Assistente</span></button>
 <div id="relatorio" hidden></div>
 <div id="impressao" hidden></div>
 <section id="tv" class="tv" hidden aria-label="Tela de senhas"><div class="tv-topo"><b id="tv-nome">Casa Brasa</b><span class="tv-hora" id="tv-hora"></span><button class="sec" id="tv-sair" type="button">Sair da TV</button></div>
@@ -381,7 +408,7 @@ document.getElementById("site").src=URL.createObjectURL(new Blob([u],{type:"text
 const MARCA={nome:"Casa Brasa",ini:"CB",cor:"#b23a1e"};
 // nomes curtos das abas para o menu de baixo no celular
 {const CURTO={historico:"Histórico",config:"Ajustes",pedidos:"Pedidos",cozinha:"Cozinha",bar:"Bar",mesas:"Mesas",balcao:"Balcão",reservas:"Reservas",cardapio:"Cardápio",marketing:"Fidelidade",gerencia:"Gerência",integracoes:"Integrar",rede:"Rede"};
-document.querySelectorAll("nav button").forEach(b=>{const tx=[...b.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());if(!tx)return;const l=document.createElement("span");l.className="l";l.textContent=tx.nodeValue;tx.replaceWith(l);
+document.querySelectorAll("nav button[data-aba]").forEach(b=>{const tx=[...b.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());if(!tx)return;const l=document.createElement("span");l.className="l";l.textContent=tx.nodeValue;tx.replaceWith(l);
 const c=document.createElement("span");c.className="c";c.textContent=CURTO[b.dataset.aba]||l.textContent;l.after(c)})}
 const $=s=>document.querySelector(s),reais=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const site=()=>document.getElementById("site").contentWindow;
@@ -400,11 +427,11 @@ Object.assign(mesas[7],{estado:"ocupada",total:64,aceita:true,itens:[{nome:"Tagl
 Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84,pessoa:"Lucas"},{nome:"Chope pilsen",qtd:3,preco:14,pessoa:"Marina"}]});
 const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
 let filtro="Todos";
-function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;listaPedidos();try{tv()}catch(e){}try{historico()}catch(e){}}
+function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;(o.tempos=o.tempos||{})[st]=o.tempos[st]||new Date();listaPedidos();try{tv()}catch(e){}try{historico()}catch(e){}}
 const FILTROS=["Todos","Aguardando aceite","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
 function listaPedidos(){const vis=pedidos.filter(o=>filtro==="Todos"||o.status===filtro);
 $("#filtros").innerHTML=FILTROS.map(f=>`<button class="${f===filtro?"on":""}" data-f="${f}">${f} (${f==="Todos"?pedidos.length:pedidos.filter(o=>o.status===f).length})</button>`).join("");
-$("#lista-pedidos").innerHTML=vis.map(o=>`<tr><td>#${o.num}</td><td>${o.hora.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</td><td>${o.mesa?"Mesa "+esc(o.mesa):"Retirada"}</td>
+$("#lista-pedidos").innerHTML=vis.map(o=>`<tr class="clic" data-num="${o.num}" title="Ver detalhes"><td>#${o.num}</td><td>${o.hora.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}${["Aguardando aceite","Recebido","Em preparo"].includes(o.status)?`<small class="${Date.now()-o.hora>15*60000?"alerta-t":""}">há ${Math.max(0,Math.round((Date.now()-o.hora)/60000))} min</small>`:""}</td><td>${o.mesa?"Mesa "+esc(o.mesa):"Balcão"+(o.senha?" · senha "+o.senha:"")}${o.origem==="garcom"?"<small>lançado pelo garçom</small>":o.nome&&o.nome!=="Mesa"?`<small>${esc(o.nome)}</small>`:""}</td>
 <td>${o.itens.map(i=>`${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}`).join("<br>")}</td><td>${reais(o.total)}</td><td><span class="ps p-${o.status.split(" ")[0]}">${o.status}</span></td></tr>`).join("");
 $("#sem-pedidos").hidden=pedidos.length>0;const n=pedidos.filter(o=>o.status==="Aguardando aceite").length;const b=$("#b-pedidos");b.hidden=!n;b.textContent=n}
 $("#filtros").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filtro=b.dataset.f;listaPedidos()}};
@@ -414,7 +441,7 @@ function bolinha(id,n){const b=$("#b-"+id);b.hidden=!n;b.textContent=n}
 function contar(){bolinha("cozinha",document.querySelectorAll("#cozinha-Recebido .card").length);bolinha("bar",document.querySelectorAll("#bar-Recebido .card").length);
 bolinha("mesas",Object.values(mesas).filter(m=>["conta","pronto"].includes(m.estado)).length+document.querySelectorAll(".alerta").length)}
 // abas
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));document.querySelectorAll(".aba").forEach(a=>a.classList.toggle("ativa",a.id==="aba-"+b.dataset.aba))});
+document.querySelectorAll("nav button[data-aba]").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button[data-aba]").forEach(x=>x.setAttribute("aria-selected",x===b));document.querySelectorAll(".aba").forEach(a=>a.classList.toggle("ativa",a.id==="aba-"+b.dataset.aba))});
 // mapa das mesas
 const ROT={livre:"Livre",ocupada:"Ocupada",pronto:"Pronto para levar",conta:"Pediu a conta"};
 function mapa(){$("#mapa").innerHTML=Object.values(mesas).map(m=>`<div class="m ${m.estado}"><span class="n">Mesa ${m.n}</span><span class="s">${ROT[m.estado]}</span><span class="v">QR ${m.qr}${m.total?` · ${reais(m.total)}`:""}</span>
@@ -438,7 +465,7 @@ if(p.mesa||s!=="Pronto")reg(p,s);site().postMessage({tipo:"status",num:p.num,sta
 $(`#${setor}-Recebido .vazio`)?.remove();$(`#${setor}-Recebido`).prepend(c)}
 setInterval(()=>document.querySelectorAll(".card[data-ini]").forEach(c=>{if(c.dataset.status==="Pronto")return;const s=Math.floor((Date.now()-c.dataset.ini)/1000);
 c.querySelector(".tempo").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;c.classList.toggle("atraso",s>90)}),1000);
-function entrar(p){reg(p,"Recebido");try{baixarEstoque(p)}catch(e){}if(!p.mesa&&!p.senha){p.senha=String(++senhaN).padStart(3,"0");balcao.push(p);site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Aguarde ser chamado na TV.`},"*")}enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
+function entrar(p){reg(p,"Recebido");try{baixarEstoque(p)}catch(e){}if(!p.mesa&&!p.senha){p.senha=String(++senhaN).padStart(3,"0");balcao.push(p);const po=pedidos.find(x=>x.num===p.num);if(po)po.senha=p.senha;site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Aguarde ser chamado na TV.`},"*")}enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
 if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);p.pend=(coz.length?1:0)+(bar.length?1:0);tv();
 const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>{i.pessoa=i.pessoa||p.nome||"Mesa";m.itens.push(i)})}
 ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.qtd;if(i.sug)sug+=i.qtd*i.preco});gerencia();mapa();bip()}
@@ -474,8 +501,8 @@ $("#g-top").innerHTML=top.length?top.map(([n,q])=>`<div class="barra"><span styl
 $("#modo-tela").onclick=e=>{const c=document.body.classList.toggle("modo-cel");e.target.textContent=c?"💻 Ver no PC":"📱 Ver no celular"};
 // login por função: cada um vê só a sua tela
 let funcaoAtual="",tipoAtual="restaurante";const OCULTAS={restaurante:[],pizzaria:[],hamburgueria:["reservas","bar"],cafeteria:["reservas","bar","mesas"],bar:["balcao"]};
-function aplicarVisao(ir){document.querySelectorAll("nav button").forEach(b=>b.hidden=(!!funcaoAtual&&b.dataset.aba!==funcaoAtual)||OCULTAS[tipoAtual].includes(b.dataset.aba));
-const alvo=ir&&document.querySelector(`nav [data-aba="${ir}"]`),at=document.querySelector('nav [aria-selected="true"]');if(alvo&&!alvo.hidden)alvo.click();else if(!at||at.hidden)[...document.querySelectorAll("nav button")].find(b=>!b.hidden)?.click()}
+function aplicarVisao(ir){document.querySelectorAll("nav button[data-aba]").forEach(b=>b.hidden=(!!funcaoAtual&&b.dataset.aba!==funcaoAtual)||OCULTAS[tipoAtual].includes(b.dataset.aba));
+const alvo=ir&&document.querySelector(`nav [data-aba="${ir}"]`),at=document.querySelector('nav [aria-selected="true"]');if(alvo&&!alvo.hidden)alvo.click();else if(!at||at.hidden)[...document.querySelectorAll("nav button[data-aba]")].find(b=>!b.hidden)?.click()}
 $("#funcao").onchange=e=>{funcaoAtual=e.target.value;usuario=ROTULO_F[funcaoAtual];aplicarVisao(funcaoAtual||"cozinha")};
 // esgotado hoje
 const esgot=new Set();function cardapio(){$('.esg[data-setor="todos"]').innerHTML=MENU.map(i=>`<tr><td>${esc(i.nome)}</td><td>${esc(i.cat)}</td><td>${BAR.includes(i.cat)?"Bar":"Cozinha"}</td><td>${reais(i.preco)}</td><td>${vendidos[i.nome]||0}</td><td><button class="${esgot.has(i.id)?"on":""}" data-id="${i.id}">${esgot.has(i.id)?"Esgotado":"Disponível"}</button> <button class="sec" data-editar="${i.id}">Editar</button></td></tr>`).join("")}
@@ -545,7 +572,7 @@ function pronta(p){p.pronta=Date.now();reg(p,"Pronto");tv();bip(990)}
 function tv(){const prep=balcao.filter(o=>!o.pronta&&!o.retirada),pr=balcao.filter(o=>o.pronta&&!o.retirada).sort((a,b)=>b.pronta-a.pronta),ult=pr[0];
 $("#tv-prep").innerHTML=prep.map(o=>`<span>${o.senha}</span>`).join("")||"<em>Nenhum pedido no momento</em>";
 const ag=$("#tv-agora");const novo=ult&&ag.dataset.num!==String(ult.num)+ult.pronta;ag.dataset.num=ult?String(ult.num)+ult.pronta:"";
-ag.className="tv-agora"+(ult?"":" vazio");ag.innerHTML=ult?`<small>Senha chamada</small><b>${ult.senha}</b><span>${esc(ult.nome&&ult.nome!=="Mesa"?ult.nome:"")}</span>`:`<small>Aguardando</small><b>—</b>`;
+ag.className="tv-agora"+(ult?"":" vazio");ag.innerHTML=ult?`<small>Senha chamada</small><b>${ult.senha}</b><span>${esc(ult.nome&&ult.nome!=="Mesa"?ult.nome:"")}</span>`:`<small>Pode retirar</small><span>As senhas prontas aparecem aqui em destaque.</span>`;
 if(novo){void ag.offsetWidth;ag.classList.add("chama")}
 $("#tv-prontos").innerHTML=pr.slice(1).map(o=>`<span>${o.senha}</span>`).join("");
 const linha=(o,b)=>`<div class="linha"><span class="q">${o.senha}</span><span class="d"><b>${esc(o.nome||"Cliente")}</b><small>${o.itens.map(i=>i.qtd+"× "+esc(i.nome)).join(", ")}</small></span>${b}</div>`;
@@ -722,6 +749,19 @@ const slug=semAc(w.nome).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#caixa").innerHTML=`<div class="wiz-ok"><div class="grande">🚀</div><h3>${esc(w.nome)} está no ar!</h3><code>https://${slug}.stacksolution.com.br</code><p class="nota">Cardápio publicado, ${w.mesas} QR Codes prontos (Configurações > Imprimir plaquinhas) e painel liberado. Tudo sem programador.</p><div class="pe" style="justify-content:center"><button data-cancelar>Ver o painel</button></div></div>`}};tela()}
 $("#btn-novo-rest").onclick=cadastro;$("#btn-novo-rest2").onclick=()=>{$("#demo-pop").hidden=true;cadastro()};
 listaFunc();placas();historico();
+// menu de baixo no celular: principais + "Mais"
+["pedidos","cozinha","mesas","balcao"].forEach(a=>document.querySelector(`nav [data-aba="${a}"]`)?.classList.add("prim"));
+$("#nav-mais").onclick=()=>{const n=document.querySelector("nav"),ab=n.classList.toggle("aberta");$("#nav-mais").setAttribute("aria-expanded",ab);$("#nav-mais").textContent=ab?"✕ Fechar":"☰ Mais"};
+document.querySelectorAll("nav button[data-aba]").forEach(b=>b.addEventListener("click",()=>{document.querySelector("nav").classList.remove("aberta");$("#nav-mais").textContent="☰ Mais";$("#nav-mais").setAttribute("aria-expanded",false)}));
+// detalhe do pedido: itens, observações, horário de cada etapa e reimpressão
+$("#lista-pedidos").addEventListener("click",e=>{const tr=e.target.closest("tr[data-num]");if(!tr)return;const o=pedidos.find(x=>String(x.num)===tr.dataset.num);if(!o)return;
+const h=d=>new Date(d).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+$("#caixa").innerHTML=`<h3>Pedido #${o.num} · ${o.mesa?"Mesa "+esc(o.mesa):"Balcão"+(o.senha?" · senha "+o.senha:"")}</h3><p class="nota" style="margin-top:0">${o.nome&&o.nome!=="Mesa"?esc(o.nome)+" · ":""}${o.origem==="garcom"?"lançado pelo garçom":"pedido pelo QR"}</p>
+${o.itens.map(i=>`<div class="l"><span>${i.qtd}× ${esc(i.nome)}${i.obs?`<br><small class="nota">${esc(i.obs)}</small>`:""}</span><span>${reais(i.qtd*i.preco)}</span></div>`).join("")}<div class="l t"><span>Total</span><span>${reais(o.total)}</span></div>
+<ul class="linha-tempo">${Object.entries(o.tempos||{}).map(([st,d])=>`<li><b>${esc(st)}</b><small>${h(d)}</small></li>`).join("")}</ul>
+<div class="pe"><button class="sec" data-cancelar>Fechar</button><button id="dp-imp">🖨 Imprimir comanda</button></div>`;$("#modal").hidden=false;
+$("#dp-imp").onclick=()=>comanda(o,o.itens,o.itens.every(i=>BAR.includes(i.cat))?"bar":"cozinha")});
+setInterval(()=>{if($("#aba-pedidos").classList.contains("ativa"))listaPedidos()},30000);
 // ===== estoque simples
 const PIX=%%PIX%%;
 const INSUMOS=[{nome:"Picanha",un:"kg",qtd:4.2,min:2,usa:{"picanha-brasa":.35}},{nome:"Costela",un:"kg",qtd:5,min:2,usa:{"costela-12h":.45}},{nome:"Filé-mignon",un:"kg",qtd:3,min:1.5,usa:{"file-espaguete":.25,"file-roti":.25}},
@@ -750,7 +790,7 @@ if(autoN%5===0)document.querySelector("[data-entregar]")?.click();
 if(autoN%6===0)document.querySelector("[data-retirado]")?.click();
 if(autoN%7===0){const m=sorteia(Object.values(mesas).filter(x=>x.estado==="ocupada"&&+x.n!==5));if(m)window.dispatchEvent(new MessageEvent("message",{data:{tipo:"garcom",mesa:String(m.n)}}))}
 if(autoN%9===0)document.querySelectorAll(".alerta [data-vou]").forEach(b=>b.click())}
-$("#btn-auto").onclick=()=>{const b=$("#btn-auto");if(autoT){clearInterval(autoT);autoT=null;b.classList.remove("on");b.textContent="▶ Modo apresentação";avisar("Modo apresentação desligado.")}
+$("#btn-auto").onclick=()=>{const b=$("#btn-auto");$("#demo-pop").hidden=true;if(autoT){clearInterval(autoT);autoT=null;b.classList.remove("on");b.textContent="▶ Modo apresentação";avisar("Modo apresentação desligado.")}
 else{autoPedido();autoT=setInterval(autoPasso,2600);b.classList.add("on");b.textContent="■ Parar apresentação";$("#demo-pop").hidden=true;avisar("Modo apresentação ligado: pedidos de exemplo chegando sozinhos. Navegue pelas abas.")}};
 // botão fixo: abre a Gerência direto no assistente
 $("#btn-ia").onclick=()=>{$("#funcao").value="";$("#funcao").onchange({target:$("#funcao")});document.querySelector('nav [data-aba="gerencia"]').click();$("#assistente").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#ia-q").focus({preventScroll:true}),400)};
@@ -802,7 +842,7 @@ body.ver-restaurante .painel{height:calc(100vh - 64px)}
 @media(max-width:600px){body.ver-cliente .lado{padding:0}body.ver-cliente .celular{width:100vw;height:calc(100vh - 64px);border:0;border-radius:0;box-shadow:none}}
 </style></head>"""
 TROCA_HTML = """<body class="um ver-cliente"><div class="troca" role="group" aria-label="Escolher a tela">
-<button type="button" data-ver="cliente" aria-pressed="true">Cliente</button><button type="button" data-ver="restaurante" aria-pressed="false">Restaurante<span class="bolinha" id="b-troca" hidden></span></button><button type="button" data-ver="tv" aria-pressed="false">TV senhas</button><button type="button" class="tour-btn" id="tour-btn">▶ Tour</button></div>"""
+<button type="button" data-ver="cliente" aria-pressed="true">Cliente</button><button type="button" data-ver="restaurante" aria-pressed="false">Restaurante<span class="bolinha" id="b-troca" hidden></span></button><button type="button" data-ver="tv" aria-pressed="false">TV senhas</button><button type="button" class="tour-btn" id="tour-btn">▶<span class="t"> Tour</span></button></div>"""
 TROCA_JS = """<script>
 (()=>{const ver=v=>{document.body.classList.toggle("ver-cliente",v==="cliente");document.body.classList.toggle("ver-restaurante",v==="restaurante");
 document.body.classList.toggle("ver-tv",v==="tv");document.getElementById("tv").hidden=v!=="tv";document.querySelectorAll(".troca [data-ver]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.ver===v));try{localStorage.setItem("cb-ver",v)}catch(e){}};
