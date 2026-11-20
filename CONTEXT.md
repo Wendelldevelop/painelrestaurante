@@ -82,6 +82,9 @@ Vídeo do teste: `video-teste-mesa-e-balcao.mp4` (regravar: `node templates/rest
 
 **Fluxo ágil (menos cliques):** o pedido entra direto "em preparo"; cozinha e bar tocam **uma vez** em "✓ Pronto" e o cartão **sai da tela** (a cozinha só vê o que falta fazer). O prato pronto vai para **Balcão > "Mesas prontas"**, agrupado por mesa, com **"Levei ✓"** para o garçom (o celular dele vibra). **Pix pelo celular libera a mesa sozinho.** Senha sai da TV sozinha em 5 min. Aceite do 1º pedido é opcional (Configurações). Esgotados ficam recolhidos e o menu lateral é agrupado em Operação, Gestão e Ajustes.
 
+**Menu enxuto (6 grupos):** Pedidos (Hoje | Histórico) · Cozinha e bar (Cozinha | Bar) · Salão (Mesas | Balcão e TV | Reservas e fila) · Cardápio (Cardápio e estoque | Promoções e fidelidade) · Gerência (Resumo e clientes | Rede de lojas) · Configurações (Configurações | Integrações). As sub-abas ficam no topo de cada grupo.
+**Senha do balcão:** a TV só chama quando cozinha **e** bar terminam; o Balcão mostra "Cozinha ✓ · Bar ⏳" e tem "Chamar na TV" para chamar na hora.
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

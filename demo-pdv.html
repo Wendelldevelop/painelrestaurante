@@ -263,6 +263,14 @@ body.ver-tv .aviso-flutua{display:none}
 #cozinha-Recebido,#bar-Recebido{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;align-items:start}#cozinha-Recebido .card,#bar-Recebido .card{margin:0}#cozinha-Recebido .vazio,#bar-Recebido .vazio{grid-column:1/-1}
 .card.saindo{opacity:0;transform:scale(.96);transition:all .3s}
 .prontas{border:2px solid #cfe5cc;background:#fbfef9}.pronta-mesa{background:var(--verde-cl)!important;border-color:#cfe5cc!important}.pronta-mesa .q{color:var(--verde)}.pronta-mesa [data-levei-mesa]{background:var(--verde)}.pronta-mesa .d small{display:block;margin-top:4px}
+/* menu enxuto: 6 grupos + abas pequenas no topo */
+nav button.sub{display:none!important}nav.so-uma button.sub:not([hidden]){display:block!important}#nav-mais{display:none!important}
+nav button.grupo-ativo{background:var(--brasa-cl);color:var(--brasa)}
+.subnav{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 18px;padding:5px;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;width:fit-content;max-width:100%}
+.subnav button{background:none;color:var(--suave);font-weight:600;padding:9px 16px;border-radius:9px}.subnav button.on{background:var(--brasa);color:#fff}
+.subnav .n{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:4px;padding:0 4px;border-radius:9px;background:var(--brasa);color:#fff;font-size:11px}.subnav button.on .n{background:#fff;color:var(--brasa)}
+@media(max-width:700px){nav:not(.aberta){grid-auto-columns:minmax(0,1fr)}.subnav{width:100%;overflow-x:auto;flex-wrap:nowrap}.subnav button{white-space:nowrap;padding:8px 12px}}
+.d-set{font-size:13px;font-weight:600;color:var(--suave);white-space:nowrap;align-self:center}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -281,23 +289,24 @@ body.ver-tv .aviso-flutua{display:none}
 <nav role="tablist">
 <span class="nav-sec">Operação</span>
 <button role="tab" aria-selected="false" data-aba="pedidos">Pedidos<span class="bolinha" id="b-pedidos" hidden></span></button>
-<button role="tab" aria-selected="true" data-aba="cozinha">Cozinha<span class="bolinha" id="b-cozinha" hidden></span></button>
-<button role="tab" aria-selected="false" data-aba="bar">Bar<span class="bolinha" id="b-bar" hidden></span></button>
-<button role="tab" aria-selected="false" data-aba="mesas">Mesas (garçom)<span class="bolinha" id="b-mesas" hidden></span></button>
-<button role="tab" aria-selected="false" data-aba="balcao">Balcão e TV<span class="bolinha" id="b-balcao" hidden></span></button>
+<button role="tab" aria-selected="true" data-aba="cozinha">Cozinha e bar<span class="bolinha" id="b-cozinha" hidden></span></button>
+<button role="tab" aria-selected="false" data-aba="bar" class="sub">Bar<span class="bolinha" id="b-bar" hidden></span></button>
+<button role="tab" aria-selected="false" data-aba="mesas">Salão<span class="bolinha" id="b-mesas" hidden></span></button>
+<button role="tab" aria-selected="false" data-aba="balcao" class="sub">Balcão e TV<span class="bolinha" id="b-balcao" hidden></span></button>
 <span class="nav-sec">Gestão</span>
-<button role="tab" aria-selected="false" data-aba="reservas">Reservas e fila</button>
+<button role="tab" aria-selected="false" data-aba="reservas" class="sub">Reservas e fila</button>
 <button role="tab" aria-selected="false" data-aba="cardapio">Cardápio</button>
-<button role="tab" aria-selected="false" data-aba="marketing">Fidelidade e promoções</button>
-<button role="tab" aria-selected="false" data-aba="gerencia">Gerência e CRM</button>
-<button role="tab" aria-selected="false" data-aba="historico">Histórico</button>
+<button role="tab" aria-selected="false" data-aba="marketing" class="sub">Fidelidade e promoções</button>
+<button role="tab" aria-selected="false" data-aba="gerencia">Gerência</button>
+<button role="tab" aria-selected="false" data-aba="historico" class="sub">Histórico</button>
 <span class="nav-sec">Ajustes</span>
-<button role="tab" aria-selected="false" data-aba="integracoes">Integrações</button>
-<button role="tab" aria-selected="false" data-aba="rede">Rede de lojas</button>
+<button role="tab" aria-selected="false" data-aba="integracoes" class="sub">Integrações</button>
+<button role="tab" aria-selected="false" data-aba="rede" class="sub">Rede de lojas</button>
 <button role="tab" aria-selected="false" data-aba="config">Configurações</button>
 <button type="button" id="nav-mais" aria-expanded="false">☰ Mais</button>
 </nav>
 <main>
+<div class="subnav" id="subnav" hidden></div>
 <p class="aviso-rede" id="aviso-rede" hidden></p>
 <p class="aviso-unidade" id="aviso-unidade" hidden></p>
 <div class="alertas" id="alertas"></div>
@@ -378,7 +387,7 @@ body.ver-tv .aviso-flutua{display:none}
 document.getElementById("site").src=URL.createObjectURL(new Blob([u],{type:"text/html"}))+"#cardapio"})();
 const MARCA={nome:"Casa Brasa",ini:"CB",cor:"#b23a1e"};
 // nomes curtos das abas para o menu de baixo no celular
-{const CURTO={historico:"Histórico",config:"Ajustes",pedidos:"Pedidos",cozinha:"Cozinha",bar:"Bar",mesas:"Mesas",balcao:"Balcão",reservas:"Reservas",cardapio:"Cardápio",marketing:"Fidelidade",gerencia:"Gerência",integracoes:"Integrar",rede:"Rede"};
+{const CURTO={mesas:"Salão",config:"Ajustes",gerencia:"Gerência",cozinha:"Cozinha",historico:"Histórico",config:"Ajustes",pedidos:"Pedidos",cozinha:"Cozinha",bar:"Bar",mesas:"Mesas",balcao:"Balcão",reservas:"Reservas",cardapio:"Cardápio",marketing:"Fidelidade",gerencia:"Gerência",integracoes:"Integrar",rede:"Rede"};
 document.querySelectorAll("nav button[data-aba]").forEach(b=>{const tx=[...b.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());if(!tx)return;const l=document.createElement("span");l.className="l";l.textContent=tx.nodeValue;tx.replaceWith(l);
 const c=document.createElement("span");c.className="c";c.textContent=CURTO[b.dataset.aba]||l.textContent;l.after(c)})}
 const $=s=>document.querySelector(s),reais=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -408,7 +417,7 @@ $("#sem-pedidos").hidden=pedidos.length>0;const n=pedidos.filter(o=>o.status==="
 $("#filtros").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filtro=b.dataset.f;listaPedidos()}};
 let ped=0,fat=0,sug=0,senhaN=40;const balcao=[],prontosMesa=[];const vendidos={},vistos=new Set(),hist={},tempos=[],cancel=[];
 function bip(f=880){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.18,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.45);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+.45)}catch(e){}}
-function bolinha(id,n){const b=$("#b-"+id);b.hidden=!n;b.textContent=n}
+const BC={};function bolinha(id,n){BC[id]=n;const b=$("#b-"+id);if(b){b.hidden=!n;b.textContent=n}try{grupoBadges()}catch(e){}}
 function contar(){bolinha("cozinha",document.querySelectorAll("#cozinha-Recebido .card").length);bolinha("bar",document.querySelectorAll("#bar-Recebido .card").length);
 bolinha("mesas",Object.values(mesas).filter(m=>["conta","pronto"].includes(m.estado)).length+document.querySelectorAll(".alerta").length)}
 // abas
@@ -431,13 +440,13 @@ c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"
 <ul>${itens.map(i=>`<li>${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}</li>`).join("")}</ul><div class="pe"><span class="mx"><button data-av>✓ Pronto</button><button class="sec" data-imp title="Imprimir comanda" aria-label="Imprimir comanda">🖨</button><button class="sec" data-cancel title="Cancelar item" aria-label="Cancelar">✕</button></span></div>`;
 c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);c.querySelector("[data-imp]").onclick=()=>comanda(p,itens,setor);if($("#c-auto-imp")?.checked&&$("#c-imp").value){avisar(`🖨 Comanda #${p.num} impressa na ${esc(setor==="bar"&&$("#c-bar-imp").checked?"impressora do bar":$("#c-imp").value)}`);log("Imprimiu comanda",`#${p.num} · ${setor}`)}
 c.querySelector("button").onclick=()=>{const s=PROX[c.dataset.status][0];c.dataset.status=s;c.classList.remove("novo");
-if(s==="Pronto"){c.querySelector("[data-av]").remove();tempos.push((Date.now()-c.dataset.ini)/1000);gerencia();const m=mesas[p.mesa];if(m){m.estado="pronto";m.pronto++;prontosMesa.push({mesa:m.n,num:p.num,itens,setor,hora:Date.now(),p});listaProntas();notificar(MARCA.nome,`Mesa ${m.n}: pronto para levar (veja no Balcão)`);bip(990);}if(!p.mesa&&--p.pend<=0)pronta(p);mapa()}else c.querySelector("button").textContent=PROX[s][1];
+if(s==="Pronto"){c.querySelector("[data-av]").remove();tempos.push((Date.now()-c.dataset.ini)/1000);gerencia();const m=mesas[p.mesa];if(m){m.estado="pronto";m.pronto++;prontosMesa.push({mesa:m.n,num:p.num,itens,setor,hora:Date.now(),p});listaProntas();notificar(MARCA.nome,`Mesa ${m.n}: pronto para levar (veja no Balcão)`);bip(990);}(p.feitos=p.feitos||[]).push(setor);if(!p.mesa&&--p.pend<=0)pronta(p);else if(!p.mesa)tv();mapa()}else c.querySelector("button").textContent=PROX[s][1];
 if(p.mesa||s!=="Pronto")reg(p,s);site().postMessage({tipo:"status",num:p.num,status:p.mesa?(s==="Pronto"?"Pronto, saindo para a mesa":"Em preparo"):(p.pronta?`Pronto! Senha ${p.senha}: retire no balcão`:`Senha ${p.senha} · em preparo`)},"*");if(s==="Pronto"){c.classList.add("saindo");setTimeout(()=>{const col=c.parentElement;c.remove();if(col&&!col.querySelector(".card"))col.innerHTML=`<p class="vazio">Nada para fazer agora. 👌</p>`},350)}else document.getElementById(`${setor}-${s}`).prepend(c);contar()};
 $(`#${setor}-Recebido .vazio`)?.remove();$(`#${setor}-Recebido`).prepend(c)}
 setInterval(()=>document.querySelectorAll(".card[data-ini]").forEach(c=>{if(c.dataset.status==="Pronto")return;const s=Math.floor((Date.now()-c.dataset.ini)/1000);
 c.querySelector(".tempo").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;c.classList.toggle("atraso",s>90)}),1000);
 function entrar(p){reg(p,"Recebido");try{baixarEstoque(p)}catch(e){}if(!p.mesa&&!p.senha){p.senha=String(++senhaN).padStart(3,"0");balcao.push(p);const po=pedidos.find(x=>x.num===p.num);if(po)po.senha=p.senha;site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Aguarde ser chamado na TV.`},"*")}enviarCaixa("pedido.criado",`Pedido #${p.num} · ${p.mesa?"mesa "+p.mesa:"retirada"} · ${reais(p.total)}`,{numero:p.num,mesa:p.mesa,pessoa:p.nome||"",itens:p.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,obs:i.obs||""})),total:p.total});const coz=p.itens.filter(i=>!BAR.includes(i.cat)),bar=p.itens.filter(i=>BAR.includes(i.cat));
-if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);p.pend=(coz.length?1:0)+(bar.length?1:0);reg(p,"Em preparo");site().postMessage({tipo:"status",num:p.num,status:p.mesa?"Em preparo":`Senha ${p.senha} · em preparo. Aguarde ser chamado na TV.`},"*");tv();
+if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);p.pend=(coz.length?1:0)+(bar.length?1:0);p.setores=[coz.length&&"cozinha",bar.length&&"bar"].filter(Boolean);reg(p,"Em preparo");site().postMessage({tipo:"status",num:p.num,status:p.mesa?"Em preparo":`Senha ${p.senha} · em preparo. Aguarde ser chamado na TV.`},"*");tv();
 const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>{i.pessoa=i.pessoa||p.nome||"Mesa";m.itens.push(i)})}
 ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.qtd;if(i.sug)sug+=i.qtd*i.preco});gerencia();mapa();bip()}
 // alertas: aceite do primeiro pedido, garçom, conta
@@ -552,9 +561,9 @@ ag.className="tv-agora"+(ult?"":" vazio");ag.innerHTML=ult?`<small>Senha chamada
 if(novo){void ag.offsetWidth;ag.classList.add("chama")}
 $("#tv-prontos").innerHTML=pr.slice(1).map(o=>`<span>${o.senha}</span>`).join("");
 const linha=(o,b)=>`<div class="linha"><span class="q">${o.senha}</span><span class="d"><b>${esc(o.nome||"Cliente")}</b><small>${o.itens.map(i=>i.qtd+"× "+esc(i.nome)).join(", ")}</small></span>${b}</div>`;
-$("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="st pendente">${(pedidos.find(x=>x.num===o.num)||{}).status||"Recebido"}</span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
+$("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="mx"><span class="d-set">${(o.setores||[]).map(st=>`${st==="bar"?"Bar":"Cozinha"} ${(o.feitos||[]).includes(st)?"✓":"⏳"}`).join(" · ")}</span><button class="sec" data-chamar-ja="${o.num}" title="Chamar a senha na TV agora">Chamar na TV</button></span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
 $("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">${o.pagar==="pix"||o.pago?"Retirado":"Cobrou "+reais(o.total)+" e entregou"}</button></span>`)).join("")||'<p class="nota">—</p>';
-const n=pr.length+new Set(prontosMesa.map(x=>x.mesa)).size,bb=$("#b-balcao");bb.hidden=!n;bb.textContent=n}
+bolinha("balcao",pr.length+new Set(prontosMesa.map(x=>x.mesa)).size)}
 $("#b-prontos").onclick=e=>{const r=e.target.closest("[data-retirado]"),d=e.target.closest("[data-de-novo]");
 if(r)retirar(balcao.find(x=>String(x.num)===r.dataset.retirado))
 if(d){const o=balcao.find(x=>String(x.num)===d.dataset.deNovo);o.pronta=Date.now();tv();bip(990)}};
@@ -725,6 +734,18 @@ const slug=semAc(w.nome).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#caixa").innerHTML=`<div class="wiz-ok"><div class="grande">🚀</div><h3>${esc(w.nome)} está no ar!</h3><code>https://${slug}.stacksolution.com.br</code><p class="nota">Cardápio publicado, ${w.mesas} QR Codes prontos (Configurações > Imprimir plaquinhas) e painel liberado. Tudo sem programador.</p><div class="pe" style="justify-content:center"><button data-cancelar>Ver o painel</button></div></div>`}};tela()}
 $("#btn-novo-rest").onclick=cadastro;$("#btn-novo-rest2").onclick=()=>{$("#demo-pop").hidden=true;cadastro()};
 listaFunc();placas();historico();
+$("#b-prep").onclick=e=>{const b=e.target.closest("[data-chamar-ja]");if(!b)return;const o=balcao.find(x=>String(x.num)===b.dataset.chamarJa);if(o&&!o.pronta){log("Chamou senha na TV",`${o.senha} (antes de tudo ficar pronto)`);pronta(o);site().postMessage({tipo:"status",num:o.num,status:`Pronto! Senha ${o.senha}: retire no balcão`},"*")}};
+// ===== menu enxuto: grupos e sub-abas
+const GRUPOS={pedidos:["pedidos","historico"],cozinha:["cozinha","bar"],mesas:["mesas","balcao","reservas"],cardapio:["cardapio","marketing"],gerencia:["gerencia","rede"],config:["config","integracoes"]};
+const SUBL={pedidos:"Hoje",historico:"Histórico",cozinha:"Cozinha",bar:"Bar",mesas:"Mesas",balcao:"Balcão e TV",reservas:"Reservas e fila",cardapio:"Cardápio e estoque",marketing:"Promoções e fidelidade",gerencia:"Resumo e clientes",rede:"Rede de lojas",config:"Configurações",integracoes:"Integrações"};
+let abaAtual="cozinha";const lider=a=>Object.keys(GRUPOS).find(k=>GRUPOS[k].includes(a))||a;
+function subnav(a){abaAtual=a;const L=lider(a);document.querySelectorAll("nav button[data-aba]").forEach(b=>b.classList.toggle("grupo-ativo",b.dataset.aba===L&&a!==L));
+const vis=(GRUPOS[L]||[a]).filter(x=>!document.querySelector(`nav [data-aba="${x}"]`)?.hidden),sn=$("#subnav");sn.hidden=vis.length<2;
+sn.innerHTML=vis.map(x=>`<button type="button" data-sub="${x}" class="${x===a?"on":""}">${SUBL[x]}${BC[x]?`<span class="n">${BC[x]}</span>`:""}</button>`).join("")}
+$("#subnav").onclick=e=>{const b=e.target.closest("[data-sub]");if(b)document.querySelector(`nav [data-aba="${b.dataset.sub}"]`).click()};
+document.querySelectorAll("nav button[data-aba]").forEach(b=>b.addEventListener("click",()=>subnav(b.dataset.aba)));
+function grupoBadges(){[["cozinha",["cozinha","bar"]],["mesas",["mesas","balcao"]]].forEach(([L,ids])=>{const t=ids.reduce((s,i)=>s+(BC[i]||0),0),el=$("#b-"+L);if(el){el.hidden=!t;el.textContent=t}});if(!$("#subnav").hidden)subnav(abaAtual)}
+subnav("cozinha");
 // "Mesas prontas" no Balcão: pratos prontos agrupados por mesa, para o garçom levar
 function listaProntas(){const g={};prontosMesa.forEach(x=>{(g[x.mesa]=g[x.mesa]||[]).push(x)});const ms=Object.keys(g).sort((a,b)=>g[a][0].hora-g[b][0].hora);
 $("#mesas-prontas").innerHTML=ms.map(n=>{const l=g[n],min=Math.round((Date.now()-l[0].hora)/60000);return `<div class="linha pronta-mesa"><span class="q">Mesa ${n}</span><span class="d">${l.map(x=>x.itens.map(i=>`<b>${i.qtd}×</b> ${esc(i.nome)}${i.obs?` <small>(${esc(i.obs)})</small>`:""}`).join("<br>")).join("<br>")}<small class="${min>=3?"alerta-t":""}">${l.map(x=>x.setor==="bar"?"bar":"cozinha").filter((v,i,a)=>a.indexOf(v)===i).join(" + ")} · pronto há ${min} min</small></span><span class="mx"><button class="sec" data-imp-mesa="${n}" title="Imprimir" aria-label="Imprimir">🖨</button><button data-levei-mesa="${n}">Levei ✓</button></span></div>`}).join("")||'<p class="nota">Nenhum prato esperando. Quando a cozinha ou o bar marcam pronto, o prato aparece aqui com o número da mesa.</p>';try{tv()}catch(e){}}
@@ -742,7 +763,7 @@ function PIXCFG(){try{return PIX}catch(e){return null}}
 $("#c-balcao").onchange=()=>{cfgSite();log("Pagamento do balcão",$("#c-balcao").selectedOptions[0].textContent);avisar("Balcão: "+esc($("#c-balcao").selectedOptions[0].textContent))};
 window.addEventListener("message",ev=>{if(ev.data?.tipo==="oi")cfgSite()});
 // menu de baixo no celular: principais + "Mais"
-["pedidos","cozinha","mesas","balcao"].forEach(a=>document.querySelector(`nav [data-aba="${a}"]`)?.classList.add("prim"));
+["pedidos","cozinha","mesas","cardapio","gerencia","config"].forEach(a=>document.querySelector(`nav [data-aba="${a}"]`)?.classList.add("prim"));
 $("#nav-mais").onclick=()=>{const n=document.querySelector("nav"),ab=n.classList.toggle("aberta");$("#nav-mais").setAttribute("aria-expanded",ab);$("#nav-mais").textContent=ab?"✕ Fechar":"☰ Mais"};
 document.querySelectorAll("nav button[data-aba]").forEach(b=>b.addEventListener("click",()=>{document.querySelector("nav").classList.remove("aberta");$("#nav-mais").textContent="☰ Mais";$("#nav-mais").setAttribute("aria-expanded",false)}));
 // detalhe do pedido: itens, observações, horário de cada etapa e reimpressão

@@ -27,6 +27,17 @@ const { chromium } = require('playwright');
   await ver('cliente'); const st2 = await f.locator('#status-pedido').textContent(); ok('celular avisa', /retire no balcão/.test(st2), st2);
   await ver('restaurante'); await p.evaluate(() => document.querySelector('nav [data-aba="balcao"]').click()); await p.click('[data-retirado]'); await p.waitForTimeout(200);
   ok('saiu da TV', !/041/.test(await p.locator('#tv-agora').textContent()), 'ainda na TV');
+  // comida + bebida: o Balcão mostra o que falta e dá para chamar na TV na hora
+  await ver('cliente'); await f.locator('.barra-cel a').first().click(); await p.waitForTimeout(500);
+  await f.locator('[data-add="bruschetta-tomate"]').first().click(); await f.locator('[data-add="chope-pilsen"]').first().click(); await p.waitForTimeout(200);
+  await f.locator('.barra-cel [data-abrir-pedido]').click(); await p.waitForTimeout(400); await f.locator('#gaveta a.btn-pri').click(); await p.waitForTimeout(600);
+  await f.locator('input[name=tipo][value=retirada]').check(); await f.locator('input[name=nome]').fill('Lia'); await f.locator('#enviar-pedido').click(); await p.waitForTimeout(400);
+  await f.locator('[data-pagar="pix"]').click(); await p.waitForTimeout(600); await ver('restaurante');
+  await p.evaluate(() => document.querySelector('nav [data-aba="cozinha"]').click()); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.waitForTimeout(500);
+  await p.evaluate(() => document.querySelector('nav [data-aba="balcao"]').click());
+  ok('mostra o que falta', /Cozinha ✓ · Bar ⏳/.test(await p.locator('#b-prep').textContent()), await p.locator('#b-prep').textContent());
+  await p.locator('[data-chamar-ja]').first().click(); await p.waitForTimeout(300);
+  ok('chamar na TV', /Lia/.test(await p.locator('#tv-agora').textContent()), await p.locator('#tv-agora').textContent());
   // pagar no caixa: só vai para a cozinha depois que o caixa confirma
   await ver('cliente'); await f.locator('a:has-text("Pedir mais")').click().catch(() => {}); await f.locator('.barra-cel a').first().click(); await p.waitForTimeout(600);
   await f.locator('[data-add]').nth(3).click(); await p.waitForTimeout(200); await f.locator('.barra-cel [data-abrir-pedido]').click(); await p.waitForTimeout(500); await f.locator('#gaveta a.btn-pri').click(); await p.waitForTimeout(700);

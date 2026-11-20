@@ -29,7 +29,8 @@ const DIR = path.resolve(__dirname, '..', 'video') + '/'; // depois: ffmpeg -i v
   }
   async function clicar(loc, depois = 900) { await loc.scrollIntoViewIfNeeded().catch(() => {}); await marcar(loc); await loc.click(); await espera(depois); }
   const ver = (v) => clicar(p.locator(`.troca [data-ver="${v}"]`), 900);
-  const aba = async (a) => { await clicar(p.locator(`nav [data-aba="${a}"]`), 800); };
+  const GR = { bar: 'cozinha', balcao: 'mesas', reservas: 'mesas', historico: 'pedidos', marketing: 'cardapio', rede: 'gerencia', integracoes: 'config' };
+  const aba = async (a) => { if (GR[a]) { if (!(await p.locator(`#subnav [data-sub="${a}"]`).isVisible().catch(() => false))) await clicar(p.locator(`nav [data-aba="${GR[a]}"]`), 600); await clicar(p.locator(`#subnav [data-sub="${a}"]`), 800); } else await clicar(p.locator(`nav [data-aba="${a}"]`), 800); };
   const fecharSug = async () => { const s = f.locator('[data-sug-fechar]'); if (await s.count()) await s.first().click().catch(() => {}); };
 
   await legenda('🎬 Teste do sistema: um pedido <b>NA MESA</b> e um pedido <b>NO BALCÃO</b>', 3200);
