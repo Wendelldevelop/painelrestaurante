@@ -56,9 +56,11 @@ const DIR = path.resolve(__dirname, '..', 'video') + '/'; // depois: ffmpeg -i v
   await legenda('4. Na cozinha o cartão aparece como <b>"Mesa 5"</b>, com o nome e o adicional', 2600);
   await legenda('A cozinha toca <b>uma vez só</b> em ✓ Pronto', 1400);
   await clicar(p.locator('#cozinha-Recebido [data-av]').first(), 1000);
-  await legenda('5. Ficou pronto: o garçom recebe o aviso <b>"Mesa 5: pronto para levar"</b> (e o celular vibra)', 2600);
+  await legenda('5. Ficou pronto: o cartão <b>sai da cozinha</b> e o garçom recebe o aviso (o celular vibra)', 2600);
   await legenda('Pedido de mesa <b>não vai para a TV</b>: o garçom leva e toca em <b>"Levei ✓"</b>', 2000);
-  await clicar(p.locator('.alerta [data-levei]').first(), 1000);
+  await aba('balcao');
+  await legenda('No <b>Balcão</b>, a parte <b>"Mesas prontas"</b> mostra os pratos de cada mesa esperando o garçom', 2800);
+  await clicar(p.locator('#mesas-prontas [data-levei-mesa]').first(), 1000);
   await ver('cliente');
   await legenda('6. No celular do cliente aparece <b>"Entregue na mesa"</b>', 2600);
 

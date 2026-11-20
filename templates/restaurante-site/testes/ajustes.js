@@ -20,8 +20,9 @@ const { chromium } = require('playwright');
   // estoque: 2 camarões = 0,4 kg → abaixo do mínimo
   await aba('cardapio'); ok('estoque baixou', /0,8 kg/.test(await p.locator('#estoque').textContent()), await p.locator('#estoque').textContent());
   // 🖨 continua no pedido pronto
-  await aba('cozinha'); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.waitForTimeout(200);
-  ok('🖨 no pronto', await p.locator('#cozinha-Pronto .card [data-imp]').count() === 1, 'sem botão');
+  await aba('cozinha'); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.waitForTimeout(600);
+  ok('cozinha limpa', await p.locator('#cozinha-Recebido .card').count() === 0, 'cartão ficou');
+  await aba('balcao'); ok('mesa pronta no balcão com 🖨', await p.locator('#mesas-prontas [data-levei-mesa="5"]').count() === 1 && await p.locator('#mesas-prontas [data-imp-mesa]').count() === 1, await p.locator('#mesas-prontas').textContent());
   // detalhe do pedido com horário de cada etapa
   await aba('pedidos'); await p.locator('#lista-pedidos tr.clic').first().click(); await p.waitForTimeout(200);
   ok('detalhe do pedido', await p.locator('.linha-tempo li').count() >= 3, await p.locator('.linha-tempo li').count()); await p.click('[data-cancelar]');
@@ -30,7 +31,7 @@ const { chromium } = require('playwright');
   await f.locator('input[value="Pix agora"]').check(); ok('QR Pix', await f.locator('#pix-box svg').isVisible(), 'sem QR');
   if (process.env.FOTO) await p.screenshot({ path: process.env.FOTO + '-pix.png' });
   await f.locator('[data-fechar-conta]').click(); await p.waitForTimeout(400);
-  await ver('restaurante'); const al = await p.locator('.aviso-flutua').textContent(); ok('Pix libera sozinho', /pagou .* no Pix/.test(al), al);
+  await ver('restaurante'); await p.waitForFunction(() => /pagou .* no Pix/.test(document.querySelector('.aviso-flutua')?.textContent || ''), null, { timeout: 5000 }).catch(() => {}); const al = await p.locator('.aviso-flutua').textContent(); ok('Pix libera sozinho', /pagou .* no Pix/.test(al), al);
   await p.waitForTimeout(1600); await ver('cliente'); ok('conta fechada', /Thank|Obrigado/.test(await f.locator('body').textContent()), 'não fechou');
   // horário vai para o site
   await ver('restaurante'); await aba('config'); for (const c of await p.locator('[data-fecha]').all()) await c.check();

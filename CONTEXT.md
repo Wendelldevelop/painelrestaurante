@@ -80,7 +80,7 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 **Mesa x balcão:** o cliente escolhe "Na mesa" ou "Retirar no balcão" ao enviar. Mesa → aceite do garçom no 1º pedido, mapa das mesas, "Entregue na mesa", conta no fim. Balcão → senha, TV chama quando cozinha e bar terminam, "Retirado". Pagamento do balcão em Configurações: **pagar antes** (Pix pelo celular ou caixa confirma "Recebido no caixa") ou **pagar ao retirar**. Na cozinha: borda **laranja = mesa**, **azul = balcão** com etiqueta de pagamento.
 Vídeo do teste: `video-teste-mesa-e-balcao.mp4` (regravar: `node templates/restaurante-site/testes/gravar-video.js`).
 
-**Fluxo ágil (menos cliques):** o pedido entra direto "em preparo"; cozinha e bar tocam **uma vez** em "✓ Pronto" (colunas Preparando | Prontos). O garçom recebe o aviso "Mesa X: pronto para levar" com **"Levei ✓"** em qualquer tela. **Pix pelo celular libera a mesa sozinho.** Senha sai da TV sozinha em 5 min. Aceite do 1º pedido é opcional (Configurações). Esgotados ficam recolhidos e o menu lateral é agrupado em Operação, Gestão e Ajustes.
+**Fluxo ágil (menos cliques):** o pedido entra direto "em preparo"; cozinha e bar tocam **uma vez** em "✓ Pronto" e o cartão **sai da tela** (a cozinha só vê o que falta fazer). O prato pronto vai para **Balcão > "Mesas prontas"**, agrupado por mesa, com **"Levei ✓"** para o garçom (o celular dele vibra). **Pix pelo celular libera a mesa sozinho.** Senha sai da TV sozinha em 5 min. Aceite do 1º pedido é opcional (Configurações). Esgotados ficam recolhidos e o menu lateral é agrupado em Operação, Gestão e Ajustes.
 
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
