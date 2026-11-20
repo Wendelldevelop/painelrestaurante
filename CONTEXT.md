@@ -77,6 +77,9 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 - **Estoque simples** (aba Cardápio): baixa por prato vendido, aviso de estoque baixo, prato vira esgotado quando zera, botão "+ Repor".
 - **Cardápio em inglês e espanhol** (traduções em `cardapio.json` > `i18n`); a cozinha sempre recebe em português.
 
+**Mesa x balcão:** o cliente escolhe "Na mesa" ou "Retirar no balcão" ao enviar. Mesa → aceite do garçom no 1º pedido, mapa das mesas, "Entregue na mesa", conta no fim. Balcão → senha, TV chama quando cozinha e bar terminam, "Retirado". Pagamento do balcão em Configurações: **pagar antes** (Pix pelo celular ou caixa confirma "Recebido no caixa") ou **pagar ao retirar**. Na cozinha: borda **laranja = mesa**, **azul = balcão** com etiqueta de pagamento.
+Vídeo do teste: `video-teste-mesa-e-balcao.mp4` (regravar: `node templates/restaurante-site/testes/gravar-video.js`).
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

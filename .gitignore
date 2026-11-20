@@ -3,3 +3,4 @@ templates/restaurante-site/demo-pdv.html
 templates/restaurante-site/*.jpg
 templates/restaurante-site/v7/
 !/demo-pdv.html
+templates/restaurante-site/video/

@@ -297,6 +297,11 @@ body.modo-cel nav.aberta{grid-template-columns:repeat(4,minmax(0,1fr));max-heigh
 body.modo-cel #nav-mais{display:block;font-size:11px;padding:9px 4px;min-height:44px;color:var(--brasa)}
 body.ver-tv .aviso-flutua{display:none}
 @media(max-width:600px){.troca{gap:2px;padding:3px}.troca button{padding:7px 10px;font-size:12.5px}.troca .tour-btn .t{display:none}}
+/* cores: mesa x balcão */
+.card.mesa-c{border-left:6px solid #c98a2c}.card.balc-c{border-left:6px solid #2457a6;background:#f4f8fe}.card.balc-c .mesa{color:#1d4688}
+.pg{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:99px;font:700 11px system-ui;background:var(--ouro-cl);color:var(--ouro)}.pg.ok{background:var(--verde-cl);color:var(--verde)}
+.legenda-cor{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-size:13px;color:var(--suave)}.lc::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.lc.mesa-c::before{background:#c98a2c}.lc.balc-c::before{background:#2457a6}
 [hidden]{display:none!important}
 @keyframes chega{from{opacity:0;transform:translateY(-6px)}}@keyframes entra{from{opacity:0}}@keyframes pulsa{50%{opacity:.35}}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -335,10 +340,10 @@ body.ver-tv .aviso-flutua{display:none}
 <section class="aba" id="aba-pedidos"><div class="filtros" id="filtros"></div><div class="tabela"><table><thead><tr><th>#</th><th>Hora</th><th>Mesa</th><th>Itens</th><th>Total</th><th>Status</th></tr></thead><tbody id="lista-pedidos"></tbody></table></div><p class="vazio" id="sem-pedidos">Nenhum pedido ainda. Faça um pelo celular do cliente.</p></section>
 <section class="aba" id="aba-cardapio"><div class="acoes-g"><button id="novo-prato" type="button">+ Novo prato</button></div><div class="tabela"><table><thead><tr><th>Prato</th><th>Categoria</th><th>Setor</th><th>Preço</th><th>Vendidos hoje</th><th>Hoje</th></tr></thead><tbody class="esg" data-setor="todos"></tbody></table></div><p class="nota">"Esgotado" some na hora do cardápio do cliente. "Editar" muda nome, preço, descrição e foto no celular do cliente na hora.</p>
 <div class="bloco" style="margin-top:18px"><h3>Estoque</h3><div class="lista" id="estoque"></div><p class="nota">Cada prato vendido dá baixa nos ingredientes. Abaixo do mínimo, avisa; zerou, o prato vira "esgotado" sozinho. Quantidades de exemplo.</p></div></section>
-<section class="aba ativa" id="aba-cozinha"><div class="cols">
+<section class="aba ativa" id="aba-cozinha"><p class="legenda-cor"><span class="lc mesa-c">Mesa: o garçom leva</span><span class="lc balc-c">Balcão: senha chamada na TV</span></p><div class="cols">
 <div class="col"><h2>Novos</h2><div id="cozinha-Recebido"><p class="vazio">Pratos dos pedidos aceitos aparecem aqui, com tempo correndo.</p></div></div>
 <div class="col"><h2>Em preparo</h2><div id="cozinha-Em preparo"></div></div><div class="col"><h2>Prontos</h2><div id="cozinha-Pronto"></div></div></div><div class="bloco" style="margin-top:14px"><h3>Acabou algum prato? Toque para marcar "esgotado hoje"</h3><div class="esg" data-setor="cozinha"></div><p class="nota">Some na hora do cardápio do cliente.</p></div></section>
-<section class="aba" id="aba-bar"><div class="cols">
+<section class="aba" id="aba-bar"><p class="legenda-cor"><span class="lc mesa-c">Mesa: o garçom leva</span><span class="lc balc-c">Balcão: senha chamada na TV</span></p><div class="cols">
 <div class="col"><h2>Novos</h2><div id="bar-Recebido"><p class="vazio">Bebidas e vinhos vêm direto para cá, separados da cozinha.</p></div></div>
 <div class="col"><h2>Em preparo</h2><div id="bar-Em preparo"></div></div><div class="col"><h2>Prontos</h2><div id="bar-Pronto"></div></div></div><div class="bloco" style="margin-top:14px"><h3>Acabou alguma bebida?</h3><div class="esg" data-setor="bar"></div></div></section>
 <section class="aba" id="aba-mesas"><div class="acoes-g"><button id="btn-notif" class="sec" type="button">🔔 Ativar avisos no celular do garçom</button></div><div class="mapa" id="mapa"></div><p class="nota">O garçom vê o mapa no celular dele: aceita o primeiro pedido de cada mesa e leva o que ficou pronto. O cliente fecha a conta pelo celular e o garçom só leva a maquininha.</p></section>
@@ -374,7 +379,7 @@ body.ver-tv .aviso-flutua{display:none}
 <div class="duas">
 <div class="bloco"><h3>Mesas e QR Codes</h3><label class="lin">Quantidade de mesas <input id="c-mesas" type="number" min="1" max="30" value="12" style="width:80px"></label>
 <div class="pe" style="justify-content:flex-start"><button class="sec" id="c-mesas-ok" type="button">Atualizar</button><button id="c-placas" type="button">🖨 Imprimir plaquinhas</button></div><div class="placas-mini" id="placas-mini"></div></div>
-<div class="bloco"><h3>Conta e funcionamento</h3><label class="lin"><input type="checkbox" id="c-serv" checked> Cobrar taxa de serviço</label><label class="lin">Taxa <input id="c-pct" type="number" min="0" max="20" value="10" style="width:70px"> %</label>
+<div class="bloco"><h3>Conta e funcionamento</h3><label class="lin"><input type="checkbox" id="c-serv" checked> Cobrar taxa de serviço</label><label class="lin">Taxa <input id="c-pct" type="number" min="0" max="20" value="10" style="width:70px"> %</label><label class="lin">Pedido do balcão <select id="c-balcao"><option value="antes">Pagar antes (Pix ou caixa)</option><option value="retirada">Pagar ao retirar</option></select></label>
 <h3 style="margin-top:16px">Horário de funcionamento</h3><div class="horarios" id="horarios"></div><button class="sec" id="c-hor-ok" type="button" style="margin-top:8px">Salvar horários</button></div>
 <div class="bloco"><h3>Impressora da cozinha</h3><label class="lin">Modelo <select id="c-imp"><option>Epson TM-T20</option><option>Elgin i9</option><option>Bematech MP-4200</option><option value="">Sem impressora (usar tablet)</option></select></label>
 <label class="lin"><input type="checkbox" id="c-auto-imp"> Imprimir cada pedido automaticamente</label><label class="lin"><input type="checkbox" id="c-bar-imp" checked> Bebidas saem na impressora do bar</label>
@@ -428,7 +433,7 @@ Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Coste
 const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
 let filtro="Todos";
 function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;(o.tempos=o.tempos||{})[st]=o.tempos[st]||new Date();listaPedidos();try{tv()}catch(e){}try{historico()}catch(e){}}
-const FILTROS=["Todos","Aguardando aceite","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
+const FILTROS=["Todos","Aguardando aceite","Aguardando pagamento","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
 function listaPedidos(){const vis=pedidos.filter(o=>filtro==="Todos"||o.status===filtro);
 $("#filtros").innerHTML=FILTROS.map(f=>`<button class="${f===filtro?"on":""}" data-f="${f}">${f} (${f==="Todos"?pedidos.length:pedidos.filter(o=>o.status===f).length})</button>`).join("");
 $("#lista-pedidos").innerHTML=vis.map(o=>`<tr class="clic" data-num="${o.num}" title="Ver detalhes"><td>#${o.num}</td><td>${o.hora.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}${["Aguardando aceite","Recebido","Em preparo"].includes(o.status)?`<small class="${Date.now()-o.hora>15*60000?"alerta-t":""}">há ${Math.max(0,Math.round((Date.now()-o.hora)/60000))} min</small>`:""}</td><td>${o.mesa?"Mesa "+esc(o.mesa):"Balcão"+(o.senha?" · senha "+o.senha:"")}${o.origem==="garcom"?"<small>lançado pelo garçom</small>":o.nome&&o.nome!=="Mesa"?`<small>${esc(o.nome)}</small>`:""}</td>
@@ -455,8 +460,8 @@ ${comandas(m)}<div class="l"><span>Subtotal</span><span>${reais(m.total)}</span>
 $("#caixa").onclick=e=>{if(e.target.closest("[data-cancelar]"))$("#modal").hidden=true;const c=e.target.closest("[data-confirmar]");
 if(c){const m=mesas[c.dataset.confirmar];log("Fechou conta",`Mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`);enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*taxaServ()).toFixed(2),desconto:+(descMesa[m.n]||0).toFixed(2),total:+(m.total*(1+taxaServ())-(descMesa[m.n]||0)).toFixed(2)});const cb=+(m.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"fechada",mesa:m.n,cashback:cb},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
 // cozinha e bar
-function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo";c.dataset.status="Recebido";c.dataset.ini=Date.now();
-c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Balcão · senha "+p.senha}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
+function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo"+(p.mesa?" mesa-c":" balc-c");c.dataset.status="Recebido";c.dataset.ini=Date.now();
+c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Balcão · senha "+p.senha}${p.mesa?"":`<small class="pg ${p.pagar==="pix"||p.pago?"ok":""}">${p.pagar==="pix"?"✓ Pago no Pix":p.pago==="caixa"?"✓ Pago no caixa":"A pagar na retirada"}</small>`}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
 <ul>${itens.map(i=>`<li>${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}</li>`).join("")}</ul><div class="pe"><span class="hora">${setor==="bar"?"Bar":"Cozinha"}</span><span class="mx"><button data-av>Começar</button><button class="sec" data-imp title="Imprimir comanda" aria-label="Imprimir comanda">🖨</button><button class="sec" data-cancel>Cancelar</button></span></div>`;
 c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);c.querySelector("[data-imp]").onclick=()=>comanda(p,itens,setor);if($("#c-auto-imp")?.checked&&$("#c-imp").value){avisar(`🖨 Comanda #${p.num} impressa na ${esc(setor==="bar"&&$("#c-bar-imp").checked?"impressora do bar":$("#c-imp").value)}`);log("Imprimiu comanda",`#${p.num} · ${setor}`)}
 c.querySelector("button").onclick=()=>{const s=PROX[c.dataset.status][0];c.dataset.status=s;c.classList.remove("novo");
@@ -473,6 +478,11 @@ ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.
 function alerta(html,mesa,acoes){notificar(MARCA.nome,html.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim());const a=document.createElement("div");a.className="alerta";a.dataset.mesa=mesa;a.innerHTML=html+`<span class="mx">${acoes}</span>`;$("#alertas").prepend(a);bip(660);contar();return a}
 window.addEventListener("message",ev=>{const p=ev.data;if(!p||!p.tipo)return;if(offline&&["pedido","garcom","conta","ver-conta"].includes(p.tipo)){esperando.add(p.num||p.tipo+p.mesa);faixaRede();return}
 if(p.tipo==="pedido"){site().postMessage({tipo:"recebido",num:p.num},"*");if(vistos.has(p.num))return;vistos.add(p.num);const m=mesas[p.mesa];reg(p,"Aguardando aceite");
+if(!p.mesa&&p.pagar==="caixa"){p.senha=String(++senhaN).padStart(3,"0");reg(p,"Aguardando pagamento");const po=pedidos.find(x=>x.num===p.num);if(po)po.senha=p.senha;
+site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Pague ${reais(p.total)} no caixa para o pedido ir para a cozinha.`},"*");
+const a=alerta(`<b>Balcão · senha ${p.senha}</b><span>${esc(p.nome||"Cliente")} · ${reais(p.total)} · aguardando pagamento no caixa</span>`,"",`<button data-ok>Recebido no caixa</button><button class="sec" data-nao>Cancelar</button>`);
+a.querySelector("[data-ok]").onclick=()=>{a.remove();p.pago="caixa";balcao.push(p);entrar(p);log("Recebeu no caixa",`Senha ${p.senha} · ${reais(p.total)}`);site().postMessage({tipo:"status",num:p.num,status:`Pagamento confirmado! Senha ${p.senha}: aguarde ser chamado na TV.`},"*");contar()};
+a.querySelector("[data-nao]").onclick=()=>{a.remove();reg(p,"Cancelado");site().postMessage({tipo:"status",num:p.num,status:"Pedido cancelado pelo caixa."},"*");contar()};return}
 const h=hist[p.mesa]=(hist[p.mesa]||[]).filter(x=>Date.now()-x<60000);
 if(h.length>=3){const a=alerta(`<b>Mesa ${esc(p.mesa)}: muitos pedidos em 1 minuto</b><span>Pedido #${p.num} segurado. Confira com a mesa.</span>`,p.mesa,`<button data-ok>Liberar</button><button class="sec" data-nao>Descartar</button>`);
 site().postMessage({tipo:"status",num:p.num,status:"Aguardando o garçom confirmar"},"*");a.querySelector("[data-ok]").onclick=()=>{a.remove();entrar(p)};a.querySelector("[data-nao]").onclick=()=>{a.remove();reg(p,"Cancelado");contar()};return}
@@ -577,7 +587,7 @@ if(novo){void ag.offsetWidth;ag.classList.add("chama")}
 $("#tv-prontos").innerHTML=pr.slice(1).map(o=>`<span>${o.senha}</span>`).join("");
 const linha=(o,b)=>`<div class="linha"><span class="q">${o.senha}</span><span class="d"><b>${esc(o.nome||"Cliente")}</b><small>${o.itens.map(i=>i.qtd+"× "+esc(i.nome)).join(", ")}</small></span>${b}</div>`;
 $("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="st pendente">${(pedidos.find(x=>x.num===o.num)||{}).status||"Recebido"}</span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
-$("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">Retirado</button></span>`)).join("")||'<p class="nota">—</p>';
+$("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">${o.pagar==="pix"||o.pago?"Retirado":"Cobrou "+reais(o.total)+" e entregou"}</button></span>`)).join("")||'<p class="nota">—</p>';
 const n=pr.length,bb=$("#b-balcao");bb.hidden=!n;bb.textContent=n}
 $("#b-prontos").onclick=e=>{const r=e.target.closest("[data-retirado]"),d=e.target.closest("[data-de-novo]");
 if(r){const o=balcao.find(x=>String(x.num)===r.dataset.retirado);o.retirada=true;reg(o,"Entregue");const cb=+(o.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"status",num:o.num,status:"Retirado. Bom apetite!"+(cb?` Você ganhou ${reais(cb)} de cashback.`:"")},"*");tv()}
@@ -749,6 +759,11 @@ const slug=semAc(w.nome).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#caixa").innerHTML=`<div class="wiz-ok"><div class="grande">🚀</div><h3>${esc(w.nome)} está no ar!</h3><code>https://${slug}.stacksolution.com.br</code><p class="nota">Cardápio publicado, ${w.mesas} QR Codes prontos (Configurações > Imprimir plaquinhas) e painel liberado. Tudo sem programador.</p><div class="pe" style="justify-content:center"><button data-cancelar>Ver o painel</button></div></div>`}};tela()}
 $("#btn-novo-rest").onclick=cadastro;$("#btn-novo-rest2").onclick=()=>{$("#demo-pop").hidden=true;cadastro()};
 listaFunc();placas();historico();
+// configurações que o celular do cliente precisa saber (pagamento do balcão e Pix)
+const cfgSite=()=>site().postMessage({tipo:"config",balcaoPagar:$("#c-balcao").value,pix:PIXCFG()},"*");
+function PIXCFG(){try{return PIX}catch(e){return null}}
+$("#c-balcao").onchange=()=>{cfgSite();log("Pagamento do balcão",$("#c-balcao").selectedOptions[0].textContent);avisar("Balcão: "+esc($("#c-balcao").selectedOptions[0].textContent))};
+window.addEventListener("message",ev=>{if(ev.data?.tipo==="oi")cfgSite()});
 // menu de baixo no celular: principais + "Mais"
 ["pedidos","cozinha","mesas","balcao"].forEach(a=>document.querySelector(`nav [data-aba="${a}"]`)?.classList.add("prim"));
 $("#nav-mais").onclick=()=>{const n=document.querySelector("nav"),ab=n.classList.toggle("aberta");$("#nav-mais").setAttribute("aria-expanded",ab);$("#nav-mais").textContent=ab?"✕ Fechar":"☰ Mais"};
@@ -782,7 +797,7 @@ let autoT=null,autoN=0;const NOMES=["Ana","Bruno","Carla","Diego","Lia","Rafa","
 const sorteia=a=>a[Math.floor(Math.random()*a.length)];
 function autoPedido(){const balc=tipoAtual==="hamburgueria"||tipoAtual==="cafeteria"||Math.random()<.3,mesa=balc?"":String(sorteia([1,2,3,4,6,7,8,9,10,11,12]));
 const disp=MENU.filter(i=>!esgot.has(i.id)),its=[...Array(1+Math.floor(Math.random()*3))].map(()=>{const i=sorteia(disp);return {nome:i.nome,qtd:1+(Math.random()<.25?1:0),obs:"",preco:i.preco,cat:i.cat,sug:Math.random()<.2}});
-window.dispatchEvent(new MessageEvent("message",{data:{tipo:"pedido",num:Date.now()%100000,mesa,modo:balc?"Retirada":"Mesa",nome:sorteia(NOMES),itens:its,total:its.reduce((t,i)=>t+i.qtd*i.preco,0)}}))}
+window.dispatchEvent(new MessageEvent("message",{data:{tipo:"pedido",num:Date.now()%100000,mesa,modo:balc?"Retirada":"Mesa",nome:sorteia(NOMES),pagar:balc&&$("#c-balcao").value==="antes"?"pix":undefined,itens:its,total:its.reduce((t,i)=>t+i.qtd*i.preco,0)}}))}
 function autoPasso(){autoN++;document.querySelectorAll(".alerta [data-ok]").forEach(b=>b.click());
 const cards=[...document.querySelectorAll(".card [data-av]")];if(cards.length&&autoN%2===0)sorteia(cards).click();
 if(autoN%2===1&&document.querySelectorAll(".card").length<10)autoPedido();
@@ -806,7 +821,7 @@ print(f"{destino.name}: {destino.stat().st_size // 1024} KB")
 # Abertas no mesmo navegador (duas janelas, ou PC e TV espelhada), conversam por um canal local.
 CANAL = "casa-brasa-pdv"
 PONTE = """<script>(()=>{const c=new BroadcastChannel("%s");
-window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta","ver-conta"].includes(e.data.tipo))c.postMessage(e.data)});
+window.addEventListener("message",e=>{if(e.source===window&&e.data&&["pedido","garcom","conta","ver-conta","oi"].includes(e.data.tipo))c.postMessage(e.data)});
 c.onmessage=e=>window.postMessage(e.data,"*")})();</script></body>""" % CANAL
 cli = site.replace("</body>", PONTE, 1) if "</body>" in site else site + PONTE
 (AQUI / "cliente.html").write_text(cli, encoding="utf-8")

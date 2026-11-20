@@ -710,6 +710,7 @@
         try { localStorage.setItem("cb-nome", JSON.stringify(nomeMesa)); } catch (e) {}
         let confirmado = false;
         const enviar = () => { if (!confirmado) { window.parent.postMessage(pedido, "*"); setTimeout(enviar, 3000); } };
+        const seguir = () => {
         enviar();
         carrinho = [];
         salvarCarrinho();
@@ -719,6 +720,16 @@
           if (ev.data?.num === num && ev.data.tipo === "recebido") { confirmado = true; if ($("#status-pedido")?.textContent === "Enviando…") $("#status-pedido").textContent = "Recebido"; }
           if (ev.data?.tipo === "status" && ev.data.num === num && $("#status-pedido")) $("#status-pedido").textContent = ev.data.status;
         });
+        };
+        // balcão com "pagar antes": paga pelo Pix no celular ou no caixa, e só então vai para a cozinha
+        if (!naMesa && PAINEL_CFG.balcaoPagar === "antes") {
+          $("#conteudo").innerHTML = `<div class="largura pagina estreita pagina-pagar"><p class="sobre">Retirar no balcão</p><h1>Pagamento</h1><p class="texto">Pague para o pedido ir para a cozinha.</p>
+            <p class="entre" style="margin-top:var(--e5)"><b>Total</b><span class="preco conta-total">${reais(pedido.total)}</span></p>
+            ${PAINEL_CFG.pix ? `<div class="pix-box"><div class="pix-qr">${PAINEL_CFG.pix.qr}</div><button type="button" class="btn btn-sec" data-copiar-pix>Copiar código Pix</button><p class="nota">Demonstração: chave Pix de exemplo, não pague.</p></div>` : ""}
+            <p style="margin-top:var(--e5);display:grid;gap:var(--e3)"><button type="button" class="btn btn-pri" data-pagar="pix">Já paguei pelo Pix</button><button type="button" class="btn btn-sec" data-pagar="caixa">Vou pagar no caixa</button></p></div>`;
+          window.scrollTo(0, 0);
+          $$("[data-pagar]").forEach((b) => (b.onclick = () => { pedido.pagar = b.dataset.pagar; seguir(); }));
+        } else seguir();
         return;
       }
       window.open(linkWhats(msg), "_blank", "noopener");
@@ -859,6 +870,9 @@
   function redesenhar() { if (!MULTI && paginaAtual === "cardapio") { const y = window.scrollY; paginaAtual = null; irPara("cardapio"); window.scrollTo(0, y); } }
   // cardápio em inglês e espanhol (só o cardápio; o pedido chega em português na cozinha)
   let LANG = "pt";
+  // configurações que vêm do painel (pagamento do balcão e chave Pix)
+  const PAINEL_CFG = { balcaoPagar: "retirada" };
+  if (PAINEL) setTimeout(() => window.parent.postMessage({ tipo: "oi" }, "*"), 400);
   const TX = { add: { pt: "Adicionar", en: "Add", es: "Agregar" }, addPed: { pt: "Adicionar ao pedido", en: "Add to order", es: "Agregar al pedido" }, ok: { pt: "Adicionado", en: "Added", es: "Agregado" } };
   const CAT_TR = { en: { entradas: "Starters", principais: "Mains", executivo: "Lunch menu", massas: "Pasta & pizza", sobremesas: "Desserts", bebidas: "Drinks", vinhos: "Wines" },
     es: { entradas: "Entradas", principais: "Platos principales", executivo: "Menú del día", massas: "Pastas y pizza", sobremesas: "Postres", bebidas: "Bebidas", vinhos: "Vinos" } };
@@ -970,6 +984,7 @@
     $$("[data-abrir-pedido]").forEach((b) => (b.onclick = abrirGaveta));
     $("#fundo-gaveta").onclick = fecharGaveta;
     window.addEventListener("message", (ev) => {
+      if (ev.data?.tipo === "config") { Object.assign(PAINEL_CFG, ev.data); return; }
       if (ev.data?.tipo === "promo") return aplicarPromo(ev.data);
       if (ev.data?.tipo === "marca") return aplicarMarca(ev.data);
       if (ev.data?.tipo === "menu") return aplicarMenu(ev.data);
@@ -995,7 +1010,7 @@
       }
       const lg = ev.target.closest("[data-lang]");
       if (lg) idioma(lg.dataset.lang);
-      if (ev.target.closest("[data-copiar-pix]")) { try { navigator.clipboard.writeText(extrato.pix.copia); } catch (e) {} ev.target.closest("[data-copiar-pix]").textContent = "Código copiado"; }
+      if (ev.target.closest("[data-copiar-pix]")) { try { navigator.clipboard.writeText((extrato.pix || PAINEL_CFG.pix).copia); } catch (e) {} ev.target.closest("[data-copiar-pix]").textContent = "Código copiado"; }
       const sg = ev.target.closest("[data-sug]");
       if (sg) { adicionar(sg.dataset.sug, 1, "", true); $("#sugestao")?.remove(); }
       if (ev.target.closest("[data-sug-fechar]")) $("#sugestao")?.remove();
