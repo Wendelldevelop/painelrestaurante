@@ -80,6 +80,8 @@ Leia isto antes de mexer no projeto. Resume o que existe, as decisões já tomad
 **Mesa x balcão:** o cliente escolhe "Na mesa" ou "Retirar no balcão" ao enviar. Mesa → aceite do garçom no 1º pedido, mapa das mesas, "Entregue na mesa", conta no fim. Balcão → senha, TV chama quando cozinha e bar terminam, "Retirado". Pagamento do balcão em Configurações: **pagar antes** (Pix pelo celular ou caixa confirma "Recebido no caixa") ou **pagar ao retirar**. Na cozinha: borda **laranja = mesa**, **azul = balcão** com etiqueta de pagamento.
 Vídeo do teste: `video-teste-mesa-e-balcao.mp4` (regravar: `node templates/restaurante-site/testes/gravar-video.js`).
 
+**Fluxo ágil (menos cliques):** o pedido entra direto "em preparo"; cozinha e bar tocam **uma vez** em "✓ Pronto" (colunas Preparando | Prontos). O garçom recebe o aviso "Mesa X: pronto para levar" com **"Levei ✓"** em qualquer tela. **Pix pelo celular libera a mesa sozinho.** Senha sai da TV sozinha em 5 min. Aceite do 1º pedido é opcional (Configurações). Esgotados ficam recolhidos e o menu lateral é agrupado em Operação, Gestão e Ajustes.
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

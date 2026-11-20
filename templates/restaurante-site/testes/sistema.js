@@ -19,7 +19,7 @@ const { chromium } = require('playwright');
   if (process.env.FOTO) await p.screenshot({ path: process.env.FOTO + '-rest.png' });
   await p.click('.troca [data-ver="cliente"]'); await p.waitForTimeout(300);
   const st = await f.locator('#status-pedido').textContent();
-  const ok = aviso === '1' && /preparo/i.test(st) && !errs.length;
+  const ok = aviso === '1' && /preparo|Pronto/i.test(st) && !errs.length;
   console.log(ok ? 'FALHAS 0' : 'FALHA', aviso, st, errs);
   await b.close();
 })();

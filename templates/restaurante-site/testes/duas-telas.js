@@ -23,7 +23,7 @@ const { chromium } = require('playwright');
   const fim = await c.locator('h1').first().textContent();
   await r.locator('#modo-tela').click(); await r.setViewportSize({ width: 1280, height: 900 });
   if (process.env.FOTO) { await r.screenshot({ path: process.env.FOTO + '-cel.png' }); await r.locator('#modo-tela').click(); await r.locator('nav [data-aba="mesas"]').click(); await r.waitForTimeout(500); await r.screenshot({ path: process.env.FOTO + '-pc.png' }); await c.screenshot({ path: process.env.FOTO + '-cliente.png' }); }
-  const ok = chegou === 1 && /preparo/i.test(st) && /R\$/.test(conta) && /maquininha/.test(aviso) && /Obrigado/.test(fim) && !errs.length;
+  const ok = chegou === 1 && /preparo|Pronto/i.test(st) && /R\$/.test(conta) && /maquininha/.test(aviso) && /Obrigado/.test(fim) && !errs.length;
   console.log(ok ? 'FALHAS 0' : 'FALHA', chegou, st, conta, aviso, fim, errs);
   await b.close();
 })();

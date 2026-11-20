@@ -20,7 +20,7 @@ const { chromium } = require('playwright');
   // estoque: 2 camarões = 0,4 kg → abaixo do mínimo
   await aba('cardapio'); ok('estoque baixou', /0,8 kg/.test(await p.locator('#estoque').textContent()), await p.locator('#estoque').textContent());
   // 🖨 continua no pedido pronto
-  await aba('cozinha'); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.locator('#cozinha-Em\\ preparo [data-av]').first().click(); await p.waitForTimeout(200);
+  await aba('cozinha'); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.waitForTimeout(200);
   ok('🖨 no pronto', await p.locator('#cozinha-Pronto .card [data-imp]').count() === 1, 'sem botão');
   // detalhe do pedido com horário de cada etapa
   await aba('pedidos'); await p.locator('#lista-pedidos tr.clic').first().click(); await p.waitForTimeout(200);
@@ -30,8 +30,8 @@ const { chromium } = require('playwright');
   await f.locator('input[value="Pix agora"]').check(); ok('QR Pix', await f.locator('#pix-box svg').isVisible(), 'sem QR');
   if (process.env.FOTO) await p.screenshot({ path: process.env.FOTO + '-pix.png' });
   await f.locator('[data-fechar-conta]').click(); await p.waitForTimeout(400);
-  await ver('restaurante'); const al = await p.locator('.alerta').first().textContent(); ok('alerta Pix', /Pix pelo celular/.test(al), al);
-  await p.click('[data-pago]'); await p.waitForTimeout(400); await ver('cliente'); ok('conta fechada', /Thank|Obrigado/.test(await f.locator('body').textContent()), 'não fechou');
+  await ver('restaurante'); const al = await p.locator('.aviso-flutua').textContent(); ok('Pix libera sozinho', /pagou .* no Pix/.test(al), al);
+  await p.waitForTimeout(1600); await ver('cliente'); ok('conta fechada', /Thank|Obrigado/.test(await f.locator('body').textContent()), 'não fechou');
   // horário vai para o site
   await ver('restaurante'); await aba('config'); for (const c of await p.locator('[data-fecha]').all()) await c.check();
   await p.click('#c-hor-ok'); await p.waitForTimeout(300); await ver('cliente');

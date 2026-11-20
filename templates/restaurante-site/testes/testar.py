@@ -54,7 +54,7 @@ finally:
     codigo, saida = rodar([sys.executable, "demo-pdv.py"])
     if not codigo:
         codigo, saida = rodar(["node", str(AQUI / "pdv.js")])
-        ok = codigo == 0 and "PDV cards: 1" in saida and "Em preparo" in saida
+        ok = codigo == 0 and "PDV cards: 1" in saida and "Em preparo" in saida and "um toque: pronto = 1" in saida
         falhou |= not ok
         print(f"[demo PDV] pdv.js: {'ok' if ok else 'FALHOU'}")
         codigo, saida = rodar(["node", str(AQUI / "duas-telas.js")])
