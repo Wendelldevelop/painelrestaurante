@@ -1,4 +1,9 @@
-# Painel Restaurante (Stack Solution)
+# Comanda+ (Stack Solution)
+
+**Abra `index.html`**: é a landing page do Comanda+. O botão **"Testar o sistema"** abre o `sistema.html`.
+Comparativo com concorrentes: `COMPARATIVO.md`.
+
+## Painel Restaurante
 
 Cardápio digital com pedido na mesa por QR Code e painel da casa.
 

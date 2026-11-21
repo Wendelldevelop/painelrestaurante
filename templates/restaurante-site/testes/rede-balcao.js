@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 860 } }); const errs = [], falhas = [];
   const ok = (n, c, v) => { if (!c) falhas.push(n + ': ' + v); };
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto(RAIZ + 'sistema.html'); await p.waitForTimeout(2500);
+  await p.goto(RAIZ + 'sistema.html#semlogin'); await p.waitForTimeout(2500);
   const f = p.frameLocator('#site'); const ver = (v) => p.click(`.troca [data-ver="${v}"]`);
   // cliente pede para retirar no balcão (sem aceite do garçom)
   await f.locator('[data-add]').nth(2).click(); await p.waitForTimeout(200);
@@ -35,7 +35,7 @@ const { chromium } = require('playwright');
   await f.locator('[data-pagar="pix"]').click(); await p.waitForTimeout(600); await ver('restaurante');
   await p.evaluate(() => document.querySelector('nav [data-aba="cozinha"]').click()); await p.locator('#cozinha-Recebido [data-av]').first().click(); await p.waitForTimeout(500);
   await p.evaluate(() => document.querySelector('nav [data-aba="balcao"]').click());
-  ok('mostra o que falta', /Cozinha ✓ · Bar ⏳/.test(await p.locator('#b-prep').textContent()), await p.locator('#b-prep').textContent());
+  ok('mostra o que falta', /Cozinha ✓ · Bar pendente/.test(await p.locator('#b-prep').textContent()), await p.locator('#b-prep').textContent());
   await p.locator('[data-chamar-ja]').first().click(); await p.waitForTimeout(300);
   ok('chamar na TV', /Lia/.test(await p.locator('#tv-agora').textContent()), await p.locator('#tv-agora').textContent());
   // pagar no caixa: só vai para a cozinha depois que o caixa confirma

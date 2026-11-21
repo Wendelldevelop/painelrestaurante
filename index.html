@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comanda+ · Pedido na mesa, cozinha e salão para restaurantes</title>
+<meta name="description" content="Comanda+: o cliente pede pelo QR Code da mesa, o pedido chega na cozinha e no bar, o garçom só leva. Sem app, sem taxa por pedido e integrado ao caixa que você já usa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Hanken+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{--escuro:#17100b;--escuro2:#231710;--creme:#f6efe4;--creme2:#efe5d4;--texto:#2b2018;--suave:#76665a;--linha:#e4d9c7;--laranja:#ff7a3d;--brasa:#b23a1e;--verde:#2f7d3b;--branco:#fffdf9;
+--sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;--display:"Fraunces",Georgia,serif;--r:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--creme);color:var(--texto);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}a{color:inherit}
+.c{width:min(1180px,100% - 40px);margin:0 auto}
+.i{width:1.15em;height:1.15em;vertical-align:-.2em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:12px;font:700 16px var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform .15s,filter .15s,background .15s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}.btn-pri{background:var(--laranja);color:#fff;box-shadow:0 10px 26px rgba(255,122,61,.35)}
+.btn-sec{background:transparent;color:inherit;border:1.5px solid currentColor}.btn-claro{background:#fff;color:var(--escuro)}
+.marca{display:inline-flex;align-items:center;gap:10px;font:800 21px var(--sans);letter-spacing:-.02em;text-decoration:none}.marca b{color:var(--laranja)}.marca svg{width:34px;height:34px}
+/* topo */
+.topo{position:sticky;top:0;z-index:20;background:rgba(23,16,11,.92);backdrop-filter:blur(10px);color:var(--creme);border-bottom:1px solid rgba(246,239,228,.08)}
+.topo .c{display:flex;align-items:center;gap:28px;height:72px}.topo nav{display:flex;gap:24px;margin-left:auto}.topo nav a{text-decoration:none;font-weight:600;font-size:15px;opacity:.8}.topo nav a:hover{opacity:1}
+.topo .btn{padding:11px 18px;font-size:15px}
+/* hero */
+.hero{background:radial-gradient(circle at 75% 20%,#3a261a 0,var(--escuro) 55%);color:var(--creme);overflow:hidden}
+.hero .c{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding:76px 0 90px}
+.etiqueta{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;background:rgba(255,122,61,.14);color:#ffb08a;font-size:14px;font-weight:700}
+.hero h1{font:600 clamp(38px,5.2vw,64px)/1.04 var(--display);letter-spacing:-.025em;margin:20px 0 18px}.hero h1 em{font-style:italic;color:var(--laranja)}
+.hero .lead{font-size:19px;color:#d9ccb8;max-width:540px;margin:0 0 30px}
+.acoes{display:flex;gap:14px;flex-wrap:wrap}
+.provas{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;font-size:14px;color:#cdbfa9}.provas span{display:inline-flex;align-items:center;gap:7px}.provas .i{color:#8fd19a}
+.vitrine{position:relative;min-height:440px}
+.note{position:absolute;right:-60px;top:10px;width:118%;border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.55);border:8px solid #2b1f17;background:#2b1f17}
+.cel{position:absolute;left:-8px;bottom:-30px;width:205px;border-radius:34px;overflow:hidden;border:9px solid #0b0705;box-shadow:0 30px 60px rgba(0,0,0,.6)}
+/* seções */
+section{padding:96px 0}.titulo{max-width:720px;margin:0 0 48px}.titulo small{display:block;color:var(--brasa);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;margin-bottom:10px}
+.titulo h2{font:600 clamp(30px,3.6vw,44px)/1.1 var(--display);letter-spacing:-.02em;margin:0 0 12px}.titulo p{margin:0;color:var(--suave);font-size:18px}
+.centro{text-align:center;margin-left:auto;margin-right:auto}
+.beneficios{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ben{background:var(--branco);border:1px solid var(--linha);border-radius:var(--r);padding:26px}.ben .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:#ffe9dc;color:var(--laranja);margin-bottom:16px}.ben .ic .i{width:24px;height:24px}
+.ben h3{font:700 19px var(--sans);margin:0 0 6px}.ben p{margin:0;color:var(--suave);font-size:15.5px}
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:p}
+.passo{position:relative;padding:28px 24px;border-radius:var(--r);background:var(--escuro);color:var(--creme)}.passo::before{counter-increment:p;content:counter(p);font:600 54px/1 var(--display);color:var(--laranja);display:block;margin-bottom:14px}
+.passo h3{margin:0 0 6px;font:700 18px var(--sans)}.passo p{margin:0;color:#cdbfa9;font-size:15px}
+.telas{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.tela{grid-column:span 2;background:var(--branco);border:1px solid var(--linha);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}.tela.larga{grid-column:span 3}
+.tela figure{margin:0;background:var(--creme2);aspect-ratio:16/10;overflow:hidden}.tela figure img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.tela .t{padding:18px 20px 22px}.tela h3{margin:0 0 4px;font:700 18px var(--sans)}.tela p{margin:0;color:var(--suave);font-size:15px}
+.tela.cel-t figure{aspect-ratio:auto;height:320px;display:grid;place-items:center;padding-top:18px}.tela.cel-t figure img{width:170px;height:auto;border-radius:22px;border:6px solid #0b0705;object-fit:initial}
+.recursos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rec{display:flex;gap:14px;padding:20px;border-radius:14px;background:var(--branco);border:1px solid var(--linha)}.rec .i{width:26px;height:26px;color:var(--brasa);margin-top:2px}.rec h3{margin:0 0 3px;font:700 16.5px var(--sans)}.rec p{margin:0;color:var(--suave);font-size:14.5px;line-height:1.5}
+.video{background:var(--escuro);color:var(--creme)}.video .titulo p{color:#cdbfa9}
+.video video{width:100%;max-width:960px;margin:0 auto;display:block;border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.5);background:#000}
+.planos{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plano{position:relative;display:flex;flex-direction:column;padding:30px 28px;border-radius:22px;background:var(--branco);border:1px solid var(--linha)}
+.plano.dest{background:var(--escuro);color:var(--creme);border-color:var(--escuro);transform:translateY(-10px);box-shadow:0 30px 60px rgba(23,16,11,.3)}
+.plano .tag{position:absolute;top:-13px;left:28px;background:var(--laranja);color:#fff;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:99px}
+.plano h3{margin:0;font:700 21px var(--sans)}.plano .para{margin:4px 0 18px;color:var(--suave);font-size:15px}.plano.dest .para{color:#cdbfa9}
+.preco{font:600 44px/1 var(--display);letter-spacing:-.02em}.preco small{font:600 16px var(--sans);color:var(--suave)}.plano.dest .preco small{color:#cdbfa9}
+.pacotes{margin:10px 0 20px;font-size:14px;color:var(--suave)}.plano.dest .pacotes{color:#cdbfa9}
+.plano ul{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:9px;font-size:15.5px}.plano li{display:flex;gap:9px}.plano li .i{color:var(--verde);margin-top:3px}.plano.dest li .i{color:#8fd19a}
+.plano .btn{margin-top:auto;justify-content:center}
+.obs{margin-top:22px;text-align:center;color:var(--suave);font-size:14.5px}
+.tabela{overflow-x:auto;background:var(--branco);border:1px solid var(--linha);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:820px;font-size:15px}th,td{padding:15px 16px;text-align:left;vertical-align:top;border-top:1px solid var(--linha)}
+thead th{border-top:0;background:var(--creme2);font-size:14px}thead th.nos{background:var(--escuro);color:var(--creme)}td.nos{background:#fff6ef;font-weight:600}
+tbody th{font-weight:700;width:22%}.sim{color:var(--verde);font-weight:700}.fonte{margin-top:14px;font-size:13px;color:var(--suave)}.fonte a{color:var(--suave)}
+.encaixe{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}.encaixe div{padding:22px;border-radius:14px;background:var(--branco);border:1px solid var(--linha)}.encaixe h3{margin:0 0 6px;font:700 17px var(--sans)}.encaixe p{margin:0;color:var(--suave);font-size:15px}
+.faq{max-width:820px;margin:0 auto;display:grid;gap:12px}.faq details{background:var(--branco);border:1px solid var(--linha);border-radius:14px;padding:4px 22px}
+.faq summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:16px}.faq summary::after{content:"+";color:var(--laranja);font-size:24px;line-height:1}.faq details[open] summary::after{content:"–"}
+.faq p{margin:0 0 18px;color:var(--suave)}
+.final{background:radial-gradient(circle at 20% 0,#3a261a 0,var(--escuro) 60%);color:var(--creme);text-align:center}
+.final h2{font:600 clamp(32px,4vw,50px)/1.08 var(--display);margin:0 0 14px;letter-spacing:-.02em}.final p{color:#cdbfa9;margin:0 auto 30px;max-width:620px;font-size:18px}.final .acoes{justify-content:center}
+footer{background:#0f0a07;color:#a7998a;padding:34px 0;font-size:14px}footer .c{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}footer .marca{color:var(--creme);font-size:18px}
+@media(max-width:980px){.topo nav{display:none}.hero .c{grid-template-columns:1fr;padding:50px 0 60px}.vitrine{min-height:0;height:330px;margin-top:10px}.note{right:-30px;width:105%}.cel{width:140px;bottom:-20px}
+.beneficios,.passos{grid-template-columns:1fr 1fr}.telas{grid-template-columns:1fr 1fr}.tela,.tela.larga{grid-column:span 1}.recursos{grid-template-columns:1fr 1fr}.planos{grid-template-columns:1fr}.plano.dest{transform:none}.encaixe{grid-template-columns:1fr}}
+@media(max-width:620px){body{font-size:16px}section{padding:64px 0}.topo .btn-sec{display:none}.beneficios,.passos,.telas,.recursos{grid-template-columns:1fr}.vitrine{height:240px}.cel{width:110px;border-radius:22px;border-width:6px}.acoes .btn{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#2b1f17"/><path d="M20.6 11.4a6.6 6.6 0 1 0 0 9.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M24.5 6.5v6M21.5 9.5h6" stroke="#ff7a3d" stroke-width="2.6" stroke-linecap="round"/></symbol>
+<symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h3M21 17v4h-4"/></symbol>
+<symbol id="i-chef" viewBox="0 0 24 24"><path d="M6 13.9A4 4 0 0 1 7.5 6a5 5 0 0 1 9 0A4 4 0 0 1 18 13.9V21H6z"/><line x1="6" y1="17" x2="18" y2="17"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+<symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-check-c" viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14 9 11"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.5z"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-whats" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></symbol>
+<symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 2l4 4-4 4-4-4zM12 14l4 4-4 4-4-4zM2 12l4-4 4 4-4 4zM14 12l4-4 4 4-4 4z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M3 9v11h18V9M3 9h18M9 20v-6h6v6"/></symbol>
+<symbol id="i-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+</svg>
+
+<header class="topo"><div class="c">
+<a class="marca" href="#"><svg><use href="#logo"/></svg><span>Comanda<b>+</b></span></a>
+<nav><a href="#como">Como funciona</a><a href="#telas">Telas</a><a href="#planos">Planos</a><a href="#comparativo">Comparativo</a><a href="#duvidas">Dúvidas</a></nav>
+<a class="btn btn-sec" data-whats href="#">Falar com a gente</a>
+<a class="btn btn-pri" href="sistema.html" data-testar>Testar agora</a>
+</div></header>
+
+<section class="hero" style="padding:0"><div class="c">
+<div>
+<span class="etiqueta"><svg class="i"><use href="#i-spark"/></svg> Para restaurantes, pizzarias, hamburguerias e bares</span>
+<h1>O pedido sai da mesa e chega na cozinha. <em>Sem fila, sem papel, sem erro.</em></h1>
+<p class="lead">O cliente pede pelo QR Code da mesa, a cozinha e o bar recebem na hora e o garçom só leva. Você vende mais, atende mais mesas e acompanha tudo pelo celular.</p>
+<div class="acoes"><a class="btn btn-pri" href="sistema.html" data-testar><svg class="i"><use href="#i-play"/></svg> Testar o sistema agora</a><a class="btn btn-sec" href="#video">Ver vídeo de 2 minutos</a></div>
+<div class="provas"><span><svg class="i"><use href="#i-check"/></svg> Sem app para baixar</span><span><svg class="i"><use href="#i-check"/></svg> Sem taxa por pedido</span><span><svg class="i"><use href="#i-check"/></svg> Conversa com o caixa que você já usa</span></div>
+</div>
+<div class="vitrine"><img class="note" src="comanda-mais/img/salao.webp" alt="Painel do restaurante no Comanda+ com o mapa das mesas"><img class="cel" src="comanda-mais/img/cliente.webp" alt="Cardápio do cliente no celular, pedindo pela mesa"></div>
+</div></section>
+
+<section><div class="c">
+<div class="titulo"><small>Por que o Comanda+</small><h2>Menos espera no salão, mais venda em cada mesa</h2><p>Tudo o que atrasa o serviço numa noite cheia vira um toque na tela.</p></div>
+<div class="beneficios">
+<div class="ben"><div class="ic"><svg class="i"><use href="#i-clock"/></svg></div><h3>Mesa gira mais rápido</h3><p>O cliente não espera o garçom para pedir nem para fechar a conta: faz tudo pelo celular.</p></div>
+<div class="ben"><div class="ic"><svg class="i"><use href="#i-trend"/></svg></div><h3>Ticket maior</h3><p>Sugestão "vai bem com", adicionais com preço e promoções por horário aparecem na hora certa.</p></div>
+<div class="ben"><div class="ic"><svg class="i"><use href="#i-check-c"/></svg></div><h3>Zero comanda perdida</h3><p>O pedido chega escrito na cozinha e no bar, com observações e ponto da carne. Sem letra ilegível.</p></div>
+<div class="ben"><div class="ic"><svg class="i"><use href="#i-heart"/></svg></div><h3>Cliente que volta</h3><p>Cashback, convite no WhatsApp para quem sumiu e avaliação no Google depois da visita.</p></div>
+</div></div></section>
+
+<section id="como" style="padding-top:0"><div class="c">
+<div class="titulo"><small>Como funciona</small><h2>Do QR Code ao prato na mesa em 4 passos</h2></div>
+<div class="passos">
+<div class="passo"><h3>Cliente escaneia o QR</h3><p>Abre o cardápio com fotos da mesa dele. Sem baixar nada, em português, inglês ou espanhol.</p></div>
+<div class="passo"><h3>Pede do jeito dele</h3><p>Escolhe adicionais, tira ingredientes, coloca o nome para a comanda individual.</p></div>
+<div class="passo"><h3>Cozinha e bar recebem</h3><p>Cada setor vê só o que é seu, com tempo correndo. Terminou? Um toque em "Pronto".</p></div>
+<div class="passo"><h3>Garçom só leva</h3><p>O prato pronto aparece com o número da mesa. No balcão, a senha é chamada na TV.</p></div>
+</div></div></section>
+
+<section id="telas" style="background:var(--creme2)"><div class="c">
+<div class="titulo"><small>Uma tela para cada pessoa</small><h2>Cada função vê só o que precisa</h2><p>Cozinha, bar, garçom, caixa e dono: cada um entra com a sua senha e vê a sua tela.</p></div>
+<div class="telas">
+<article class="tela cel-t"><figure><img src="comanda-mais/img/prato.webp" alt="Ficha do prato com adicionais"></figure><div class="t"><h3>Cliente</h3><p>Cardápio com fotos, adicionais, conta separada por pessoa e Pix pelo celular.</p></div></article>
+<article class="tela"><figure><img src="comanda-mais/img/cozinha.webp" alt="Tela da cozinha"></figure><div class="t"><h3>Cozinha e bar</h3><p>Pedidos separados por setor, com tempo e um toque para "Pronto".</p></div></article>
+<article class="tela"><figure><img src="comanda-mais/img/balcao.webp" alt="Mesas prontas no balcão"></figure><div class="t"><h3>Garçom e balcão</h3><p>Pratos prontos por mesa e senhas do balcão num lugar só.</p></div></article>
+<article class="tela larga"><figure><img src="comanda-mais/img/tv.webp" alt="TV de senhas"></figure><div class="t"><h3>TV de senhas</h3><p>Para hamburguerias, cafeterias e retirada: a senha é chamada com som quando fica pronta.</p></div></article>
+<article class="tela larga"><figure><img src="comanda-mais/img/gerencia.webp" alt="Gerência com assistente de IA"></figure><div class="t"><h3>Dono</h3><p>Faturamento, pratos mais vendidos, relatório do mês, resumo diário no WhatsApp e assistente com IA.</p></div></article>
+</div></div></section>
+
+<section><div class="c">
+<div class="titulo"><small>Recursos</small><h2>Tudo o que o salão precisa, sem complicar</h2></div>
+<div class="recursos">
+<div class="rec"><svg class="i"><use href="#i-qr"/></svg><div><h3>Pedido na mesa e no balcão</h3><p>QR por mesa, retirada com senha e pagamento antes ou na retirada.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-chef"/></svg><div><h3>Cozinha e bar separados</h3><p>Cada setor recebe só o seu pedido, com comanda impressa se quiser.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-bell"/></svg><div><h3>Garçom avisado no celular</h3><p>Chamado da mesa, pedido de conta e prato pronto chegam com vibração.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-pix"/></svg><div><h3>Conta pelo celular</h3><p>Conta por pessoa, serviço opcional, Pix pelo celular ou maquininha.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-users"/></svg><div><h3>Comanda individual</h3><p>Cada um vê o que pediu e paga o seu, sem conta de cabeça no fim.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-box"/></svg><div><h3>Cardápio e estoque</h3><p>Muda preço e foto na hora, esgotado automático quando o ingrediente acaba.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-chart"/></svg><div><h3>Relatórios e histórico</h3><p>Vendas por dia, horário de pico, pratos campeões e exportação para Excel.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-spark"/></svg><div><h3>Assistente com IA</h3><p>Pergunte "qual prato vende menos?" e receba a resposta com uma sugestão.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-gift"/></svg><div><h3>Fidelidade e promoções</h3><p>Cashback, happy hour e prato do dia que ligam sozinhos no horário.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-store"/></svg><div><h3>Rede de lojas</h3><p>Várias unidades, cardápio central e ranking das lojas num painel.</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-plug"/></svg><div><h3>Integra com o seu caixa</h3><p>Envia pedidos e contas para o sistema que você já usa (Saipos, Consumer, Colibri e outros).</p></div></div>
+<div class="rec"><svg class="i"><use href="#i-lock"/></svg><div><h3>Seguro e com LGPD</h3><p>Senha por função, registro de quem fez o quê e dados de clientes protegidos.</p></div></div>
+</div></div></section>
+
+<section class="video" id="video"><div class="c">
+<div class="titulo centro"><small style="color:var(--laranja)">Veja funcionando</small><h2>Um pedido na mesa e um no balcão, do começo ao fim</h2><p>2 minutos, com legendas.</p></div>
+<video controls preload="metadata" poster="comanda-mais/img/salao.webp"><source src="comanda-mais/demo.mp4" type="video/mp4"></video>
+<div class="acoes" style="justify-content:center;margin-top:30px"><a class="btn btn-pri" href="sistema.html" data-testar><svg class="i"><use href="#i-play"/></svg> Testar eu mesmo</a></div>
+</div></section>
+
+<section id="planos"><div class="c">
+<div class="titulo centro"><small>Planos</small><h2>Mensalidade fixa. Sem taxa por pedido.</h2><p>Comece pelo cardápio e cresça até o salão completo.</p></div>
+<div class="planos">
+<div class="plano"><h3>Cardápio Digital</h3><p class="para">Para quem quer começar</p><div class="preco">R$ 350<small>/mês</small></div><p class="pacotes">ou R$ 1.200 (3 meses) · R$ 2.200 (6 meses) · R$ 4.200 (12 meses)</p>
+<ul><li><svg class="i"><use href="#i-check"/></svg>Site do restaurante com cardápio e fotos</li><li><svg class="i"><use href="#i-check"/></svg>QR Code nas mesas</li><li><svg class="i"><use href="#i-check"/></svg>Cardápio em 3 idiomas</li><li><svg class="i"><use href="#i-check"/></svg>Troca de preços e pratos inclusa</li></ul>
+<a class="btn btn-sec" data-whats data-plano="Cardápio Digital" href="#">Quero este</a></div>
+<div class="plano"><h3>Site + Reservas</h3><p class="para">Para lotar as mesas</p><div class="preco">R$ 550<small>/mês</small></div><p class="pacotes">ou R$ 1.900 (3 meses) · R$ 3.500 (6 meses) · R$ 6.600 (12 meses)</p>
+<ul><li><svg class="i"><use href="#i-check"/></svg>Tudo do Cardápio Digital</li><li><svg class="i"><use href="#i-check"/></svg>Reservas pelo site e confirmação no WhatsApp</li><li><svg class="i"><use href="#i-check"/></svg>Fila de espera pelo QR da porta</li><li><svg class="i"><use href="#i-check"/></svg>Relatório mensal</li></ul>
+<a class="btn btn-sec" data-whats data-plano="Site + Reservas" href="#">Quero este</a></div>
+<div class="plano dest"><span class="tag">Mais completo</span><h3>Mesa Completa</h3><p class="para">Pedido na mesa até a cozinha</p><div class="preco">R$ 990<small>/mês</small></div><p class="pacotes">ou R$ 3.400 (3 meses) · R$ 6.300 (6 meses) · R$ 11.880 (12 meses)</p>
+<ul><li><svg class="i"><use href="#i-check"/></svg>Tudo do Site + Reservas</li><li><svg class="i"><use href="#i-check"/></svg>Pedido na mesa e no balcão com TV de senhas</li><li><svg class="i"><use href="#i-check"/></svg>Cozinha, bar, garçom e conta pelo celular</li><li><svg class="i"><use href="#i-check"/></svg>Gerência, IA, fidelidade e integração com o caixa</li></ul>
+<a class="btn btn-pri" data-whats data-plano="Mesa Completa" href="#">Quero este</a></div>
+</div>
+<p class="obs">Sem delivery: o Comanda+ cuida do salão e da retirada. Caixa, nota fiscal e maquininha continuam no sistema que você já usa.</p>
+</div></section>
+
+<section id="comparativo" style="background:var(--creme2)"><div class="c">
+<div class="titulo"><small>Comparativo</small><h2>Onde o Comanda+ se encaixa</h2><p>Cada sistema tem um foco. O nosso é o salão: do QR Code da mesa até o prato chegar, trabalhando junto com o caixa que você já tem.</p></div>
+<div class="tabela"><table>
+<thead><tr><th></th><th class="nos">Comanda+</th><th>Goomer</th><th>Anota AI</th><th>Saipos</th></tr></thead>
+<tbody>
+<tr><th>Foco principal</th><td class="nos">Salão: pedido na mesa e no balcão, cozinha, garçom e TV de senhas</td><td>Cardápio digital e autoatendimento por QR (mesa, balcão e delivery)</td><td>Atendente automático no WhatsApp para delivery</td><td>Gestão completa e PDV: caixa, delivery, estoque e fiscal</td></tr>
+<tr><th>Preço de entrada divulgado*</th><td class="nos">R$ 350/mês, sem taxa por pedido</td><td>Plano grátis com limite de pedidos e taxa por pedido excedente; planos pagos sob consulta</td><td>A partir de cerca de R$ 300/mês</td><td>A partir de cerca de R$ 220 a R$ 240/mês</td></tr>
+<tr><th>Pedido na mesa por QR</th><td class="nos sim">Sim</td><td>Sim</td><td>Foco em delivery</td><td>Por integração com cardápios digitais</td></tr>
+<tr><th>Cozinha e bar separados, garçom e TV de senhas</th><td class="nos sim">Sim, tudo incluso no Mesa Completa</td><td>Consulte a empresa</td><td>Foco em delivery</td><td>Consulte a empresa</td></tr>
+<tr><th>Conta por pessoa e Pix pelo celular</th><td class="nos sim">Sim</td><td>Pagamento no cardápio digital</td><td>Pix no delivery</td><td>Consulte a empresa</td></tr>
+<tr><th>Site próprio com a marca do restaurante</th><td class="nos sim">Sim, com fotos e reservas</td><td>Cardápio com a marca</td><td>Consulte a empresa</td><td>Consulte a empresa</td></tr>
+<tr><th>Caixa, nota fiscal e delivery</th><td class="nos">Integra com o seu sistema</td><td>Integra com sistemas de gestão</td><td>Nota fiscal nos planos superiores</td><td class="sim">Faz tudo isso</td></tr>
+</tbody></table></div>
+<p class="fonte">*Valores e recursos públicos encontrados em pesquisa de novembro de 2026, em sites e comparativos de terceiros; podem ter mudado e devem ser confirmados com cada empresa. Goomer, Anota AI e Saipos são marcas de seus respectivos donos; o Comanda+ não tem relação com elas.</p>
+<div class="encaixe"><div><h3>Já usa Saipos ou outro caixa?</h3><p>Ótimo. O Comanda+ não substitui o seu caixa: ele cuida do pedido no salão e manda a conta pronta para o seu sistema.</p></div><div><h3>Seu forte é o salão, não o delivery?</h3><p>Então é para você. Ferramentas de delivery não foram feitas para a mesa; o Comanda+ foi.</p></div></div>
+</div></section>
+
+<section id="duvidas"><div class="c">
+<div class="titulo centro"><small>Dúvidas</small><h2>Perguntas frequentes</h2></div>
+<div class="faq">
+<details><summary>O cliente precisa baixar algum aplicativo?</summary><p>Não. Ele aponta a câmera para o QR Code da mesa e o cardápio abre no navegador do celular.</p></details>
+<details><summary>Funciona com o caixa e a maquininha que eu já tenho?</summary><p>Sim. O Comanda+ não emite nota nem cobra no cartão: ele manda o pedido e a conta prontos para o seu caixa e o garçom leva a sua maquininha. O Pix pelo celular é opcional.</p></details>
+<details><summary>Tem taxa por pedido?</summary><p>Não. Você paga uma mensalidade fixa, venda 10 ou 1.000 pedidos.</p></details>
+<details><summary>E se a internet cair?</summary><p>O pedido fica guardado no celular do cliente e entra sozinho quando a conexão volta. Nada se perde.</p></details>
+<details><summary>Minha cozinha não usa tablet. Dá para imprimir?</summary><p>Dá. O pedido pode sair na impressora térmica da cozinha e do bar, ou nas duas telas ao mesmo tempo.</p></details>
+<details><summary>Quanto tempo leva para começar?</summary><p>Montamos o cardápio com você, imprimimos os QR Codes das mesas e treinamos a equipe. Fale com a gente para combinar a data.</p></details>
+<details><summary>Serve para hamburgueria, cafeteria ou bar?</summary><p>Serve. Na hamburgueria e na cafeteria o pedido é no balcão com senha na TV; no bar, comanda por mesa e por pessoa.</p></details>
+</div></div></section>
+
+<section class="final"><div class="c">
+<h2>Veja o Comanda+ funcionando agora</h2>
+<p>Abra o sistema, faça um pedido como cliente e veja chegar na cozinha. Leva 2 minutos.</p>
+<div class="acoes"><a class="btn btn-pri" href="sistema.html" data-testar><svg class="i"><use href="#i-play"/></svg> Testar o sistema</a><a class="btn btn-claro" data-whats href="#"><svg class="i"><use href="#i-whats"/></svg> Falar no WhatsApp</a></div>
+</div></section>
+
+<footer><div class="c"><a class="marca" href="#"><svg><use href="#logo"/></svg><span>Comanda<b>+</b></span></a><span>Um produto Stack Solution · © 2026</span></div></footer>
+
+<script>
+// WhatsApp comercial: coloque o número com DDI e DDD, só números (ex.: 5511999999999)
+const WHATS = "";
+document.querySelectorAll("[data-whats]").forEach((a) => {
+  const plano = a.dataset.plano;
+  const msg = plano ? `Olá! Tenho interesse no plano ${plano} do Comanda+.` : "Olá! Quero conhecer o Comanda+ para o meu restaurante.";
+  a.href = (WHATS ? `https://wa.me/${WHATS}` : "https://wa.me/") + "?text=" + encodeURIComponent(msg);
+  a.target = "_blank"; a.rel = "noopener";
+});
+</script>
+</body>
+</html>

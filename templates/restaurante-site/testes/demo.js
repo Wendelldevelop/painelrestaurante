@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 860 } }); const errs = [], falhas = [];
   const ok = (n, c, v) => { if (!c) falhas.push(n + ': ' + v); };
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto(RAIZ + 'sistema.html'); await p.waitForTimeout(2500);
+  await p.goto(RAIZ + 'sistema.html#semlogin'); await p.waitForTimeout(2500);
   const f = p.frameLocator('#site');
   // tour
   await p.click('#tour-btn'); await p.waitForTimeout(400);

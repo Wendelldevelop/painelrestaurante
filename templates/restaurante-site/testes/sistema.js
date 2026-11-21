@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 860 } }); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto(RAIZ + 'sistema.html'); await p.waitForTimeout(2500);
+  await p.goto(RAIZ + 'sistema.html#semlogin'); await p.waitForTimeout(2500);
   const f = p.frameLocator('#site');
   await f.locator('[data-add]').nth(2).click(); await p.waitForTimeout(300);
   await f.locator('.barra-cel [data-abrir-pedido]').click(); await p.waitForTimeout(500);

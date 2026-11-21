@@ -4,7 +4,7 @@ const RAIZ = 'file://' + path.resolve(__dirname, '..') + '/';
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const ctx = await b.newContext(); const errs = [];
-  const r = await ctx.newPage(); r.on('pageerror', e => errs.push(e.message)); await r.goto(RAIZ + 'restaurante.html');
+  const r = await ctx.newPage(); r.on('pageerror', e => errs.push(e.message)); await r.goto(RAIZ + 'restaurante.html#semlogin');
   const c = await ctx.newPage(); await c.setViewportSize({ width: 390, height: 800 }); c.on('pageerror', e => errs.push(e.message));
   await c.goto(RAIZ + 'cliente.html?mesa=3#cardapio'); await c.waitForTimeout(1500);
   await c.locator('[data-add]').first().click(); await c.waitForTimeout(300);

@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 860 } }); const errs = [], falhas = [];
   const ok = (n, c, v) => { if (!c) falhas.push(n + ': ' + v); };
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto(RAIZ + 'sistema.html'); await p.waitForTimeout(2500);
+  await p.goto(RAIZ + 'sistema.html#semlogin'); await p.waitForTimeout(2500);
   const f = p.frameLocator('#site'); const ver = (v) => p.click(`.troca [data-ver="${v}"]`), aba = (a) => p.evaluate(x => document.querySelector(`nav [data-aba="${x}"]`).click(), a);
   // promoção liga e muda o preço no cardápio do cliente
   await ver('restaurante'); await aba('marketing'); await p.click('[data-promo="0"]'); await p.waitForTimeout(300);

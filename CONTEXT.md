@@ -85,6 +85,11 @@ Vídeo do teste: `video-teste-mesa-e-balcao.mp4` (regravar: `node templates/rest
 **Menu enxuto (6 grupos):** Pedidos (Hoje | Histórico) · Cozinha e bar (Cozinha | Bar) · Salão (Mesas | Balcão e TV | Reservas e fila) · Cardápio (Cardápio e estoque | Promoções e fidelidade) · Gerência (Resumo e clientes | Rede de lojas) · Configurações (Configurações | Integrações). As sub-abas ficam no topo de cada grupo.
 **Senha do balcão:** a TV só chama quando cozinha **e** bar terminam; o Balcão mostra "Cozinha ✓ · Bar ⏳" e tem "Chamar na TV" para chamar na hora.
 
+**Produto: Comanda+** (marca da Stack Solution).
+- **Landing page:** `index.html` (fonte: `templates/restaurante-site/comanda-mais.html`, imagens e vídeo em `comanda-mais/`). Botão "Testar" abre `sistema.html`. Número do WhatsApp comercial a preencher na constante `WHATS` no fim da página.
+- **Cara de produto:** tela de login (qualquer senha entra na demo; `#semlogin` na URL pula), logo Comanda+ no menu e na TV, ícones SVG no lugar de emojis, fontes Fraunces + Hanken Grotesk, **modo limpo** que esconde os avisos de demonstração (⚙ Demo > "Mostrar avisos de demonstração").
+- **Comparativo:** `COMPARATIVO.md` (Goomer, Anota AI, Saipos, com fontes; confirmar valores).
+
 **Tudo em um:** `sistema.html` junta as duas partes, com a escolha **Cliente | Restaurante | TV senhas** no topo, no centro.
 
 **Hoje é demonstração:** roda só no navegador, sem servidor. As duas telas conversam quando abertas no **mesmo navegador** (BroadcastChannel). `demo-pdv.html` mostra as duas lado a lado. Reservas, clientes e as mesas 2, 7 e 9 ocupadas são dados de exemplo.

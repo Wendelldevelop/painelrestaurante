@@ -853,7 +853,7 @@
   function faixaPromo() {
     $("#faixa-promo")?.remove();
     const t = Object.values(PROMOS);
-    if (t.length && paginaAtual === "cardapio") $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-promo" class="faixa-promo" role="status">${t.map((x) => `<p>🔥 ${esc(x)}</p>`).join("")}</div>`);
+    if (t.length && paginaAtual === "cardapio") $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-promo" class="faixa-promo" role="status">${t.map((x) => `<p>${esc(x)}</p>`).join("")}</div>`);
   }
   // demonstração: o painel troca nome, iniciais e cor para mostrar o sistema "com a cara" do cliente
   let marcaAtual = { nome: CONFIG.nome, ini: CONFIG.logo?.iniciais || "" };
@@ -881,7 +881,7 @@
     $("#faixa-idioma")?.remove();
     if (paginaAtual !== "cardapio" || CONFIG.idiomas === false) return;
     if (LANG !== "pt") setTimeout(traduzTela, 0);
-    $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-idioma" class="faixa-idioma" role="group" aria-label="Idioma do cardápio">🌐 ${[["pt", "Português"], ["en", "English"], ["es", "Español"]].map(([k, n]) => `<button type="button" data-lang="${k}" aria-pressed="${LANG === k}">${n}</button>`).join("")}</div>`);
+    $("#conteudo").insertAdjacentHTML("afterbegin", `<div id="faixa-idioma" class="faixa-idioma" role="group" aria-label="Idioma do cardápio">${[["pt", "Português"], ["en", "English"], ["es", "Español"]].map(([k, n]) => `<button type="button" data-lang="${k}" aria-pressed="${LANG === k}">${n}</button>`).join("")}</div>`);
   }
   // textos fixos da tela (título, botões da mesa, barra de baixo)
   const TELA = {
@@ -993,7 +993,7 @@
       if (ev.data?.tipo === "fechada" && String(ev.data.mesa ?? mesa) === String(mesa)) {
         const alvo = $(".pagina-conta") || $("#status-pedido")?.closest(".pagina");
         const link = CONFIG.avaliacao?.link || "https://www.google.com/search?q=" + encodeURIComponent(CONFIG.nome + " avaliações");
-        if (alvo) alvo.innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Pagamento confirmado e conta fechada. Gostou? Sua avaliação ajuda muito a casa.</p>${ev.data.cashback ? `<p class="cashback">🎁 Você ganhou <b>${reais(ev.data.cashback)}</b> de cashback para usar na próxima visita.</p>` : ""}<p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
+        if (alvo) alvo.innerHTML = `<h1>Obrigado pela visita!</h1><p class="texto">Pagamento confirmado e conta fechada. Gostou? Sua avaliação ajuda muito a casa.</p>${ev.data.cashback ? `<p class="cashback">Você ganhou <b>${reais(ev.data.cashback)}</b> de cashback para usar na próxima visita.</p>` : ""}<p style="margin-top:var(--e6)"><a class="btn btn-pri" href="${link}" target="_blank" rel="noopener">Avaliar no Google</a></p>`;
         return;
       }
       if (ev.data?.tipo !== "esgotado") return;

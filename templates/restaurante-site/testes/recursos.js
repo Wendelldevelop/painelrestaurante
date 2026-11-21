@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 860 } }); const errs = [], falhas = [];
   const ok = (n, c, v) => { if (!c) falhas.push(n + ': ' + v); };
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto(RAIZ + 'sistema.html'); await p.waitForTimeout(2500);
+  await p.goto(RAIZ + 'sistema.html#semlogin'); await p.waitForTimeout(2500);
   const f = p.frameLocator('#site'); const R = () => p.click('.troca [data-ver="restaurante"]'), C = () => p.click('.troca [data-ver="cliente"]');
   // integração ligada antes dos pedidos
   await R(); await p.evaluate(() => document.querySelector('nav [data-aba="integracoes"]').click()); await p.click('[data-ig="saipos"]'); await p.waitForTimeout(800); await C();
