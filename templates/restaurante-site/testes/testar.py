@@ -89,6 +89,12 @@ finally:
         ok = codigo == 0 and "FALHAS 0" in saida
         falhou |= not ok
         print(f"[🖨 no pronto, horário, Pix, estoque, idiomas] ajustes.js: {'ok' if ok else 'FALHOU'}")
+        codigo, saida = rodar(["node", str(SITE / "servidor" / "teste.js")])
+        ok = codigo == 0 and "FALHAS 0" in saida
+        falhou |= not ok
+        print(f"[servidor: cliente, painel e TV em aparelhos separados] servidor/teste.js: {'ok' if ok else 'FALHOU'}")
+        if not ok:
+            print("   " + "\n   ".join(saida.splitlines()[-6:]))
         if not ok:
             print("   " + "\n   ".join(saida.splitlines()[-4:]))
         if not ok:

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Proposta comercial · Comanda+</title>
+<!-- Edite os campos entre colchetes e gere o PDF com: node templates/restaurante-site/vendas/gerar-pdf.js -->
+<style>
+@page{size:A4;margin:0}
+:root{--escuro:#17100b;--creme:#f6efe4;--texto:#2b2018;--suave:#76665a;--linha:#e4d9c7;--laranja:#ff7a3d;--verde:#2f7d3b}
+*{box-sizing:border-box}body{margin:0;font:11.5pt/1.55 "Hanken Grotesk",system-ui,sans-serif;color:var(--texto);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{width:210mm;height:297mm;overflow:hidden;padding:20mm 18mm;position:relative;page-break-after:always;background:#fff}.pg:last-child{page-break-after:auto}
+.capa{background:radial-gradient(circle at 80% 15%,#3a261a 0,var(--escuro) 60%);color:var(--creme);display:flex;flex-direction:column}
+.marca{display:flex;align-items:center;gap:10px;font:800 20pt system-ui}.marca b{color:var(--laranja)}.marca svg{width:44px;height:44px}
+.capa h1{font:600 38pt/1.05 Georgia,serif;margin:auto 0 12px}.capa h1 em{color:var(--laranja)}.capa .para{font-size:14pt;color:#d9ccb8;margin:0 0 30mm}
+.capa .rod{display:flex;justify-content:space-between;color:#a7998a;font-size:10pt;border-top:1px solid rgba(246,239,228,.15);padding-top:6mm}
+h2{font:600 22pt/1.15 Georgia,serif;margin:0 0 6mm}h3{font:700 12.5pt system-ui;margin:0 0 2mm}.small{color:var(--suave);font-size:10pt}
+.cab{display:flex;justify-content:space-between;align-items:center;font-size:9pt;color:var(--suave);border-bottom:1px solid var(--linha);padding-bottom:3mm;margin-bottom:10mm}.cab b{color:var(--laranja)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6mm}.box{border:1px solid var(--linha);border-radius:4mm;padding:5mm}
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin:6mm 0}.passo{background:var(--escuro);color:var(--creme);border-radius:4mm;padding:5mm}.passo b{display:block;font:600 22pt Georgia;color:var(--laranja)}.passo span{font-size:9.5pt;color:#d9ccb8}
+img.shot{width:100%;height:78mm;object-fit:cover;object-position:top left;border-radius:3mm;border:1px solid var(--linha)}
+table{width:100%;border-collapse:collapse;font-size:9.5pt}th,td{border-bottom:1px solid var(--linha);padding:2.2mm 2.5mm;text-align:left}th{background:#f6efe4}
+.dest{background:#fff6ef}.preco{font:600 16pt Georgia}
+ul{padding-left:5mm;margin:2mm 0}li{margin:1mm 0}
+.total{margin-top:6mm;padding:6mm;border-radius:4mm;background:var(--escuro);color:var(--creme);display:flex;justify-content:space-between;align-items:center}.total .preco{color:var(--laranja);font-size:22pt}
+.ass{display:grid;grid-template-columns:1fr 1fr;gap:16mm;margin-top:24mm}.ass div{border-top:1px solid var(--texto);padding-top:2mm;font-size:10pt}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#2b1f17"/><path d="M20.6 11.4a6.6 6.6 0 1 0 0 9.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M24.5 6.5v6M21.5 9.5h6" stroke="#ff7a3d" stroke-width="2.6" stroke-linecap="round"/></symbol></svg>
+
+<section class="pg capa">
+<div class="marca"><svg><use href="#logo"/></svg><span>Comanda<b>+</b></span></div>
+<h1>Proposta comercial para <em>[Nome do restaurante]</em></h1>
+<p class="para">Pedido na mesa direto na cozinha: menos espera no salão e mais venda em cada mesa.</p>
+<div class="rod"><span>Preparada por [seu nome] · Stack Solution</span><span>[data] · válida por 15 dias</span></div>
+</section>
+
+<section class="pg">
+<div class="cab"><span>Comanda<b>+</b> · Proposta para [Nome do restaurante]</span><span>1</span></div>
+<h2>O que muda no seu salão</h2>
+<div class="grid2">
+<div class="box"><h3>Hoje</h3><ul><li>Cliente espera o garçom para pedir e para pagar.</li><li>Comanda de papel se perde ou chega ilegível.</li><li>Cozinha e bar recebem tudo misturado.</li><li>Dono não sabe o que mais vende nem quem sumiu.</li></ul></div>
+<div class="box" style="border-color:#ffd2bb;background:#fff6ef"><h3>Com o Comanda+</h3><ul><li>Cliente pede pelo QR Code da mesa, sem app.</li><li>Pedido chega escrito, com adicionais e observações.</li><li>Cozinha e bar recebem só o seu; garçom só leva.</li><li>Relatórios, IA, fidelidade e resumo diário no WhatsApp.</li></ul></div>
+</div>
+<h2 style="margin-top:10mm">Como funciona</h2>
+<div class="passos"><div class="passo"><b>1</b><span>Cliente escaneia o QR da mesa e vê o cardápio com fotos.</span></div><div class="passo"><b>2</b><span>Pede do jeito dele: adicionais, ponto, observação.</span></div><div class="passo"><b>3</b><span>Cozinha e bar recebem e tocam em "Pronto".</span></div><div class="passo"><b>4</b><span>Garçom leva; no balcão, a TV chama a senha.</span></div></div>
+<img class="shot" src="../comanda-mais/img/salao.webp" alt="">
+</section>
+
+<section class="pg">
+<div class="cab"><span>Comanda<b>+</b> · Proposta para [Nome do restaurante]</span><span>2</span></div>
+<h2>Planos</h2>
+<table>
+<tr><th>Plano</th><th>Inclui</th><th>Mensal</th><th>3 meses</th><th>6 meses</th><th>12 meses</th></tr>
+<tr><td><b>Cardápio Digital</b></td><td>Site com cardápio e fotos, QR nas mesas, 3 idiomas</td><td>R$ 350</td><td>R$ 1.200</td><td>R$ 2.200</td><td>R$ 4.200</td></tr>
+<tr><td><b>Site + Reservas</b></td><td>Tudo acima + reservas, confirmação no WhatsApp e fila de espera</td><td>R$ 550</td><td>R$ 1.900</td><td>R$ 3.500</td><td>R$ 6.600</td></tr>
+<tr class="dest"><td><b>Mesa Completa</b></td><td>Tudo acima + pedido na mesa e no balcão, cozinha, bar, garçom, TV, conta pelo celular, gerência, IA e integração com o caixa</td><td>R$ 990</td><td>R$ 3.400</td><td>R$ 6.300</td><td>R$ 11.880</td></tr>
+</table>
+<p class="small" style="margin-top:3mm">Sem taxa por pedido. Sem delivery: o Comanda+ cuida do salão e da retirada; caixa, nota fiscal e maquininha continuam no sistema do restaurante.</p>
+<h2 style="margin-top:8mm">Proposta para [Nome do restaurante]</h2>
+<table>
+<tr><th>Item</th><th>Detalhe</th></tr>
+<tr><td>Plano escolhido</td><td>[Mesa Completa · 12 meses]</td></tr>
+<tr><td>Mesas</td><td>[20 mesas + balcão]</td></tr>
+<tr><td>Implantação</td><td>[Cardápio, fotos, QR Codes e treinamento da equipe · valor ou "inclusa"]</td></tr>
+<tr><td>Condição especial</td><td>[Restaurante fundador: ...]</td></tr>
+<tr><td>Início previsto</td><td>[data]</td></tr>
+</table>
+<div class="total"><span>Investimento</span><span class="preco">[R$ 0.000]</span></div>
+</section>
+
+<section class="pg">
+<div class="cab"><span>Comanda<b>+</b> · Proposta para [Nome do restaurante]</span><span>3</span></div>
+<h2>Próximos passos</h2>
+<ol><li><b>Aceite desta proposta</b> e assinatura do contrato.</li><li><b>Cardápio:</b> recebemos fotos, preços e adicionais (ou fotografamos com vocês).</li><li><b>QR Codes:</b> entregamos as plaquinhas prontas para as mesas.</li><li><b>Treinamento:</b> 1 hora com a equipe (cozinha, bar, garçons e caixa).</li><li><b>Estreia acompanhada:</b> ficamos junto no primeiro dia de casa cheia.</li></ol>
+<h2 style="margin-top:10mm">Suporte</h2>
+<p>WhatsApp direto com a equipe Comanda+ · [horário de atendimento] · alterações de cardápio e preços incluídas.</p>
+<div class="ass"><div>[Nome do restaurante]<br><span class="small">Responsável</span></div><div>Stack Solution · Comanda+<br><span class="small">[seu nome] · [WhatsApp] · contato@comandamais.com.br</span></div></div>
+</section>
+</body>
+</html>

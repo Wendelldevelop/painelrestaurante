@@ -1,7 +1,8 @@
 # Comanda+ (Stack Solution)
 
 **Abra `index.html`**: é a landing page do Comanda+. O botão **"Testar o sistema"** abre o `sistema.html`.
-Comparativo com concorrentes: `COMPARATIVO.md`.
+Comparativo com concorrentes: `COMPARATIVO.md`. Proposta e contrato: `vendas/`.
+**Servidor (para usar de verdade num restaurante):** `templates/restaurante-site/servidor/README.md`.
 
 ## Painel Restaurante
 

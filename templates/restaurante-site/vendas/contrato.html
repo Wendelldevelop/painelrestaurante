@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Contrato de assinatura · Comanda+</title>
+<!-- MODELO para revisão jurídica. Preencha os campos entre colchetes. Gere o PDF com: node templates/restaurante-site/vendas/gerar-pdf.js -->
+<style>
+@page{size:A4;margin:20mm 20mm 22mm}
+body{font:11pt/1.6 "Hanken Grotesk",system-ui,sans-serif;color:#2b2018}
+h1{font:600 20pt Georgia,serif;margin:0 0 2mm}.sub{color:#76665a;margin:0 0 8mm}
+h2{font:700 11.5pt system-ui;margin:6mm 0 1.5mm}p{margin:1.5mm 0;text-align:justify}
+.partes{border:1px solid #e4d9c7;border-radius:3mm;padding:4mm 5mm;margin-bottom:4mm}
+.ass{display:grid;grid-template-columns:1fr 1fr;gap:14mm;margin-top:20mm;page-break-inside:avoid}.ass div{border-top:1px solid #2b2018;padding-top:2mm;font-size:10pt}
+.nota{font-size:9pt;color:#76665a;margin-top:10mm;border-top:1px solid #e4d9c7;padding-top:3mm}
+</style>
+</head>
+<body>
+<h1>Contrato de assinatura do software Comanda+</h1>
+<p class="sub">Contrato nº [000] · [cidade], [data]</p>
+
+<div class="partes"><p><b>CONTRATADA:</b> [Razão social da Stack Solution], CNPJ [00.000.000/0001-00], com sede em [endereço], representada por [nome], doravante "Stack Solution".</p>
+<p><b>CONTRATANTE:</b> [Razão social do restaurante], CNPJ [00.000.000/0001-00], com sede em [endereço], representada por [nome], doravante "Restaurante".</p></div>
+
+<h2>1. Objeto</h2>
+<p>Licença de uso, por assinatura, do software Comanda+ (sistema de pedidos na mesa e no balcão, cozinha, bar, garçom, TV de senhas, reservas, relatórios e site do restaurante), no plano <b>[plano]</b>, para <b>[número] mesas</b> e <b>[número] unidade(s)</b>, acessado pela internet.</p>
+
+<h2>2. O que não está incluído</h2>
+<p>O Comanda+ não emite nota fiscal, não substitui o sistema de caixa do Restaurante e não intermedeia pagamentos. Valores pagos por Pix ou maquininha são recebidos diretamente pelo Restaurante. Delivery não faz parte do objeto.</p>
+
+<h2>3. Implantação</h2>
+<p>A Stack Solution fará a configuração do cardápio, a entrega dos QR Codes das mesas e um treinamento de até [1 hora] com a equipe, em até [10] dias úteis após o recebimento das informações do Restaurante. Valor da implantação: <b>[valor ou "incluso"]</b>.</p>
+
+<h2>4. Preço e pagamento</h2>
+<p>O Restaurante pagará <b>[R$ 0.000,00]</b> [por mês / pelo pacote de X meses], por [Pix / boleto / cartão], com vencimento todo dia [dia]. Os valores serão reajustados anualmente pelo [IPCA]. Em caso de atraso superior a [10] dias, após aviso, o acesso poderá ser suspenso até a regularização, sem prejuízo da cobrança.</p>
+
+<h2>5. Prazo e cancelamento</h2>
+<p>Prazo de <b>[12] meses</b>, renovado automaticamente por igual período se nenhuma parte se manifestar com [30] dias de antecedência. Nos planos mensais, o cancelamento pode ser feito com aviso de [30] dias. Nos pacotes pagos adiantado, [não há devolução proporcional / há devolução proporcional de X%].</p>
+
+<h2>6. Obrigações da Stack Solution</h2>
+<p>Manter o sistema disponível, com cópias de segurança diárias; prestar suporte pelo WhatsApp em [horário]; corrigir falhas em prazo razoável; incluir alterações de cardápio e preços solicitadas pelo Restaurante; avisar com antecedência sobre manutenções programadas.</p>
+
+<h2>7. Obrigações do Restaurante</h2>
+<p>Pagar em dia; manter internet e aparelhos (celulares, tablets, TV e impressora) em funcionamento; guardar as senhas da equipe; manter corretas as informações do cardápio, preços e alergênicos; usar o sistema de acordo com a lei.</p>
+
+<h2>8. Dados pessoais (LGPD)</h2>
+<p>O Restaurante é o controlador dos dados dos seus clientes e a Stack Solution atua como operadora, tratando-os apenas para executar este contrato, conforme a Lei nº 13.709/2018 e a Política de Privacidade do Comanda+. Ao fim do contrato, os dados serão devolvidos ou eliminados, a pedido do Restaurante, ressalvadas as obrigações legais de guarda.</p>
+
+<h2>9. Responsabilidade</h2>
+<p>A responsabilidade da Stack Solution fica limitada ao valor pago pelo Restaurante nos últimos [3] meses, e não abrange falhas de internet, energia, aparelhos ou serviços de terceiros, nem lucros cessantes.</p>
+
+<h2>10. Propriedade</h2>
+<p>O software e a marca Comanda+ pertencem à Stack Solution. Cardápio, fotos e dados do Restaurante pertencem ao Restaurante.</p>
+
+<h2>11. Foro</h2>
+<p>Fica eleito o foro da comarca de [cidade/UF] para resolver questões deste contrato.</p>
+
+<p>E, por estarem de acordo, assinam este contrato [eletronicamente].</p>
+<div class="ass"><div>[Restaurante]<br>[nome e CPF do responsável]</div><div>Stack Solution<br>[nome e CPF do responsável]</div></div>
+<p class="nota">Modelo de contrato preparado como ponto de partida. Revise com um advogado antes de usar.</p>
+</body>
+</html>
