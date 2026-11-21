@@ -73,19 +73,6 @@ function paraClientes(slug, dados) {
 function paraTV(slug, dados) { for (const c of sala(slug)) if (c.papel === 'tv') envia(c, dados); }
 setInterval(() => { for (const s of salas.values()) for (const c of s) { try { c.res.write(': ping\n\n'); } catch (e) {} } }, 25000);
 
-// pedidos do dia que ainda não terminaram (reenviados quando o painel abre ou recarrega)
-const FINAL = /^(Entregue na mesa|Retirado|Recusado|Item cancelado|Pedido cancelado)/;
-function pedidosAbertos(rid) {
-  const ev = q.doDia.all(rid), abertos = new Map();
-  for (const e of ev) {
-    const d = JSON.parse(e.dados);
-    if (e.tipo === 'pedido') abertos.set(String(e.num), d);
-    else if (e.tipo === 'status' && FINAL.test(d.status || '')) abertos.delete(String(e.num));
-    else if (e.tipo === 'fechada') for (const [k, p] of abertos) if (String(p.mesa) === String(d.mesa)) abertos.delete(k);
-  }
-  return [...abertos.values()];
-}
-
 // ---------- cardápio: o preço vem daqui, não do celular (o cliente poderia alterar o preço pelo navegador)
 const cardapios = new Map(); // slug -> { porNome: Map(nome -> {id, preco, extraMax}), porId: Map, promo: Map(id -> preco) }
 function cardapio(slug) {
@@ -98,6 +85,8 @@ function cardapio(slug) {
     const x = { id: it.id, nome: it.nome, preco: it.preco, extraMax };
     c.porNome.set(it.nome, x); c.porId.set(it.id, x);
   }
+  for (const it of Object.values(estado(slug).edits)) { const x = c.porId.get(it.id) || { id: it.id, extraMax: 0 }; if (it.nome) { c.porNome.delete(x.nome); x.nome = it.nome; } if (it.preco) x.preco = Number(it.preco); c.porId.set(x.id, x); c.porNome.set(x.nome, x); }
+  for (const pr of Object.values(estado(slug).promos)) if (pr.ativa) for (const [id, v] of Object.entries(pr.precos || {})) c.promo.set(id, Number(v));
   cardapios.set(slug, c);
   return c;
 }
@@ -118,9 +107,45 @@ function conferePrecos(slug, d) {
   return true;
 }
 
+// ---------- estado salvo por restaurante: edições do cardápio, esgotados do dia, promoções e configurações
+const estados = new Map();
+const hoje = () => new Date().toISOString().slice(0, 10);
+function arqEstado(slug) { const d = path.join(DADOS, 'restaurantes', slug); fs.mkdirSync(d, { recursive: true }); return path.join(d, 'estado.json'); }
+function estado(slug) {
+  if (!estados.has(slug)) { const f = arqEstado(slug); estados.set(slug, fs.existsSync(f) ? JSON.parse(ler(f)) : {}); }
+  const e = estados.get(slug);
+  e.edits = e.edits || {}; e.promos = e.promos || {}; e.cfg = e.cfg || {};
+  if (e.esgDia !== hoje()) { e.esgotados = {}; e.esgDia = hoje(); } // esgotado vale só para o dia
+  return e;
+}
+function salvaEstado(slug) { fs.writeFileSync(arqEstado(slug), JSON.stringify(estados.get(slug))); }
+function registraEstado(slug, d) {
+  const e = estado(slug);
+  if (d.tipo === 'esgotado' && d.id) { if (d.ativo) e.esgotados[d.id] = true; else delete e.esgotados[d.id]; }
+  else if (d.tipo === 'promo' && d.id) e.promos[d.id] = { id: d.id, titulo: d.titulo, ativa: !!d.ativa, precos: d.precos || {} };
+  else if (d.tipo === 'menu' && d.item && d.item.id) e.edits[d.item.id] = Object.assign(e.edits[d.item.id] || {}, d.item);
+  else if (d.tipo === 'acao' && d.a === 'cfg' && /^c-[a-z]+$/.test(d.id || '')) e.cfg[d.id] = d.v;
+  else return;
+  salvaEstado(slug);
+}
+const ultimaTV = new Map();
+const recentes = new Map(); // evita mandar a mesma mensagem duas vezes ao cliente (vários aparelhos da equipe)
+function repetida(slug, d) {
+  const k = slug + JSON.stringify(d), agora = Date.now();
+  for (const [x, t] of recentes) if (agora - t > 5000) recentes.delete(x);
+  if (recentes.has(k)) return true; recentes.set(k, agora); return false;
+}
+const ACOES = new Set(['k', 'esg', 'promo', 'fechar', 'retirado', 'cancelar', 'pedido', 'cfg']);
+function guardaAcao(r, d, papel = 'painel') {
+  const info = q.evento.run(r.id, papel, 'acao', null, d.mesa != null ? String(d.mesa) : null, null, JSON.stringify(d));
+  d._id = Number(info.lastInsertRowid);
+  registraEstado(r.slug, d);
+  paraPainel(r.slug, d);
+}
+
 // ---------- regras de mensagens
 const DO_CLIENTE = new Set(['pedido', 'garcom', 'conta', 'ver-conta', 'oi']);
-const DO_PAINEL = new Set(['status', 'recebido', 'fechada', 'extrato', 'esgotado', 'promo', 'marca', 'menu', 'horario', 'config', 'tv-estado']);
+const DO_PAINEL = new Set(['acao', 'status', 'recebido', 'fechada', 'extrato', 'esgotado', 'promo', 'marca', 'menu', 'horario', 'config', 'tv-estado']);
 const GUARDAR = new Set(['pedido', 'garcom', 'conta', 'status', 'fechada', 'esgotado']);
 
 // ---------- páginas
@@ -128,6 +153,13 @@ const ler = (p) => fs.readFileSync(p, 'utf8');
 function arquivo(slug, nome, padrao) { const prop = path.join(DADOS, 'restaurantes', slug, nome); return fs.existsSync(prop) ? prop : path.join(SITE, padrao); }
 const js = (x) => JSON.stringify(x).replace(/</g, '\\u003c');
 
+function estadoCliente(slug) {
+  const e = estado(slug), msgs = [];
+  for (const it of Object.values(e.edits)) msgs.push({ tipo: 'menu', item: it });
+  for (const id of Object.keys(e.esgotados)) msgs.push({ tipo: 'esgotado', id, ativo: true });
+  for (const pr of Object.values(e.promos)) if (pr.ativa) msgs.push({ tipo: 'promo', id: pr.id, titulo: pr.titulo, ativa: true, precos: pr.precos });
+  return msgs;
+}
 function paginaCliente(r, mesa, token, balcao) {
   let h = ler(arquivo(r.slug, 'site.html', 'casa-brasa.html'));
   h = h.replace(/"pedidos": (false|true|"painel")/, balcao ? '"pedidos": "painel"' : `"pedidos": "painel", "mesa": ${+mesa}`);
@@ -137,7 +169,8 @@ const qs="papel=cliente&mesa="+encodeURIComponent(M)+"&t="+encodeURIComponent(T)
 function aviso(t){let a=document.getElementById("cm-aviso");if(!a){a=document.createElement("div");a.id="cm-aviso";a.style.cssText="position:fixed;left:12px;right:12px;top:12px;z-index:999;padding:14px 16px;border-radius:12px;background:#b23a1e;color:#fff;font:600 15px system-ui;text-align:center";document.body.append(a)}a.textContent=t}
 window.addEventListener("message",e=>{if(e.source!==window||!e.data||!TIPOS.includes(e.data.tipo))return;
 fetch("/api/"+S+"/msg?"+qs,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(e.data),keepalive:true}).then(r=>{if(r.status===403)aviso("Este QR Code não é válido. Chame o garçom.");if(r.status===429)aviso("Muitos pedidos em pouco tempo. Aguarde um instante.")}).catch(()=>{})});
-const es=new EventSource("/api/"+S+"/stream?"+qs);es.onmessage=ev=>{try{window.postMessage(JSON.parse(ev.data),"*")}catch(x){}};})();</script></body>`;
+const es=new EventSource("/api/"+S+"/stream?"+qs);es.onmessage=ev=>{try{window.postMessage(JSON.parse(ev.data),"*")}catch(x){}};
+const E=${js(estadoCliente(r.slug))};setTimeout(()=>{E.forEach(m=>window.postMessage(m,"*"))},300);})();</script></body>`;
   return h.replace('</body>', ponte);
 }
 
@@ -159,21 +192,59 @@ function paginaPainel(r, tv) {
 .login-erro{color:#b23a1e;font-size:14px;font-weight:600;margin:0;min-height:1.2em}</style>
 <script>(()=>{const S=${js(r.slug)},MESAS=${+q.nMesas.get(r.id).n},NOME=${js(r.nome)},TV=new URLSearchParams(location.search).has("tv");
 let tok=null;try{tok=sessionStorage.getItem("cm-tok-"+S)}catch(e){}
-window.__cmEnviar=d=>{if(!tok||TV)return;fetch("/api/"+S+"/msg?papel=painel&token="+encodeURIComponent(tok),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(d)}).then(r=>{if(r.status===401)sair()}).catch(()=>{})};
+window.__cmSync=true;let APLICANDO=false,REPLAY=true;const EU=Math.random().toString(36).slice(2),fila=[];let enviando=false;
+const CFG_IDS=["c-aceite","c-serv","c-pct","c-balcao"];
+function faixa(on){let f=document.getElementById("cm-offline");if(!f){f=document.createElement("div");f.id="cm-offline";f.style.cssText="position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:90;padding:10px 16px;border-radius:10px;background:#b23a1e;color:#fff;font:600 14px system-ui;display:none";f.textContent="Sem conexão com o servidor: as ações entram assim que voltar.";document.body.append(f)}f.style.display=on?"block":"none"}
+async function despacha(){if(enviando)return;enviando=true;while(fila.length){const d=fila[0];try{const r=await fetch("/api/"+S+"/msg?papel=painel&token="+encodeURIComponent(tok),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(d)});if(r.status===401){sair();break}fila.shift();faixa(false)}catch(e){faixa(true);await new Promise(x=>setTimeout(x,2000))}}enviando=false}
+function acao(d){fila.push(Object.assign({tipo:"acao",de:EU},d));despacha()}
+document.addEventListener("click",e=>{if(APLICANDO||TV)return;const el=e.target.closest("[data-k]");if(!el)return;e.preventDefault();e.stopImmediatePropagation();const k=el.dataset.k;
+if(k.startsWith("esg-")){const id=k.slice(4);return acao({a:"esg",id,on:!esgot.has(id)})}if(k.startsWith("pro-")){const i=+k.slice(4);return acao({a:"promo",i,on:!PROMOS[i].ativa})}acao({a:"k",k})},true);
+document.addEventListener("change",e=>{if(APLICANDO||REPLAY||!e.isTrusted||!CFG_IDS.includes(e.target.id))return;acao({a:"cfg",id:e.target.id,v:e.target.type==="checkbox"?e.target.checked:e.target.value})},true);
+function aplicar(d){APLICANDO=true;try{
+ if(d.a==="k"){const el=document.querySelector('[data-k="'+CSS.escape(d.k)+'"]');if(el)el.click()}
+ else if(d.a==="esg"){if(esgot.has(d.id)!==!!d.on){const el=document.querySelector('[data-k="esg-'+CSS.escape(d.id)+'"]');if(el)el.click()}}
+ else if(d.a==="promo"){const x=PROMOS[d.i];if(x&&!!x.ativa!==!!d.on){const el=document.querySelector('[data-k="pro-'+d.i+'"]');if(el)el.click()}}
+ else if(d.a==="fechar"){if(typeof descMesa!=="undefined")descMesa[d.mesa]=d.desc||0;window.__fechar(d.mesa)}
+ else if(d.a==="retirado"){const o=balcao.find(x=>String(x.num)===String(d.num));window.__retirar(o)}
+ else if(d.a==="cancelar")window.__cancelar(d.chave,d.mot);
+ else if(d.a==="pedido")window.__lancar(d.p);
+ else if(d.a==="cfg"&&d.de!==EU){const el=document.getElementById(d.id);if(el){if(el.type==="checkbox")el.checked=d.v;else el.value=d.v;el.dispatchEvent(new Event("change"))}}
+}catch(x){console.error(x)}finally{APLICANDO=false}}
+function aplicarEstado(e){APLICANDO=true;try{
+ for(const it of Object.values(e.edits||{})){const m=MENU.find(x=>x.id===it.id);if(m){if(it.nome)m.nome=it.nome;if(it.preco)m.preco=+it.preco;if(it.categoria)m.cat=it.categoria}else MENU.push({id:it.id,nome:it.nome,cat:it.categoria,preco:+it.preco,opc:0})}
+ if(typeof cardapio==="function")cardapio();
+ for(const id of Object.keys(e.esgotados||{}))if(!esgot.has(id))setEsgotado(id,true);
+ for(const pr of Object.values(e.promos||{})){const x=PROMOS.find(y=>y.id===pr.id);if(x)x.ativa=!!pr.ativa}if(typeof promos==="function")promos();
+ for(const [id,v] of Object.entries(e.cfg||{})){const el=document.getElementById(id);if(!el)continue;if(el.type==="checkbox")el.checked=v;else el.value=v;el.dispatchEvent(new Event("change"))}
+}catch(x){console.error(x)}finally{APLICANDO=false}}
+window.__cmEnviar=d=>{if(!tok||TV||REPLAY)return;fetch("/api/"+S+"/msg?papel=painel&token="+encodeURIComponent(tok),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(d)}).then(r=>{if(r.status===401)sair()}).catch(()=>{})};
 let es=null;function conectar(){if(es)es.close();es=new EventSource("/api/"+S+"/stream?papel="+(TV?"tv":"painel")+"&token="+encodeURIComponent(tok));
-es.onmessage=ev=>{let d;try{d=JSON.parse(ev.data)}catch(x){return}if(TV){if(d.tipo==="tv-estado")tela(d);return}window.dispatchEvent(new MessageEvent("message",{data:d}))};
-es.onerror=()=>{if(es.readyState===2)setTimeout(conectar,3000)}}
+es.onmessage=ev=>{let d;try{d=JSON.parse(ev.data)}catch(x){return}if(TV){if(d.tipo==="tv-estado")tela(d);return}
+if(d.tipo==="estado-painel"){REPLAY=true;aplicarEstado(d);return}
+if(d.tipo==="replay-fim"){REPLAY=false;faixa(false);if(typeof tv==="function")tv();return}
+if(d.tipo==="acao"){aplicar(d);return}
+if(d.tipo==="menu-painel"){if(d.de!==EU)aplicarEstado({edits:{[d.item.id]:d.item}});return}
+window.dispatchEvent(new MessageEvent("message",{data:d}))};
+es.onerror=()=>{faixa(true);if(es.readyState===2)setTimeout(conectar,3000)};es.onopen=()=>faixa(false)}
 function sair(){tok=null;try{sessionStorage.removeItem("cm-tok-"+S)}catch(e){}document.getElementById("login").hidden=false}
 let ultima="";function tela(d){document.getElementById("tv-prep").innerHTML=d.prep;const a=document.getElementById("tv-agora");a.className=d.agoraCls;a.innerHTML=d.agora;document.getElementById("tv-prontos").innerHTML=d.prontos;
 if(d.chave&&d.chave!==ultima){ultima=d.chave;a.classList.add("chama");try{const c=new AudioContext(),o=c.createOscillator(),g=c.createGain();o.frequency.value=990;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.6);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+.6)}catch(e){}}}
-function iniciar(){document.getElementById("login").hidden=true;conectar();
+function iniciar(){document.getElementById("login").hidden=true;
+if(!TV){window.__fechar=window.fecharMesa;window.fecharMesa=function(n){if(APLICANDO)return window.__fechar(n);acao({a:"fechar",mesa:n,desc:(typeof descMesa!=="undefined"&&descMesa[n])||0})};
+window.__retirar=window.retirar;window.retirar=function(o){if(APLICANDO)return window.__retirar(o);if(o)acao({a:"retirado",num:o.num})};
+window.__cancelar=window.cmCancelar;window.cmCancelar=function(ch,mot){if(APLICANDO)return window.__cancelar(ch,mot);acao({a:"cancelar",chave:ch,mot})};
+window.__lancar=window.lancarPedido;window.lancarPedido=function(p){if(APLICANDO)return window.__lancar(p);acao({a:"pedido",p})};
+const _menu=window.__cmEnviar;window.__cmEnviar=d=>{if(d&&d.tipo==="menu")d.de=EU;_menu(d)};
+for(const f of ["bip","notificar","avisar"]){const o=window[f];if(typeof o==="function")window[f]=function(){if(!REPLAY)return o.apply(this,arguments)}}
+let fu="";try{fu=sessionStorage.getItem("cm-func-"+S)||""}catch(e){}if(fu&&fu!=="gerente"){const sel=document.getElementById("funcao");sel.value=fu;sel.dispatchEvent(new Event("change"))}}
+conectar();
 if(TV){window.tv=function(){};document.getElementById("tv").hidden=false;return}
 if(MESAS&&typeof setMesas==="function")setMesas(MESAS);if(typeof marcar==="function"&&NOME&&NOME!==MARCA.nome)marcar(NOME,NOME.split(/\\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase(),MARCA.cor);
 const _tv=window.tv;let t=null;window.tv=function(){_tv.apply(this,arguments);clearTimeout(t);t=setTimeout(()=>{const a=document.getElementById("tv-agora");window.__cmEnviar({tipo:"tv-estado",prep:document.getElementById("tv-prep").innerHTML,agora:a.innerHTML,agoraCls:a.className.replace(" chama",""),chave:a.dataset.num||"",prontos:document.getElementById("tv-prontos").innerHTML})},250)}}
 document.addEventListener("DOMContentLoaded",()=>{const box=document.querySelector(".login-box"),err=document.createElement("p");err.className="login-erro";box.insertBefore(err,document.getElementById("login-ok"));
 document.getElementById("login-email").value="";document.getElementById("login-senha").value="";document.querySelector(".login-box .nota").textContent=NOME+(TV?" · Tela da TV":" · Painel");
 document.getElementById("login-ok").onclick=async()=>{err.textContent="";try{const r=await fetch("/api/"+S+"/login",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:document.getElementById("login-email").value,senha:document.getElementById("login-senha").value})});
-if(!r.ok){err.textContent=r.status===429?"Muitas tentativas. Espere um minuto.":"E-mail ou senha incorretos.";return}const d=await r.json();tok=d.token;try{sessionStorage.setItem("cm-tok-"+S,tok)}catch(e){}
+if(!r.ok){err.textContent=r.status===429?"Muitas tentativas. Espere um minuto.":"E-mail ou senha incorretos.";return}const d=await r.json();tok=d.token;try{sessionStorage.setItem("cm-tok-"+S,tok);sessionStorage.setItem("cm-func-"+S,d.funcao||"")}catch(e){}
 if(typeof usuario!=="undefined")usuario=d.nome+" ("+d.funcao+")";iniciar()}catch(e){err.textContent="Sem conexão com o servidor."}};
 if(tok)iniciar();else document.getElementById("login").hidden=false})})();</script></head>`;
   return h.replace('</head>', ponte);
@@ -202,7 +273,12 @@ const servidor = http.createServer(async (req, res) => {
   try {
     const u = new URL(req.url, 'http://x');
     const partes = u.pathname.split('/').filter(Boolean);
-    if (u.pathname === '/saude') return responde(res, 200, { ok: true });
+    if (u.pathname === '/saude') {
+      let banco = 'ok'; try { db.prepare('SELECT 1').get(); } catch (e) { banco = 'erro'; }
+      let conexoes = 0; for (const s of salas.values()) conexoes += s.size;
+      return responde(res, banco === 'ok' ? 200 : 503, { ok: banco === 'ok', banco, conexoes, ligado_ha_min: Math.round((Date.now() - INICIO) / 60000) });
+    }
+    if ((u.pathname === '/demo' || u.pathname === '/demo/') && DEMO) return responde(res, 200, paginaDemo(), 'text/html; charset=utf-8');
 
     // arquivos públicos: landing, páginas legais, demonstração, imagens e vídeo da landing
     if (PUBLICOS[u.pathname]) return responde(res, 200, fs.readFileSync(path.join(SITE, PUBLICOS[u.pathname])), TIPOS_ARQ['.html']);
@@ -246,7 +322,15 @@ const servidor = http.createServer(async (req, res) => {
         const c = { papel, mesa: cli ? cli.mesa : '', cid: cli ? cli.cid : '', res };
         sala(r.slug).add(c);
         req.on('close', () => sala(r.slug).delete(c));
-        if (papel === 'painel') for (const p of pedidosAbertos(r.id)) envia(c, Object.assign({}, p, { reenviado: true }));
+        if (papel === 'painel') {
+          envia(c, Object.assign({ tipo: 'estado-painel' }, estado(r.slug)));
+          for (const e of q.doDia.all(r.id)) {
+            if (!((e.papel === 'cliente' && ['pedido', 'garcom', 'conta'].includes(e.tipo)) || e.tipo === 'acao')) continue;
+            envia(c, Object.assign(JSON.parse(e.dados), { _id: e.id }));
+          }
+          envia(c, { tipo: 'replay-fim' });
+        }
+        if (papel === 'tv' && ultimaTV.has(r.slug)) envia(c, ultimaTV.get(r.slug));
         return;
       }
 
@@ -262,18 +346,28 @@ const servidor = http.createServer(async (req, res) => {
             if (q.pedidoExiste.get(r.id, num, cli.cid)) { paraClientes(r.slug, { tipo: 'recebido', num }); return responde(res, 200, { ok: true, repetido: true }); }
             if (cli.mesa && q.pedidosMinuto.get(r.id, cli.mesa).n >= 6) return responde(res, 429, { erro: 'limite' });
             numDoCliente.set(`${r.slug}:${num}`, cli.cid);
-            q.evento.run(r.id, 'cliente', d.tipo, num, cli.mesa, cli.cid, JSON.stringify(d));
+            d._id = Number(q.evento.run(r.id, 'cliente', d.tipo, num, cli.mesa, cli.cid, JSON.stringify(d)).lastInsertRowid);
             paraPainel(r.slug, d);
             paraClientes(r.slug, { tipo: 'recebido', num }); // guardado no servidor: o celular pode parar de reenviar
             return responde(res, 200, { ok: true });
           }
-          if (GUARDAR.has(d.tipo)) q.evento.run(r.id, 'cliente', d.tipo, null, cli.mesa, cli.cid, JSON.stringify(d));
+          if (GUARDAR.has(d.tipo)) d._id = Number(q.evento.run(r.id, 'cliente', d.tipo, null, cli.mesa, cli.cid, JSON.stringify(d)).lastInsertRowid);
           paraPainel(r.slug, d);
+          // Pix pago pelo celular: o servidor libera a mesa (no sistema final, quem confirma é o banco)
+          if (d.tipo === 'conta' && d.pago && cli.mesa) setTimeout(() => guardaAcao(r, { tipo: 'acao', a: 'fechar', mesa: cli.mesa, desc: 0 }, 'servidor'), 1200);
           return responde(res, 200, { ok: true });
         }
         if (equipe && papel === 'painel') {
           if (!DO_PAINEL.has(d.tipo)) return responde(res, 400, { erro: 'tipo' });
-          if (d.tipo === 'tv-estado') { paraTV(r.slug, d); return responde(res, 200, { ok: true }); }
+          if (d.tipo === 'acao') {
+            if (!ACOES.has(d.a)) return responde(res, 400, { erro: 'acao' });
+            if (d.a === 'pedido' && d.p) { if (!Array.isArray(d.p.itens) || !conferePrecos(r.slug, d.p)) return responde(res, 400, { erro: 'itens' }); }
+            guardaAcao(r, d); return responde(res, 200, { ok: true, _id: d._id });
+          }
+          if (d.tipo === 'tv-estado') { ultimaTV.set(r.slug, d); paraTV(r.slug, d); return responde(res, 200, { ok: true }); }
+          if (repetida(r.slug, d)) return responde(res, 200, { ok: true, repetida: true });
+          registraEstado(r.slug, d);
+          if (d.tipo === 'menu' && d.item) paraPainel(r.slug, { tipo: 'menu-painel', item: d.item, de: d.de });
           if (d.tipo === 'promo') { const c = cardapio(r.slug); for (const [id, pr] of Object.entries(d.precos || {})) { if (d.ativa) c.promo.set(id, Number(pr)); else c.promo.delete(id); } }
           if (d.tipo === 'menu' && d.item) { const c = cardapio(r.slug), x = c.porId.get(d.item.id) || { id: d.item.id, extraMax: 0 }; if (d.item.nome) { c.porNome.delete(x.nome); x.nome = d.item.nome; } if (d.item.preco) x.preco = Number(d.item.preco); c.porId.set(x.id, x); c.porNome.set(x.nome, x); }
           if (GUARDAR.has(d.tipo)) q.evento.run(r.id, 'painel', d.tipo, d.num != null ? Number(d.num) : null, d.mesa != null ? String(d.mesa) : null, null, JSON.stringify(d));
@@ -306,8 +400,43 @@ const servidor = http.createServer(async (req, res) => {
     }
     responde(res, 404, 'Não encontrado', 'text/plain; charset=utf-8');
   } catch (e) {
-    console.error(e);
+    console.error(e); alerta('erro na página ' + req.url.split('?')[0] + ': ' + e.message);
     if (!res.headersSent) responde(res, 500, { erro: 'interno' });
   }
 });
-servidor.listen(PORTA, () => console.log(`Comanda+ no ar na porta ${PORTA} (dados em ${DADOS})`));
+// ---------- demonstração online (/demo): restaurante "demo" com dados apagados a cada 4 horas
+function criaDemo() {
+  let r = db.prepare("SELECT * FROM restaurantes WHERE slug = 'demo'").get();
+  if (!r) { db.prepare("INSERT INTO restaurantes (slug, nome, plano) VALUES ('demo', 'Casa Brasa', 'Mesa Completa')").run(); r = db.prepare("SELECT * FROM restaurantes WHERE slug = 'demo'").get(); }
+  for (let n = 0; n <= 6; n++) db.prepare('INSERT OR IGNORE INTO mesas (restaurante_id, numero, token) VALUES (?, ?, ?)').run(r.id, n, crypto.randomBytes(9).toString('base64url'));
+  const sal = crypto.randomBytes(16), hash = crypto.scryptSync('demonstracao', sal, 64, { N: 16384, r: 8, p: 1 }).toString('hex');
+  for (const [nome, email, funcao] of [['Gerente', 'gerente@demo.com', 'gerente'], ['Cozinha', 'cozinha@demo.com', 'cozinha'], ['Garçom', 'garcom@demo.com', 'mesas']])
+    db.prepare("INSERT INTO usuarios (restaurante_id, nome, email, senha, funcao) VALUES (?, ?, ?, ?, ?) ON CONFLICT(restaurante_id, email) DO NOTHING").run(r.id, nome, email, `scrypt$${sal.toString('hex')}$${hash}`, funcao);
+  const limpa = () => { db.prepare("DELETE FROM eventos WHERE restaurante_id = ? AND criado_em < datetime('now', '-4 hours')").run(r.id); };
+  limpa(); setInterval(limpa, 3600e3);
+  return r;
+}
+const DEMO = process.env.COMANDA_DEMO === '0' ? null : criaDemo();
+function paginaDemo(base) {
+  const m = (n) => db.prepare('SELECT token FROM mesas WHERE restaurante_id = ? AND numero = ?').get(DEMO.id, n).token;
+  const link = (u, t) => `<a href="${u}" target="_blank">${t}</a>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comanda+ · Demonstração ao vivo</title>
+<style>body{margin:0;font:17px/1.6 system-ui;background:#f6efe4;color:#2b2018}main{width:min(760px,100% - 32px);margin:40px auto}h1{font:600 34px Georgia,serif;margin:0 0 6px}b{color:#b23a1e}
+.c{background:#fff;border:1px solid #e4d9c7;border-radius:14px;padding:18px 20px;margin:14px 0}a{color:#b23a1e;font-weight:700}code{background:#f1e9dc;padding:2px 6px;border-radius:6px}</style></head><body><main>
+<h1>Comanda+ · demonstração ao vivo</h1><p>Use aparelhos diferentes de verdade. Os dados desta demonstração são apagados a cada 4 horas.</p>
+<div class="c"><h3>1. No computador ou tablet: o painel</h3>${link('/demo/painel', 'Abrir o painel')} · e-mail <code>gerente@demo.com</code> · senha <code>demonstracao</code><br>
+Cozinha: <code>cozinha@demo.com</code> · Garçom: <code>garcom@demo.com</code> (mesma senha), cada um num aparelho.</div>
+<div class="c"><h3>2. No celular: o cliente</h3>${[1, 2, 3].map((n) => link(`/demo/mesa/${n}?t=${m(n)}`, 'Mesa ' + n)).join(' · ')} · ${link(`/demo/balcao?balcao=1&t=${m(0)}`, 'Balcão')}<br>Dica: mande estes links para o seu celular pelo WhatsApp.</div>
+<div class="c"><h3>3. Numa TV ou outra aba: as senhas</h3>${link('/demo/tv', 'Abrir a TV')} (mesmo login do painel)</div>
+</main></body></html>`;
+}
+
+// ---------- monitoramento: /saude, registro de erros e alerta opcional (ALERTA_WEBHOOK: Discord, Slack, Telegram via bot)
+const INICIO = Date.now();
+function alerta(texto) {
+  fs.appendFileSync(path.join(DADOS, 'erros.log'), `${new Date().toISOString()} ${texto}\n`);
+  if (process.env.ALERTA_WEBHOOK) fetch(process.env.ALERTA_WEBHOOK, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ content: `Comanda+: ${texto}`, text: `Comanda+: ${texto}` }) }).catch(() => {});
+}
+process.on('uncaughtException', (e) => { alerta('erro grave: ' + e.message); console.error(e); });
+process.on('unhandledRejection', (e) => { alerta('erro: ' + (e && e.message)); });
+servidor.listen(PORTA, () => { console.log(`Comanda+ no ar na porta ${PORTA} (dados em ${DADOS})`); alerta('servidor iniciado'); });

@@ -16,6 +16,7 @@ const falhas = [], ok = (n, c, v) => { if (!c) falhas.push(`${n}: ${v}`); };
 
 (async () => {
   execFileSync('python3', [path.join(AQUI, 'admin.py'), 'criar', 'teste', 'Casa Teste', '--mesas', '6', '--email', 'gerente@teste.com', '--senha', 'senha-forte-123'], { env });
+  for (const [em, fu] of [['cozinha@teste.com', 'cozinha'], ['garcom@teste.com', 'mesas']]) execFileSync('python3', [path.join(AQUI, 'admin.py'), 'usuario', 'teste', em, 'senha-forte-123', '--funcao', fu], { env });
   const db = new (require('node:sqlite').DatabaseSync)(path.join(DADOS, 'comanda.db'));
   const tok = (n) => db.prepare("SELECT token FROM mesas WHERE numero = ? AND restaurante_id = (SELECT id FROM restaurantes WHERE slug = 'teste')").get(n).token;
   const srv = spawn(process.execPath, ['--no-warnings', path.join(AQUI, 'servidor.js')], { env, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -88,6 +89,42 @@ const falhas = [], ok = (n, c, v) => { if (!c) falhas.push(`${n}: ${v}`); };
     await pc.waitForTimeout(1200);
     ok('TV chama a senha', /Rafa/.test(await tv.locator('#tv-agora').textContent()), await tv.locator('#tv-agora').textContent());
     ok('celular do balcão avisado', /retire no balcão/i.test(await bal.locator('#status-pedido').textContent()), await bal.locator('#status-pedido').textContent());
+
+    // ===== vários aparelhos da equipe ao mesmo tempo (fase 2)
+    const entra = async (email, vp) => { const pg = await (await b.newContext({ viewport: vp })).newPage(); pg.on('pageerror', (e) => erros.push(email + ': ' + e.message));
+      await pg.goto(`${BASE}/teste/painel`); await pg.waitForTimeout(500); await pg.fill('#login-email', email); await pg.fill('#login-senha', 'senha-forte-123'); await pg.click('#login-ok'); await pg.waitForTimeout(1200); return pg; };
+    const coz = await entra('cozinha@teste.com', { width: 1024, height: 768 });
+    const gar = await entra('garcom@teste.com', { width: 390, height: 844 });
+    ok('cozinha vê só a cozinha', await coz.locator('#aba-cozinha').isVisible() && !(await coz.locator('nav [data-aba="gerencia"]').isVisible()), 'abas');
+    ok('garçom vê o salão', await gar.locator('#aba-mesas').isVisible(), 'abas garçom');
+    const c4 = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); c4.on('pageerror', (e) => erros.push('mesa4: ' + e.message));
+    await c4.goto(`${BASE}/teste/mesa/4?t=${tok(4)}#cardapio`); await c4.waitForTimeout(1200);
+    await c4.locator('[data-add="bruschetta-tomate"]').first().click(); await c4.waitForTimeout(200);
+    await c4.locator('.barra-cel [data-abrir-pedido]').click(); await c4.waitForTimeout(400); await c4.locator('#gaveta a.btn-pri').click(); await c4.waitForTimeout(600);
+    await c4.locator('input[name=nome]').fill('Bia'); await c4.locator('#enviar-pedido').click(); await c4.waitForTimeout(1500);
+    ok('garçom recebe o 1º pedido', await gar.locator('.alerta [data-ok]').count() >= 1, await gar.locator('.alerta').count());
+    await gar.locator('.alerta [data-ok]').last().click(); await gar.waitForTimeout(1200);
+    ok('aceite sumiu nos outros aparelhos', await pc.locator('.alerta[data-mesa="4"] [data-ok]').count() === 0 && await coz.locator('.alerta[data-mesa="4"] [data-ok]').count() === 0, 'alerta ficou');
+    const cart = coz.locator('#cozinha-Recebido .card', { hasText: 'Mesa 4' }); ok('cozinha (outro aparelho) recebe', await cart.count() === 1, await cart.count());
+    await cart.locator('[data-av]').click(); await coz.waitForTimeout(1200);
+    ok('garçom vê mesa pronta', /pronto/i.test(await gar.locator('#mapa .m').nth(3).textContent()), await gar.locator('#mapa .m').nth(3).textContent());
+    ok('gerente também vê', await pc.locator('#cozinha-Recebido .card', { hasText: 'Mesa 4' }).count() === 0, 'card ficou no gerente');
+    await gar.locator('[data-entregar="4"]').click(); await gar.waitForTimeout(1200);
+    ok('cliente vê entregue', /Entregue na mesa/.test(await c4.locator('#status-pedido').textContent()), await c4.locator('#status-pedido').textContent());
+    // esgotado marcado na cozinha vale para todos e fica salvo
+    await coz.locator('#aba-cozinha .esg-box summary').click(); await coz.locator('#aba-cozinha .esg [data-id="camarao-alho"]').click(); await coz.waitForTimeout(1200);
+    ok('esgotado no gerente', await pc.locator('#aba-cozinha .esg [data-id="camarao-alho"].on').count() === 1, 'gerente não viu');
+    await c4.goto(`${BASE}/teste/mesa/4?t=${tok(4)}#cardapio`); await c4.waitForTimeout(1500);
+    ok('esgotado no cliente (salvo)', await c4.locator('[data-add="camarao-alho"]').first().isDisabled(), 'cliente pode pedir');
+    // aparelho que entra depois fica igual aos outros
+    const novo = await entra('gerente@teste.com', { width: 1280, height: 800 });
+    await novo.evaluate(() => document.querySelector('nav [data-aba="pedidos"]').click());
+    const lista = await novo.locator('#lista-pedidos').textContent();
+    ok('aparelho novo com o mesmo estado', /Entregue/.test(lista) && /Bia/.test(lista), lista.slice(0, 200));
+    ok('aparelho novo com o esgotado', await novo.locator('#aba-cozinha .esg [data-id="camarao-alho"].on').count() === 1, 'sem esgotado');
+    // demonstração online e saúde
+    const demo = await fetch(`${BASE}/demo`); ok('página de demonstração', demo.status === 200 && /gerente@demo.com/.test(await demo.text()), demo.status);
+    const saude = await (await fetch(`${BASE}/saude`)).json(); ok('saúde', saude.ok && saude.banco === 'ok' && saude.conexoes > 0, JSON.stringify(saude));
   } catch (e) { falhas.push('erro: ' + e.message.split('\n')[0]); }
   if (erros.length) falhas.push('erros de página: ' + erros.join(' | '));
   await b.close(); srv.kill(); fs.rmSync(DADOS, { recursive: true, force: true });

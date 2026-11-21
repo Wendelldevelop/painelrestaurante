@@ -460,7 +460,7 @@ body.limpo .nota-demo{display:none!important}
 <div class="modal" id="modal" hidden><div class="caixa" id="caixa"></div></div>
 <script id="site-html" type="text/plain">%%SITE%%</script>
 <script>
-(()=>{const b=atob(document.getElementById("site-html").textContent.trim()),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+(()=>{const u=document.getElementById("site-html").textContent.replace(/<\\\/script/g,"</script");
 document.getElementById("site").src=URL.createObjectURL(new Blob([u],{type:"text/html"}))+"#cardapio"})();
 const MARCA={nome:"Casa Brasa",ini:"CB",cor:"#b23a1e"};
 // nomes curtos das abas para o menu de baixo no celular
@@ -482,7 +482,7 @@ const mesas={};for(let i=1;i<=12;i++)mesas[i]={n:i,estado:"livre",total:0,itens:
 Object.assign(mesas[2],{estado:"ocupada",total:186,aceita:true,itens:[{nome:"Picanha na brasa",qtd:2,preco:89}]});
 Object.assign(mesas[7],{estado:"ocupada",total:64,aceita:true,itens:[{nome:"Tagliatelle da Dona Lúcia",qtd:1,preco:64}]});
 Object.assign(mesas[9],{estado:"conta",total:212,aceita:true,itens:[{nome:"Costela 12 horas",qtd:2,preco:84,pessoa:"Lucas"},{nome:"Chope pilsen",qtd:3,preco:14,pessoa:"Marina"}]});
-const pedidos=[],pagos=[];function liberar(n){const b=document.createElement("button");b.dataset.confirmar=n;b.hidden=true;$("#caixa").append(b);b.click()}
+const pedidos=[],pagos=[];function liberar(n){fecharMesa(n)}
 let filtro="Todos";
 function reg(p,st){let o=pedidos.find(x=>x.num===p.num);if(!o){o=Object.assign({},p,{hora:new Date()});pedidos.unshift(o)}o.status=st;(o.tempos=o.tempos||{})[st]=o.tempos[st]||new Date();listaPedidos();try{tv()}catch(e){}try{historico()}catch(e){}}
 const FILTROS=["Todos","Aguardando aceite","Aguardando pagamento","Recebido","Em preparo","Pronto","Entregue","Conta fechada","Cancelado"];
@@ -502,7 +502,7 @@ document.querySelectorAll("nav button[data-aba]").forEach(b=>b.onclick=()=>{docu
 // mapa das mesas
 const ROT={livre:"Livre",ocupada:"Ocupada",pronto:"Pronto para levar",conta:"Pediu a conta"};
 function mapa(){$("#mapa").innerHTML=Object.values(mesas).map(m=>`<div class="m ${m.estado}"><span class="n">Mesa ${m.n}</span><span class="s">${ROT[m.estado]}</span><span class="v">QR ${m.qr}${m.total?` · ${reais(m.total)}`:""}</span>
-${m.estado==="pronto"?`<button class="levei" data-entregar="${m.n}">Levei ✓</button>`:m.estado==="conta"||(m.estado==="ocupada"&&m.total)?`<button class="${m.estado==="conta"?"perigo":"sec"}" data-fechar="${m.n}">Fechar conta</button>`:""}<button class="sec lancar" data-lancar="${m.n}">+ Lançar pedido</button></div>`).join("");contar()}
+${m.estado==="pronto"?`<button class="levei" data-entregar="${m.n}" data-k="ent-${m.n}">Levei ✓</button>`:m.estado==="conta"||(m.estado==="ocupada"&&m.total)?`<button class="${m.estado==="conta"?"perigo":"sec"}" data-fechar="${m.n}">Fechar conta</button>`:""}<button class="sec lancar" data-lancar="${m.n}">+ Lançar pedido</button></div>`).join("");contar()}
 $("#mapa").onclick=e=>{const la=e.target.closest("[data-lancar]");if(la)return lancar(la.dataset.lancar);const en=e.target.closest("[data-entregar]"),fe=e.target.closest("[data-fechar]");
 if(en)entregue(en.dataset.entregar)
 if(fe){const m=mesas[fe.dataset.fechar],serv=m.total*taxaServ();$("#caixa").innerHTML=`<h3>Fechar mesa ${m.n}</h3>${m.itens.map(i=>`<div class="l"><span>${i.qtd}× ${esc(i.nome)}</span><span>${reais(i.qtd*i.preco)}</span></div>`).join("")}
@@ -510,12 +510,16 @@ ${comandas(m)}<div class="l"><span>Subtotal</span><span>${reais(m.total)}</span>
 <details class="desc"><summary>Desconto ou cortesia (senha do gerente)</summary><div class="desc-g"><select id="d-tipo" aria-label="Tipo"><option value="pct">Desconto em %</option><option value="rs">Desconto em R$</option><option value="cortesia">Cortesia (conta toda)</option></select><input id="d-val" type="number" min="0" placeholder="Valor" aria-label="Valor"><select id="d-mot" aria-label="Motivo"><option>Cliente fiel</option><option>Demora no pedido</option><option>Prato com problema</option><option>Aniversário</option></select><input id="d-pin" type="password" inputmode="numeric" placeholder="Senha do gerente" aria-label="Senha do gerente"><button type="button" class="sec" id="d-ok">Aplicar</button></div><p class="erro" id="d-erro"></p></details>
 <p class="nota">Com a integração ligada, a conta vai direto para o caixa (aba Integrações). A mesa é liberada e o código do QR muda (${m.qr} deixa de valer), então ninguém pede de casa com foto do QR.</p><div class="pe" style="margin-top:12px"><button class="sec" data-cancelar>Voltar</button><button data-confirmar="${m.n}">Enviar ao caixa e liberar</button></div>`;$("#modal").hidden=false;desconto(m)}};
 $("#caixa").onclick=e=>{if(e.target.closest("[data-cancelar]"))$("#modal").hidden=true;const c=e.target.closest("[data-confirmar]");
-if(c){const m=mesas[c.dataset.confirmar];log("Fechou conta",`Mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`);enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*taxaServ()).toFixed(2),desconto:+(descMesa[m.n]||0).toFixed(2),total:+(m.total*(1+taxaServ())-(descMesa[m.n]||0)).toFixed(2)});const cb=+(m.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"fechada",mesa:m.n,cashback:cb},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();for(let i=prontosMesa.length-1;i>=0;i--)if(+prontosMesa[i].mesa===+m.n)prontosMesa.splice(i,1);listaProntas();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}};
+if(c)fecharMesa(c.dataset.confirmar)};
+function fecharMesa(n){const m=mesas[n];if(!m)return;log("Fechou conta",`Mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`);enviarCaixa("mesa.fechada",`Conta da mesa ${m.n} · ${reais(m.total*(1+taxaServ())-(descMesa[m.n]||0))}`,{mesa:m.n,itens:m.itens.map(i=>({nome:i.nome,qtd:i.qtd,preco:i.preco,pessoa:i.pessoa||"Mesa"})),subtotal:m.total,servico:+(m.total*taxaServ()).toFixed(2),desconto:+(descMesa[m.n]||0).toFixed(2),total:+(m.total*(1+taxaServ())-(descMesa[m.n]||0)).toFixed(2)});const cb=+(m.total*fidPct()/100).toFixed(2);fidDist+=cb;fidelidade();site().postMessage({tipo:"fechada",mesa:m.n,cashback:cb},"*");pedidos.filter(o=>+o.mesa===+m.n&&!["Cancelado","Recusado"].includes(o.status)).forEach(o=>o.status="Conta fechada");listaPedidos();for(let i=prontosMesa.length-1;i>=0;i--)if(+prontosMesa[i].mesa===+m.n)prontosMesa.splice(i,1);listaProntas();Object.assign(m,{estado:"livre",total:0,itens:[],aceita:false,pronto:0,qr:qr()});document.querySelectorAll(`.alerta[data-mesa="${m.n}"]`).forEach(a=>a.remove());$("#modal").hidden=true;mapa()}
 // cozinha e bar
 function cartao(p,setor,itens){const c=document.createElement("article");c.className="card novo"+(p.mesa?" mesa-c":" balc-c");c.dataset.status="Recebido";c.dataset.ini=Date.now();
 c.innerHTML=`<div class="topo"><span class="mesa">${p.mesa?"Mesa "+esc(p.mesa):"Balcão · senha "+p.senha}${p.mesa?"":`<small class="pg ${p.pagar==="pix"||p.pago?"ok":""}">${p.pagar==="pix"?"✓ Pago no Pix":p.pago==="caixa"?"✓ Pago no caixa":"A pagar na retirada"}</small>`}${p.nome?`<small class="origem">${esc(p.nome)}${p.origem==="garcom"?" · lançado pelo garçom":""}</small>`:""}</span><span class="hora">#${p.num} · <span class="tempo">0:00</span></span></div>
 <ul>${itens.map(i=>`<li>${i.qtd}× ${esc(i.nome)}${i.obs?`<small>${esc(i.obs)}</small>`:""}</li>`).join("")}</ul><div class="pe"><span class="mx"><button data-av>✓ Pronto</button><button class="sec" data-imp title="Imprimir comanda" aria-label="Imprimir comanda"><svg class='i' viewBox='0 0 24 24' aria-hidden='true'><polyline points='6 9 6 2 18 2 18 9'/><path d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/><rect x='6' y='14' width='12' height='8'/></svg></button><button class="sec" data-cancel title="Cancelar item" aria-label="Cancelar">✕</button></span></div>`;
-c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);c.querySelector("[data-imp]").onclick=()=>comanda(p,itens,setor);if($("#c-auto-imp")?.checked&&$("#c-imp").value){avisar(`<svg class='i' viewBox='0 0 24 24' aria-hidden='true'><polyline points='6 9 6 2 18 2 18 9'/><path d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/><rect x='6' y='14' width='12' height='8'/></svg> Comanda #${p.num} impressa na ${esc(setor==="bar"&&$("#c-bar-imp").checked?"impressora do bar":$("#c-imp").value)}`);log("Imprimiu comanda",`#${p.num} · ${setor}`)}
+c.querySelector("[data-cancel]").onclick=()=>cancelar(c,p,itens);c.querySelector("[data-av]").dataset.k="av-"+p.num+"-"+setor;c.dataset.chave=p.num+"-"+setor;
+c.__cancel=mot=>{const v=itens.reduce((t,i)=>t+i.qtd*i.preco,0);const m=mesas[p.mesa];if(m){m.total-=v;m.itens=m.itens.filter(i=>!itens.includes(i))}fat-=v;itens.forEach(i=>{vendidos[i.nome]-=i.qtd;if(i.sug)sug-=i.qtd*i.preco});
+cancel.unshift(`${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · ${p.mesa?"Mesa "+esc(p.mesa):"Retirada"} · ${itens.map(i=>esc(i.nome)).join(", ")} · ${reais(v)} · ${esc(mot)}`);
+log("Cancelamento",`${p.mesa?"Mesa "+p.mesa:"Balcão"} #${p.num} · ${itens.map(i=>i.nome).join(", ")} · ${mot}`);c.remove();reg(p,"Cancelado");site().postMessage({tipo:"status",num:p.num,status:"Item cancelado pela casa: "+mot},"*");gerencia();mapa()};c.querySelector("[data-imp]").onclick=()=>comanda(p,itens,setor);if($("#c-auto-imp")?.checked&&$("#c-imp").value){avisar(`<svg class='i' viewBox='0 0 24 24' aria-hidden='true'><polyline points='6 9 6 2 18 2 18 9'/><path d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/><rect x='6' y='14' width='12' height='8'/></svg> Comanda #${p.num} impressa na ${esc(setor==="bar"&&$("#c-bar-imp").checked?"impressora do bar":$("#c-imp").value)}`);log("Imprimiu comanda",`#${p.num} · ${setor}`)}
 c.querySelector("button").onclick=()=>{const s=PROX[c.dataset.status][0];c.dataset.status=s;c.classList.remove("novo");
 if(s==="Pronto"){c.querySelector("[data-av]").remove();tempos.push((Date.now()-c.dataset.ini)/1000);gerencia();const m=mesas[p.mesa];if(m){m.estado="pronto";m.pronto++;prontosMesa.push({mesa:m.n,num:p.num,itens,setor,hora:Date.now(),p});listaProntas();notificar(MARCA.nome,`Mesa ${m.n}: pronto para levar (veja no Balcão)`);bip(990);}(p.feitos=p.feitos||[]).push(setor);if(!p.mesa&&--p.pend<=0)pronta(p);else if(!p.mesa)tv();mapa()}else c.querySelector("button").textContent=PROX[s][1];
 if(p.mesa||s!=="Pronto")reg(p,s);site().postMessage({tipo:"status",num:p.num,status:p.mesa?(s==="Pronto"?"Pronto, saindo para a mesa":"Em preparo"):(p.pronta?`Pronto! Senha ${p.senha}: retire no balcão`:`Senha ${p.senha} · em preparo`)},"*");if(s==="Pronto"){c.classList.add("saindo");setTimeout(()=>{const col=c.parentElement;c.remove();if(col&&!col.querySelector(".card"))col.innerHTML=`<p class="vazio">Nada para fazer agora.</p>`},350)}else document.getElementById(`${setor}-${s}`).prepend(c);contar()};
@@ -527,8 +531,8 @@ if(coz.length)cartao(p,"cozinha",coz);if(bar.length)cartao(p,"bar",bar);p.pend=(
 const m=mesas[p.mesa];if(m){m.estado="ocupada";m.total+=p.total;m.ultimo=p.num;p.itens.forEach(i=>{i.pessoa=i.pessoa||p.nome||"Mesa";m.itens.push(i)})}
 ped++;fat+=p.total;p.itens.forEach(i=>{vendidos[i.nome]=(vendidos[i.nome]||0)+i.qtd;if(i.sug)sug+=i.qtd*i.preco});gerencia();mapa();bip()}
 // alertas: aceite do primeiro pedido, garçom, conta
-function alerta(html,mesa,acoes){notificar(MARCA.nome,html.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim());const a=document.createElement("div");a.className="alerta";a.dataset.mesa=mesa;a.innerHTML=html+`<span class="mx">${acoes}</span>`;$("#alertas").prepend(a);bip(660);contar();return a}
-window.addEventListener("message",ev=>{const p=ev.data;if(!p||!p.tipo)return;if(offline&&["pedido","garcom","conta","ver-conta"].includes(p.tipo)){esperando.add(p.num||p.tipo+p.mesa);faixaRede();return}
+function alerta(html,mesa,acoes){notificar(MARCA.nome,html.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim());const a=document.createElement("div");a.className="alerta";a.dataset.mesa=mesa;const evk=window.__ev||Date.now();a.innerHTML=html+`<span class="mx">${acoes}</span>`;$("#alertas").prepend(a);bip(660);contar();a.querySelectorAll("button").forEach((b,n)=>b.dataset.k="al-"+evk+"-"+mesa+"-"+([...b.attributes].map(x=>x.name).find(x=>x.startsWith("data-"))||n));return a}
+window.addEventListener("message",ev=>{const p=ev.data;if(!p||!p.tipo)return;window.__ev=p._id||p.num||"";if(offline&&["pedido","garcom","conta","ver-conta"].includes(p.tipo)){esperando.add(p.num||p.tipo+p.mesa);faixaRede();return}
 if(p.tipo==="pedido"){site().postMessage({tipo:"recebido",num:p.num},"*");if(vistos.has(p.num))return;vistos.add(p.num);const m=mesas[p.mesa];reg(p,"Aguardando aceite");
 if(!p.mesa&&p.pagar==="caixa"){p.senha=String(++senhaN).padStart(3,"0");reg(p,"Aguardando pagamento");const po=pedidos.find(x=>x.num===p.num);if(po)po.senha=p.senha;
 site().postMessage({tipo:"status",num:p.num,status:`Sua senha: ${p.senha}. Pague ${reais(p.total)} no caixa para o pedido ir para a cozinha.`},"*");
@@ -543,7 +547,7 @@ if(m&&!m.aceita&&$("#c-aceite").checked){const a=alerta(`<b>Mesa ${esc(p.mesa)}:
 a.querySelector("[data-ok]").onclick=()=>{m.aceita=true;a.remove();entrar(p)};a.querySelector("[data-nao]").onclick=()=>{a.remove();reg(p,"Recusado");site().postMessage({tipo:"status",num:p.num,status:"Recusado: chame o garçom"},"*");contar()}}
 else entrar(p)}
 if(p.tipo==="ver-conta"){const m=mesas[p.mesa];if(m){m.estado="conta";mapa();site().postMessage({tipo:"extrato",mesa:p.mesa,itens:m.itens,total:m.total,servico:servOn?servPct:0,pix:PIX},"*")}return}
-if(p.tipo==="conta"&&p.pagamento){if(p.pago){log("Pix pelo celular",`Mesa ${p.mesa} · ${reais(p.total)}`);pagos.push(p);avisar(`<svg class='i' viewBox='0 0 24 24' aria-hidden='true'><path d='M22 11.1V12a10 10 0 1 1-5.9-9.1'/><polyline points='22 4 12 14 9 11'/></svg> Mesa ${esc(p.mesa)} pagou ${reais(p.total)} no Pix: mesa liberada sozinha.`);setTimeout(()=>liberar(p.mesa),1200);return}const m=mesas[p.mesa];if(m){m.estado="conta";mapa()}
+if(p.tipo==="conta"&&p.pagamento){if(p.pago){log("Pix pelo celular",`Mesa ${p.mesa} · ${reais(p.total)}`);pagos.push(p);avisar(`<svg class='i' viewBox='0 0 24 24' aria-hidden='true'><path d='M22 11.1V12a10 10 0 1 1-5.9-9.1'/><polyline points='22 4 12 14 9 11'/></svg> Mesa ${esc(p.mesa)} pagou ${reais(p.total)} no Pix: mesa liberada sozinha.`);if(!window.__cmSync)setTimeout(()=>liberar(p.mesa),1200);return}const m=mesas[p.mesa];if(m){m.estado="conta";mapa()}
 const a=alerta(`<b>Mesa ${esc(p.mesa)} fechou a conta</b><span>${reais(p.total)} no ${esc(p.pagamento)}${p.partes?` · cada um paga o seu: ${p.partes.map(x=>esc(x.nome)+" "+reais(x.total)).join(", ")}`:p.pessoas>1?` · dividir em ${p.pessoas} (${reais(p.total/p.pessoas)} cada)`:""}${p.servico?"":" · sem os 10%"} ${p.pago?" · pago no Pix pelo celular: confira no app do banco":" · levar a maquininha"}</span>`,p.mesa,`<button data-pago>${p.pago?"Pix confirmado: liberar mesa":"Pago na maquininha"}</button>`);
 a.querySelector("[data-pago]").onclick=()=>{a.remove();pagos.push(p);liberar(p.mesa)};return}
 if(p.tipo==="garcom"||p.tipo==="conta"){const m=mesas[p.mesa];if(p.tipo==="conta"&&m){m.estado="conta";mapa()}
@@ -567,8 +571,8 @@ function aplicarVisao(ir){document.querySelector("nav").classList.toggle("so-uma
 const alvo=ir&&document.querySelector(`nav [data-aba="${ir}"]`),at=document.querySelector('nav [aria-selected="true"]');if(alvo&&!alvo.hidden)alvo.click();else if(!at||at.hidden)[...document.querySelectorAll("nav button[data-aba]")].find(b=>!b.hidden)?.click()}
 $("#funcao").onchange=e=>{funcaoAtual=e.target.value;usuario=ROTULO_F[funcaoAtual];aplicarVisao(funcaoAtual||"cozinha")};
 // esgotado hoje
-const esgot=new Set();function cardapio(){$('.esg[data-setor="todos"]').innerHTML=MENU.map(i=>`<tr><td>${esc(i.nome)}</td><td>${esc(i.cat)}</td><td>${BAR.includes(i.cat)?"Bar":"Cozinha"}</td><td>${reais(i.preco)}</td><td>${vendidos[i.nome]||0}</td><td><button class="${esgot.has(i.id)?"on":""}" data-id="${i.id}">${esgot.has(i.id)?"Esgotado":"Disponível"}</button> <button class="sec" data-editar="${i.id}">Editar</button></td></tr>`).join("")}
-document.querySelectorAll(".esg").forEach(el=>{const bar=el.dataset.setor==="bar";if(el.dataset.setor!=="todos")el.innerHTML=MENU.filter(i=>BAR.includes(i.cat)===bar).map(i=>`<button data-id="${i.id}">${esc(i.nome)}</button>`).join("");
+const esgot=new Set();function cardapio(){$('.esg[data-setor="todos"]').innerHTML=MENU.map(i=>`<tr><td>${esc(i.nome)}</td><td>${esc(i.cat)}</td><td>${BAR.includes(i.cat)?"Bar":"Cozinha"}</td><td>${reais(i.preco)}</td><td>${vendidos[i.nome]||0}</td><td><button class="${esgot.has(i.id)?"on":""}" data-id="${i.id}" data-k="esg-${i.id}">${esgot.has(i.id)?"Esgotado":"Disponível"}</button> <button class="sec" data-editar="${i.id}">Editar</button></td></tr>`).join("")}
+document.querySelectorAll(".esg").forEach(el=>{const bar=el.dataset.setor==="bar";if(el.dataset.setor!=="todos")el.innerHTML=MENU.filter(i=>BAR.includes(i.cat)===bar).map(i=>`<button data-id="${i.id}" data-k="esg-${i.id}">${esc(i.nome)}</button>`).join("");
 el.onclick=e=>{const b=e.target.closest("[data-id]");if(!b)return;const id=b.dataset.id,on=!esgot.has(id);on?esgot.add(id):esgot.delete(id);log(on?"Marcou esgotado":"Voltou ao cardápio",(MENU.find(i=>i.id===id)||{}).nome||id);
 document.querySelectorAll(`.esg:not(tbody) [data-id="${id}"]`).forEach(x=>x.classList.toggle("on",on));cardapio();site().postMessage({tipo:"esgotado",id,ativo:on},"*")}});cardapio();
 // cancelar com senha do gerente
@@ -578,9 +582,8 @@ $("#caixa").innerHTML=`<h3>Cancelar ${p.mesa?"mesa "+esc(p.mesa):"pedido"} #${p.
 <label>Senha do gerente<input id="pin" type="password" inputmode="numeric" placeholder="Senha do gerente"></label><p class="erro" id="erro"></p>
 <div class="pe"><button class="sec" data-cancelar>Voltar</button><button class="perigo" id="ok-canc">Cancelar itens</button></div>`;$("#modal").hidden=false;$("#pin").focus();
 $("#ok-canc").onclick=()=>{if($("#pin").value!=="1234"){$("#erro").textContent="Senha errada. Só o gerente pode cancelar.";return}
-const m=mesas[p.mesa];if(m){m.total-=v;m.itens=m.itens.filter(i=>!itens.includes(i))}fat-=v;itens.forEach(i=>{vendidos[i.nome]-=i.qtd;if(i.sug)sug-=i.qtd*i.preco});
-cancel.unshift(`${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · ${p.mesa?"Mesa "+esc(p.mesa):"Retirada"} · ${itens.map(i=>esc(i.nome)).join(", ")} · ${reais(v)} · ${esc($("#motivo").value)}`);
-log("Cancelamento",`${p.mesa?"Mesa "+p.mesa:"Balcão"} #${p.num} · ${itens.map(i=>i.nome).join(", ")} · ${$("#motivo").value}`);c.remove();reg(p,"Cancelado");site().postMessage({tipo:"status",num:p.num,status:"Item cancelado pela casa: "+$("#motivo").value},"*");$("#modal").hidden=true;gerencia();mapa()}}
+const mot=$("#motivo").value;$("#modal").hidden=true;cmCancelar(c.dataset.chave,mot)}}
+function cmCancelar(ch,mot){const c=document.querySelector(`[data-chave="${ch}"]`);if(c&&c.__cancel)c.__cancel(mot)}
 // aniversários (exemplo)
 $("#aniv").innerHTML=[["Bruno Teixeira","5511900000021","sexta-feira"],["Camila Rocha","5511900000022","domingo"]].map(c=>`<div class="linha"><span class="d"><b>${esc(c[0])}</b><small>Aniversário ${c[2]}</small></span><a href="https://wa.me/${c[1]}?text=${encodeURIComponent(`Feliz aniversário, ${c[0]}! Venha comemorar na ${MARCA.nome}: a sobremesa é por nossa conta. Reserve pelo site!`)}" target="_blank" rel="noopener"><button class="sec">Mandar parabéns</button></a></div>`).join("");
 // comanda individual no fechamento
@@ -597,7 +600,8 @@ $(".l-menu").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;const
 r.querySelector("b").textContent=qt[id];r.classList.toggle("on",qt[id]>0);$("#l-tot").textContent=reais(MENU.reduce((t,i)=>t+(qt[i.id]||0)*i.preco,0))};
 $("#l-ok").onclick=()=>{const its=MENU.filter(i=>qt[i.id]).map(i=>({nome:i.nome,qtd:qt[i.id],obs:$("#l-obs").value.trim(),preco:i.preco,cat:i.cat,sug:false}));if(!its.length)return;
 const p={tipo:"pedido",num:Date.now()%100000,mesa:String(n),modo:"Mesa",nome:$("#l-pessoa").value.trim()||"Mesa",origem:"garcom",itens:its,total:its.reduce((t,i)=>t+i.qtd*i.preco,0)};
-vistos.add(p.num);mesas[n].aceita=true;$("#modal").hidden=true;entrar(p)}}
+$("#modal").hidden=true;lancarPedido(p)}}
+function lancarPedido(p){if(vistos.has(p.num))return;vistos.add(p.num);if(mesas[p.mesa])mesas[p.mesa].aceita=true;entrar(p)}
 // integração com o caixa (simulada na demonstração)
 const INTEG=[["saipos","Saipos","PDV para restaurantes"],["consumer","Consumer","PDV e gestão"],["colibri","Colibri","PDV NCR Colibri"],["webhook","Outro sistema","Webhook (qualquer PDV com API)"]],ligadas=new Set(),envios=[];
 function integ(){$("#integ").innerHTML=INTEG.map(([id,n,d])=>{const on=ligadas.has(id);return `<div class="ig ${on?"on":""}"><b>${n}</b><small>${d}</small><span class="st ${on?"confirmada":"pendente"}">${on?"Conectado":"Desconectado"}</span><button class="${on?"sec":""}" data-ig="${id}">${on?"Desconectar":"Conectar"}</button></div>`}).join("")}
@@ -630,7 +634,7 @@ $("#relatorio").innerHTML=`<div class="rel-acoes"><button class="sec" data-rel-f
 $("#btn-rel").onclick=relatorio;
 $("#relatorio").onclick=e=>{if(e.target.closest("[data-rel-fechar]"))$("#relatorio").hidden=true;if(e.target.closest("[data-rel-pdf]"))window.print()};
 // balcão: senha pronta vai para a TV
-function pronta(p){p.pronta=Date.now();reg(p,"Pronto");tv();bip(990);setTimeout(()=>{if(!p.retirada)retirar(p)},5*60000)}
+function pronta(p){p.pronta=Date.now();reg(p,"Pronto");tv();bip(990);if(!window.__cmSync)setTimeout(()=>{if(!p.retirada)retirar(p)},5*60000)}
 function tv(){const prep=balcao.filter(o=>!o.pronta&&!o.retirada),pr=balcao.filter(o=>o.pronta&&!o.retirada).sort((a,b)=>b.pronta-a.pronta),ult=pr[0];
 $("#tv-prep").innerHTML=prep.map(o=>`<span>${o.senha}</span>`).join("")||"<em>Nenhum pedido no momento</em>";
 const ag=$("#tv-agora");const novo=ult&&ag.dataset.num!==String(ult.num)+ult.pronta;ag.dataset.num=ult?String(ult.num)+ult.pronta:"";
@@ -638,8 +642,8 @@ ag.className="tv-agora"+(ult?"":" vazio");ag.innerHTML=ult?`<small>Senha chamada
 if(novo){void ag.offsetWidth;ag.classList.add("chama")}
 $("#tv-prontos").innerHTML=pr.slice(1).map(o=>`<span>${o.senha}</span>`).join("");
 const linha=(o,b)=>`<div class="linha"><span class="q">${o.senha}</span><span class="d"><b>${esc(o.nome||"Cliente")}</b><small>${o.itens.map(i=>i.qtd+"× "+esc(i.nome)).join(", ")}</small></span>${b}</div>`;
-$("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="mx"><span class="d-set">${(o.setores||[]).map(st=>`${st==="bar"?"Bar":"Cozinha"} ${(o.feitos||[]).includes(st)?"✓":"pendente"}`).join(" · ")}</span><button class="sec" data-chamar-ja="${o.num}" title="Chamar a senha na TV agora">Chamar na TV</button></span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
-$("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}">Chamar de novo</button><button data-retirado="${o.num}">${o.pagar==="pix"||o.pago?"Retirado":"Cobrou "+reais(o.total)+" e entregou"}</button></span>`)).join("")||'<p class="nota">—</p>';
+$("#b-prep").innerHTML=prep.map(o=>linha(o,`<span class="mx"><span class="d-set">${(o.setores||[]).map(st=>`${st==="bar"?"Bar":"Cozinha"} ${(o.feitos||[]).includes(st)?"✓":"pendente"}`).join(" · ")}</span><button class="sec" data-chamar-ja="${o.num}" data-k="cha-${o.num}" title="Chamar a senha na TV agora">Chamar na TV</button></span>`)).join("")||'<p class="nota">Nenhum pedido do balcão.</p>';
+$("#b-prontos").innerHTML=pr.map(o=>linha(o,`<span class="mx"><button class="sec" data-de-novo="${o.num}" data-k="nov-${o.num}">Chamar de novo</button><button data-retirado="${o.num}" data-k="ret-${o.num}">${o.pagar==="pix"||o.pago?"Retirado":"Cobrou "+reais(o.total)+" e entregou"}</button></span>`)).join("")||'<p class="nota">—</p>';
 bolinha("balcao",pr.length+new Set(prontosMesa.map(x=>x.mesa)).size)}
 $("#b-prontos").onclick=e=>{const r=e.target.closest("[data-retirado]"),d=e.target.closest("[data-de-novo]");
 if(r)retirar(balcao.find(x=>String(x.num)===r.dataset.retirado))
@@ -664,7 +668,7 @@ let fidDist=0;const fidPct=()=>+$("#fid-pct").value;function fidelidade(){$("#fi
 $("#fid-pct").onchange=fidelidade;
 // promoções por horário
 const PROMOS=[{id:"happy",titulo:"Happy hour: chopes e caipirinha com 50%",quando:"Seg a sex, das 17h às 19h",precos:{"chope-pilsen":7,"chope-ipa":9.5,"caipirinha-limao":12}},{id:"dia",titulo:"Prato do dia: Costela 12 horas por R$ 69",quando:"Ter a sex, almoço (11h30 às 15h)",precos:{"costela-12h":69}}];
-function promos(){$("#promos").innerHTML=PROMOS.map((x,i)=>`<div class="linha"><span class="d"><b>${esc(x.titulo)}</b><small>${esc(x.quando)}</small></span><span class="st ${x.ativa?"confirmada":"pendente"}">${x.ativa?"Ativa agora":"Agendada"}</span><button class="${x.ativa?"sec":""}" data-promo="${i}">${x.ativa?"Desligar":"Ligar agora"}</button></div>`).join("")}
+function promos(){$("#promos").innerHTML=PROMOS.map((x,i)=>`<div class="linha"><span class="d"><b>${esc(x.titulo)}</b><small>${esc(x.quando)}</small></span><span class="st ${x.ativa?"confirmada":"pendente"}">${x.ativa?"Ativa agora":"Agendada"}</span><button class="${x.ativa?"sec":""}" data-promo="${i}" data-k="pro-${i}">${x.ativa?"Desligar":"Ligar agora"}</button></div>`).join("")}
 $("#promos").onclick=e=>{const b=e.target.closest("[data-promo]");if(!b)return;const x=PROMOS[b.dataset.promo];x.ativa=!x.ativa;site().postMessage({tipo:"promo",id:x.id,titulo:x.titulo,ativa:x.ativa,precos:x.precos},"*");promos()};
 // fila de espera
 const fila=[{nome:"Paula",pes:4,tel:"5511900000031",desde:Date.now()-18*60000},{nome:"Diego",pes:2,tel:"5511900000032",desde:Date.now()-9*60000}];
@@ -835,7 +839,7 @@ function grupoBadges(){[["cozinha",["cozinha","bar"]],["mesas",["mesas","balcao"
 subnav("cozinha");
 // "Mesas prontas" no Balcão: pratos prontos agrupados por mesa, para o garçom levar
 function listaProntas(){const g={};prontosMesa.forEach(x=>{(g[x.mesa]=g[x.mesa]||[]).push(x)});const ms=Object.keys(g).sort((a,b)=>g[a][0].hora-g[b][0].hora);
-$("#mesas-prontas").innerHTML=ms.map(n=>{const l=g[n],min=Math.round((Date.now()-l[0].hora)/60000);return `<div class="linha pronta-mesa"><span class="q">Mesa ${n}</span><span class="d">${l.map(x=>x.itens.map(i=>`<b>${i.qtd}×</b> ${esc(i.nome)}${i.obs?` <small>(${esc(i.obs)})</small>`:""}`).join("<br>")).join("<br>")}<small class="${min>=3?"alerta-t":""}">${l.map(x=>x.setor==="bar"?"bar":"cozinha").filter((v,i,a)=>a.indexOf(v)===i).join(" + ")} · pronto há ${min} min</small></span><span class="mx"><button class="sec" data-imp-mesa="${n}" title="Imprimir" aria-label="Imprimir"><svg class='i' viewBox='0 0 24 24' aria-hidden='true'><polyline points='6 9 6 2 18 2 18 9'/><path d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/><rect x='6' y='14' width='12' height='8'/></svg></button><button data-levei-mesa="${n}">Levei ✓</button></span></div>`}).join("")||'<p class="nota">Nenhum prato esperando. Quando a cozinha ou o bar marcam pronto, o prato aparece aqui com o número da mesa.</p>';try{tv()}catch(e){}}
+$("#mesas-prontas").innerHTML=ms.map(n=>{const l=g[n],min=Math.round((Date.now()-l[0].hora)/60000);return `<div class="linha pronta-mesa"><span class="q">Mesa ${n}</span><span class="d">${l.map(x=>x.itens.map(i=>`<b>${i.qtd}×</b> ${esc(i.nome)}${i.obs?` <small>(${esc(i.obs)})</small>`:""}`).join("<br>")).join("<br>")}<small class="${min>=3?"alerta-t":""}">${l.map(x=>x.setor==="bar"?"bar":"cozinha").filter((v,i,a)=>a.indexOf(v)===i).join(" + ")} · pronto há ${min} min</small></span><span class="mx"><button class="sec" data-imp-mesa="${n}" title="Imprimir" aria-label="Imprimir"><svg class='i' viewBox='0 0 24 24' aria-hidden='true'><polyline points='6 9 6 2 18 2 18 9'/><path d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'/><rect x='6' y='14' width='12' height='8'/></svg></button><button data-levei-mesa="${n}" data-k="lev-${n}">Levei ✓</button></span></div>`}).join("")||'<p class="nota">Nenhum prato esperando. Quando a cozinha ou o bar marcam pronto, o prato aparece aqui com o número da mesa.</p>';try{tv()}catch(e){}}
 $("#mesas-prontas").onclick=e=>{const l=e.target.closest("[data-levei-mesa]"),i=e.target.closest("[data-imp-mesa]");if(l)entregue(l.dataset.leveiMesa);
 if(i){const x=prontosMesa.filter(y=>String(y.mesa)===i.dataset.impMesa);comanda(x[0].p,x.flatMap(y=>y.itens),x[0].setor)}};
 setInterval(()=>{if(prontosMesa.length)listaProntas()},30000);
@@ -899,7 +903,7 @@ mapa();listaReservas();gerencia();listaPedidos();
 </script></body></html>"""
 
 destino = AQUI / "demo-pdv.html"
-destino.write_text(PAINEL.replace("%%FONTES%%", FONTES).replace("%%MENU%%", MENU).replace("%%QRS%%", QRS).replace("%%PIX%%", PIX).replace("%%SITE%%", base64.b64encode(site.encode("utf-8")).decode()), encoding="utf-8")
+destino.write_text(PAINEL.replace("%%FONTES%%", FONTES).replace("%%MENU%%", MENU).replace("%%QRS%%", QRS).replace("%%PIX%%", PIX).replace("%%SITE%%", site.replace("</script", "<\\/script")), encoding="utf-8")
 print(f"{destino.name}: {destino.stat().st_size // 1024} KB")
 
 # ---- duas telas separadas: cliente.html (o que o cliente vê) e restaurante.html (o que a casa vê)
@@ -916,7 +920,7 @@ a, b = rest.index('<section class="lado">'), rest.index('<section class="painel"
 rest = rest[:a] + rest[b:]
 a = rest.index('<script id="site-html"')
 rest = rest[:a] + rest[rest.index("</script>", a) + len("</script>"):]  # tira o html do site
-a = rest.index("(()=>{const b=atob(")
+a = rest.index("(()=>{const u=document.getElementById(\"site-html\")")
 rest = rest[:a] + rest[rest.index('"#cardapio"})();', a) + len('"#cardapio"})();'):]  # tira o iframe
 rest = rest.replace('const site=()=>document.getElementById("site").contentWindow;',
     'const canal=new BroadcastChannel("%s"),site=()=>({postMessage:d=>canal.postMessage(d)});canal.onmessage=e=>window.dispatchEvent(new MessageEvent("message",{data:e.data}));' % CANAL)
@@ -970,7 +974,7 @@ document.getElementById("mostrar-demo").onchange=e=>document.body.classList.togg
 // avisa no botão "Restaurante" quando chega algo novo enquanto se está na tela do cliente
 setInterval(()=>{const n=document.querySelectorAll(".alerta").length+document.querySelectorAll(".card.novo").length,b=document.getElementById("b-troca");b.hidden=!n;b.textContent=n},500)})();
 </script></body></html>"""
-um = PAINEL.replace("%%FONTES%%", FONTES).replace("%%MENU%%", MENU).replace("%%QRS%%", QRS).replace("%%PIX%%", PIX).replace("%%SITE%%", base64.b64encode(site.encode("utf-8")).decode())
+um = PAINEL.replace("%%FONTES%%", FONTES).replace("%%MENU%%", MENU).replace("%%QRS%%", QRS).replace("%%PIX%%", PIX).replace("%%SITE%%", site.replace("</script", "<\\/script"))
 um = um.replace("</style></head>", "</style>" + TROCA_CSS, 1).replace("<body>", TROCA_HTML, 1)
 um = um.replace("<title>Comanda+ · Demonstração</title>", "<title>Comanda+ · Casa Brasa</title>")
 assert um.rstrip().endswith("</body></html>")

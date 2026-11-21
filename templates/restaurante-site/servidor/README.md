@@ -69,14 +69,32 @@ O banco é um arquivo (SQLite), então o servidor precisa de **disco que não se
 
 **Cardápio e marca de cada restaurante:** gere o site com os dados do restaurante (`montar.py`) e copie `casa-brasa.html` para `servidor/dados/restaurantes/<id>/site.html`. Se esse arquivo não existir, o servidor usa o cardápio modelo.
 
-## O que vem na próxima versão (fase 2)
-Esta versão já permite rodar um restaurante com **um painel principal** (computador ou tablet do caixa ou da cozinha), os celulares dos clientes e a TV. Para a próxima versão ficam:
-- **Vários aparelhos da equipe sincronizados:** tablet da cozinha, celular do garçom e computador do gerente ao mesmo tempo, com o estado guardado no servidor.
-- **Cardápio, reservas, clientes, fidelidade e estoque salvos no banco**, editáveis pelo painel e por restaurante.
-- **Relatórios do mês com os dados reais** do banco.
-- **WhatsApp oficial** (resumo do dia, reservas, fila) e **IA de verdade** (API do Claude).
-- **Pix com confirmação automática** pelo banco ou intermediador de pagamento.
-- **Cobrança automática da mensalidade** (Asaas ou Iugu) com suspensão automática.
-- Painel do super administrador numa tela, no lugar do `admin.py`.
+## Equipe em vários aparelhos (sincronizada)
+Cada pessoa entra no painel com o **próprio login** e vê só a tela da sua função:
+- **Cozinha** no tablet (`python3 admin.py usuario <id> cozinha@... "senha" --funcao cozinha`);
+- **Garçom** no celular (`--funcao mesas`), que recebe o aceite do 1º pedido, vê a mesa pronta e marca "Levei";
+- **Gerente** no computador, que vê tudo.
+
+Toda ação (aceitar, pronto, levei, fechar conta, cancelar, esgotado, promoção, configurações) é guardada no servidor e repassada **na mesma ordem para todos os aparelhos**, então todos veem a mesma coisa. Um aparelho que entra depois, ou que recarrega, recebe tudo o que aconteceu no dia e fica igual aos outros. Se a internet de um aparelho cair, aparece o aviso "Sem conexão" e as ações entram assim que a conexão voltar.
+
+**Fica salvo no servidor:** edições do cardápio (preço, nome, prato novo), esgotados do dia, promoções ligadas e configurações (taxa de serviço, aceite do 1º pedido, pagamento do balcão). O cliente já abre o cardápio atualizado.
+
+## Demonstração ao vivo (`/demo`)
+O servidor cria sozinho o restaurante **demo**, com 6 mesas e os logins `gerente@demo.com`, `cozinha@demo.com` e `garcom@demo.com` (senha `demonstracao`). A página `/demo` tem os links do painel, da TV e das mesas para abrir no celular. Os dados são apagados a cada 4 horas. Para desligar: `COMANDA_DEMO=0`.
+
+Mande o link `https://seu-dominio/demo` para o dono do restaurante testar com o celular dele.
+
+## Monitoramento
+- **`/saude`** responde se o servidor e o banco estão funcionando e quantos aparelhos estão conectados.
+- **Alerta no celular se o servidor cair:** crie uma conta grátis no [UptimeRobot](https://uptimerobot.com), adicione um monitor HTTP para `https://seu-dominio/saude` (a cada 5 minutos) e ative o aviso por e-mail, Telegram ou app.
+- **Erros** ficam registrados em `dados/erros.log`. Para receber cada erro e cada reinício no Discord, Slack ou Telegram, defina `ALERTA_WEBHOOK` com o endereço do webhook (ex.: `ALERTA_WEBHOOK=https://discord.com/api/webhooks/... pm2 restart comanda --update-env`).
+
+## O que vem na próxima versão (fase 3)
+- Reservas, fila de espera, clientes (CRM), fidelidade e estoque salvos no banco.
+- Relatórios do mês com os dados reais do banco.
+- WhatsApp oficial (resumo do dia, confirmação de reservas, fila) e assistente de IA de verdade.
+- Pix com confirmação automática pelo banco ou intermediador de pagamento.
+- Cobrança automática da mensalidade e painel do super administrador numa tela.
+- Permissões também conferidas no servidor por função. Hoje cada função vê só a sua tela, mas a regra é aplicada no painel.
 
 Enquanto isso, o painel publicado esconde os recursos que ainda usam dados de exemplo: relatório do mês, resumo do WhatsApp, assistente de IA, estoque, rede de lojas e integrações.
